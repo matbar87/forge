@@ -214,7 +214,7 @@ export const translations = {
       quoteRef: 'Proverbs 27:17 (NIV)',
       stats: [
         { value: '3 DAYS', label: 'November 12 - 14, 2026' },
-        { value: '100%', label: 'No masks or pretense' },
+        { value: '100%', label: 'No masks or posturing' },
         { value: 'Limit', label: 'Limited accommodation' },
       ],
       galleryTitle: 'Photo Gallery',
@@ -234,7 +234,7 @@ export const translations = {
         features: [
           'Full board throughout the camp (3 hearty meals daily)',
           '2 nights accommodation in comfortable camp rooms',
-          'Evening bonfire cookout, camaraderie, and fellowship',
+          'Evening bonfire with sausage roasting and bonding',
         ],
         cta: 'Go to Registration Form',
         note: 'Redirects to secure external registration form',
@@ -260,8 +260,8 @@ export const translations = {
       days: [
         {
           date: 'November 12 (Thursday)',
-          dayName: 'Day 1',
-          theme: 'Arrival & Kindling the Fire',
+          dayName: 'DAY 1 — WARMING UP',
+          theme: 'Stop. Step into the fire.',
           items: [
             { time: '16:00 – 17:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break' },
             { time: '17:00 – 18:30', title: 'Dinner', type: 'meal' },
@@ -273,8 +273,8 @@ export const translations = {
         },
         {
           date: 'November 13 (Friday)',
-          dayName: 'Day 2',
-          theme: 'Tempering Steel — A Day of Challenge and Depth',
+          dayName: 'DAY 2 — FORGING',
+          theme: 'Let yourself be shaped.',
           items: [
             { time: '07:30 – 08:15', title: 'Breakfast', description: 'Group A', type: 'meal' },
             { time: '08:15 – 09:00', title: 'Breakfast', description: 'Group B', type: 'meal' },
@@ -283,7 +283,7 @@ export const translations = {
             { time: '09:30 – 10:30', title: 'Session 2', type: 'session' },
             { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
             { time: '11:30 – 12:30', title: 'Session 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Personal Time with God', type: 'break', badge: 'PRAYER' },
+            { time: '12:30 – 13:00', title: 'Alone with God', type: 'break', badge: 'PRAYER' },
             { time: '13:00 – 13:30', title: 'Lunch', description: 'Group A', type: 'meal' },
             { time: '13:30 – 14:00', title: 'Lunch', description: 'Group B', type: 'meal' },
             { time: '14:00 – 17:00', title: 'Free Time', type: 'break' },
@@ -298,8 +298,8 @@ export const translations = {
         },
         {
           date: 'November 14 (Saturday)',
-          dayName: 'Day 3',
-          theme: 'Forged & Commissioned to the World',
+          dayName: 'DAY 3 — TEMPERING',
+          theme: 'Leave stronger.',
           items: [
             { time: '07:30 – 08:15', title: 'Breakfast', description: 'Group A', type: 'meal' },
             { time: '08:15 – 09:00', title: 'Breakfast', description: 'Group B', type: 'meal' },
