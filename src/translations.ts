@@ -62,7 +62,7 @@ export const translations = {
       title: 'Rejestracja',
       subtitle: 'Wybierz odpowiednią opcję dla siebie.',
       individual: {
-        title: 'Rejestracja Indywidualna',
+        title: 'Indywidualna',
         badge: 'POJEDYNCZY UCZESTNIK',
         description: 'Dla każdego mężczyzny, który przyjeżdża sam lub ze znajomym',
         price: '350 zł',
@@ -76,7 +76,7 @@ export const translations = {
         note: 'Przekierowanie do zewnętrznego formularza zgłoszeniowego',
       },
       group: {
-        title: 'Rejestracja Grupowa',
+        title: 'Grupowa',
         badge: 'DLA GRUP OD 6 OSÓB',
         description: 'Dla zorganizowanej grupy z jednej wspólnoty',
         price: '300 zł',
@@ -226,7 +226,7 @@ export const translations = {
       title: 'Registration',
       subtitle: 'Choose your registration type.',
       individual: {
-        title: 'Individual Registration',
+        title: 'Individual',
         badge: 'SOLO ATTENDEE',
         description: 'For every man arriving solo or with a friend',
         price: '350 PLN',
@@ -240,7 +240,7 @@ export const translations = {
         note: 'Redirects to secure external registration form',
       },
       group: {
-        title: 'Group Registration',
+        title: 'Group',
         badge: 'FOR GROUPS OF 6+ MEN',
         description: 'For an organized group from one fellowship / community',
         price: '300 PLN',
