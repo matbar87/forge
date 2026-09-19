@@ -139,11 +139,13 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
               // Plain "session" items (no title-specific override) are the core
               // teaching blocks, so they get a stronger card background. Groups
-              // time keeps normal emphasis; everything else fades its title a
-              // touch to recede behind those two.
+              // and Prayer keep full title emphasis; everything else fades its
+              // title a touch to recede behind those.
               const isMainSession = item.type === 'session' && !item.badge && !item.badges;
               const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
+              const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
               const isGroups = badges.some((b) => b.label.toUpperCase() === groupsLabel);
+              const isPrayer = badges.some((b) => b.label.toUpperCase() === prayerLabel);
 
               return (
                 <div
@@ -173,7 +175,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                   <div className="flex-1">
                     <h4
                       className={`font-bebas text-2xl sm:text-3xl tracking-wide uppercase ${
-                        isMainSession || isGroups ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
+                        isMainSession || isGroups || isPrayer ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
                       }`}
                     >
                       {item.title}
