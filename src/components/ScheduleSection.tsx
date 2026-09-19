@@ -136,10 +136,21 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
               const badges = item.badges
                 ? item.badges.map((b) => ({ ...getBadgeForType(b.type), label: b.label }))
                 : [{ ...getBadgeForType(item.type), label: item.badge ?? (lang === 'pl' ? getBadgeForType(item.type).labelPl : getBadgeForType(item.type).labelEn) }];
+
+              // Plain "session" items (no title-specific override) are the core
+              // teaching blocks, so they get a stronger card background. Groups
+              // time keeps normal emphasis; everything else fades its title a
+              // touch to recede behind those two.
+              const isMainSession = item.type === 'session' && !item.badge && !item.badges;
+              const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
+              const isGroups = badges.some((b) => b.label.toUpperCase() === groupsLabel);
+
               return (
                 <div
                   key={itemIdx}
-                  className="group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl bg-[#1E2937]/70 hover:bg-[#232F3F] transition-all shadow-md"
+                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${
+                    isMainSession ? 'bg-[#2C3B4E] hover:bg-[#324259]' : 'bg-[#1E2937]/70 hover:bg-[#232F3F]'
+                  }`}
                 >
                   {/* Time & Badge */}
                   <div className="flex items-center gap-3 flex-wrap md:flex-nowrap shrink-0">
@@ -160,7 +171,11 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
                   {/* Title & Description */}
                   <div className="flex-1">
-                    <h4 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase">
+                    <h4
+                      className={`font-bebas text-2xl sm:text-3xl tracking-wide uppercase ${
+                        isMainSession || isGroups ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
+                      }`}
+                    >
                       {item.title}
                     </h4>
                     {item.description && (
