@@ -204,7 +204,7 @@ export const translations = {
       p2: 'Wherever you are today, you can rediscover who you are, what you are called to, and what you need to live that out to the fullest. A time of honest conversations, powerful experiences, great fun, brotherhood, and an encounter with God awaits you.',
       p3: "You don't need to arrive with ready-made answers. Bring everything you carry today: questions, triumphs, failures, exhaustion, wounds, and the things you have been wrestling with for a long time. Come with exactly that. And let God meet you right where you are.",
       p4: "We will talk about what truly matters in a man's life: identity, healing, fatherhood, sexuality, calling, relationships, and intimacy with God.",
-      p5: 'There will be room for strength, but also for rest. For authentic worship, solid teaching, and real talk without posturing. Men who also carry their own stories, questions, and struggles will stand beside you. Not to compare. Not to impress anyone. Just to stand together, strengthen one another, and let one sharpen the other.',
+      p5: 'There will be space for strength, but also for rest. For authentic worship, solid teaching, and real talk without posturing. Men who also carry their own stories, questions, and struggles will stand beside you. Not to compare. Not to impress anyone. Just to stand together, strengthen one another, and let one sharpen the other.',
       manifesto: [
         'Come as you are.',
         'Enter a space where you can truly be yourself.',
