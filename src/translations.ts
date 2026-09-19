@@ -6,7 +6,6 @@ export interface ScheduleItem {
   description?: string;
   type?: 'session' | 'meal' | 'break' | 'activity';
   badge?: string;
-  badges?: { label: string; type: 'session' | 'meal' | 'break' | 'activity' }[];
 }
 
 export interface DaySchedule {
@@ -145,8 +144,10 @@ export const translations = {
             { time: '10:00 – 11:00', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
             { time: '11:00 – 12:00', title: 'Sesja 6', type: 'session' },
             { time: '12:00 – 13:00', title: 'Czas modlitwy i usługiwania', type: 'session' },
-            { time: '13:00 – 13:30', title: 'Obiad – Grupa A / Czas w grupach – Grupa B', type: 'meal', badges: [{ label: 'POSIŁEK', type: 'meal' }, { label: 'GRUPY', type: 'session' }] },
-            { time: '13:30 – 14:00', title: 'Obiad – Grupa B / Czas w grupach – Grupa A', type: 'meal', badges: [{ label: 'POSIŁEK', type: 'meal' }, { label: 'GRUPY', type: 'session' }] },
+            { time: '13:00 – 13:30', title: 'Obiad – Grupa A', type: 'meal' },
+            { time: '13:00 – 13:30', title: 'Czas w grupach – Grupa B', type: 'session', badge: 'GRUPY' },
+            { time: '13:30 – 14:00', title: 'Obiad – Grupa B', type: 'meal' },
+            { time: '13:30 – 14:00', title: 'Czas w grupach – Grupa A', type: 'session', badge: 'GRUPY' },
             { time: '14:00 – 14:30', title: 'Uwielbienie', type: 'session' },
             { time: '14:30 – 15:30', title: 'Sesja 7', type: 'session' },
             { time: '15:30 – 16:00', title: 'Zakończenie', type: 'session', badge: 'WYJAZD' },
@@ -307,8 +308,10 @@ export const translations = {
             { time: '10:00 – 11:00', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
             { time: '11:00 – 12:00', title: 'Session 6', type: 'session' },
             { time: '12:00 – 13:00', title: 'Prayer & Ministry Time', type: 'session' },
-            { time: '13:00 – 13:30', title: 'Lunch – Group A / Small Group Time – Group B', type: 'meal', badges: [{ label: 'MEAL', type: 'meal' }, { label: 'GROUPS', type: 'session' }] },
-            { time: '13:30 – 14:00', title: 'Lunch – Group B / Small Group Time – Group A', type: 'meal', badges: [{ label: 'MEAL', type: 'meal' }, { label: 'GROUPS', type: 'session' }] },
+            { time: '13:00 – 13:30', title: 'Lunch – Group A', type: 'meal' },
+            { time: '13:00 – 13:30', title: 'Small Group Time – Group B', type: 'session', badge: 'GROUPS' },
+            { time: '13:30 – 14:00', title: 'Lunch – Group B', type: 'meal' },
+            { time: '13:30 – 14:00', title: 'Small Group Time – Group A', type: 'session', badge: 'GROUPS' },
             { time: '14:00 – 14:30', title: 'Worship', type: 'session' },
             { time: '14:30 – 15:30', title: 'Session 7', type: 'session' },
             { time: '15:30 – 16:00', title: 'Closing', type: 'session', badge: 'DEPARTURE' },
