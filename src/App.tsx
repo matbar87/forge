@@ -9,10 +9,16 @@ import { LocationSection } from './components/LocationSection';
 import { Footer } from './components/Footer';
 
 export function App() {
-  // Initialize language preference from localStorage or default to 'pl'
+  // Initialize language preference from localStorage, or detect it from the browser/device language
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('kuznia_lang');
-    return saved === 'en' ? 'en' : 'pl';
+    if (saved === 'en' || saved === 'pl') return saved;
+
+    const browserLangs = navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language];
+    const isPolish = browserLangs.some((l) => l?.toLowerCase().startsWith('pl'));
+    return isPolish ? 'pl' : 'en';
   });
 
   const handleSetLang = (newLang: Language) => {

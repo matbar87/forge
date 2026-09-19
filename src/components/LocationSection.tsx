@@ -6,6 +6,8 @@ interface LocationSectionProps {
   lang: Language;
 }
 
+const GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Ośrodek h2o, ul. Ochabska 133, 43-430 Kiczyce')}`;
+
 export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
   const t = translations[lang].location;
 
@@ -60,21 +62,11 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
               <p className="text-[#E3E6DB]/80 text-base sm:text-lg leading-relaxed mb-8">
                 {t.description}
               </p>
-
-              {/* Transport notice box - Borderless */}
-              <div className="p-5 rounded-2xl bg-[#1E2937] mb-8">
-                <p className="text-xs font-mono-code text-[#E3E6DB]/75 leading-relaxed">
-                  <strong className="text-[#E3E6DB] uppercase block mb-1">
-                    // {lang === 'pl' ? 'DOJAZD I LOGISTYKA' : 'TRAVEL & LOGISTICS'}:
-                  </strong>
-                  {t.transportInfo}
-                </p>
-              </div>
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
             <a
-              href="https://maps.google.com"
+              href={GOOGLE_MAPS_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95"
