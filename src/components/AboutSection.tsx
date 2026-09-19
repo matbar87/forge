@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { RETREAT_GALLERY } from '../data/gallery';
-import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Maximize2, X, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 
 interface AboutSectionProps {
   lang: Language;
@@ -110,57 +110,93 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
           <div className="h-0.5 bg-[#3E4C5E]/30 flex-1 rounded-full" />
         </div>
 
-        {/* Massive Headline */}
-        <div className="mb-14">
-          <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9]">
-            {lang === 'pl' ? 'NIE ZWYKŁY WYJAZD.' : 'NOT A CASUAL CAMP.'} <br />
-            <span className="text-[#E3E6DB]/60">
-              {lang === 'pl' ? 'CZAS HARTOWANIA STALI.' : 'A CRUCIBLE OF CHARACTER.'}
-            </span>
+        {/* Section Headline */}
+        <div className="mb-12">
+          <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.95] max-w-5xl">
+            {t.title}
           </h2>
-          <p className="text-lg sm:text-xl text-[#E3E6DB]/80 font-medium max-w-3xl mt-6 leading-relaxed">
-            {t.lead}
-          </p>
         </div>
 
-        {/* Narrative & Pillars Bento Grid - Borderless */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-24 items-stretch">
-          {/* Main Manifesto Card - Borderless */}
-          <div className="lg:col-span-8 bg-[#18212C] rounded-3xl p-8 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden group">
-            <div className="space-y-6 text-[#E3E6DB]/80 text-base sm:text-lg leading-relaxed relative z-10">
-              <p className="font-normal text-[#E3E6DB]">
-                {t.descriptionParagraph1}
+        {/* Narrative & Pillars Bento Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24 items-start">
+          {/* Main Manifesto Card - All text sequential in one place */}
+          <div className="lg:col-span-8 bg-[#18212C] rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden flex flex-col justify-between space-y-7">
+            <div className="space-y-6 text-[#E3E6DB]/85 text-base sm:text-lg leading-relaxed relative z-10">
+              <p className="font-semibold text-xl sm:text-2xl text-[#E3E6DB] leading-snug">
+                {t.subtitle}
               </p>
-              <p className="font-normal text-[#E3E6DB]/70">
-                {t.descriptionParagraph2}
+
+              <p>
+                {t.p1}
               </p>
+
+              <p>
+                {t.p2}
+              </p>
+
+              <p>
+                {t.p3}
+              </p>
+
+              <p className="text-[#E3E6DB] font-medium">
+                {t.p4}
+              </p>
+
+              <p>
+                {t.p5}
+              </p>
+
+              {/* 3-line manifesto */}
+              <div className="py-2 pl-5 border-l-2 border-[#3E4C5E] space-y-1.5 text-[#E3E6DB] font-medium text-lg sm:text-xl">
+                {t.manifesto.map((line, idx) => (
+                  <p key={idx}>{line}</p>
+                ))}
+              </div>
+
+              {/* CTA link / button */}
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('rejestracja');
+                    if (el) {
+                      const offset = 80;
+                      const pos = el.getBoundingClientRect().top + window.scrollY - offset;
+                      window.scrollTo({ top: pos, behavior: 'smooth' });
+                    }
+                  }}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase transition-all shadow-xl active:scale-95 group"
+                >
+                  <span>{t.ctaText}</span>
+                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+              </div>
             </div>
 
-            {/* Scripture Quote Box - Borderless, soft background */}
-            <div className="mt-10 pt-8 border-t border-[#3E4C5E]/30 relative z-10">
+            {/* Scripture Quote Box - Restored right at the end of the text */}
+            <div className="mt-8 pt-8 border-t border-[#3E4C5E]/30 relative z-10">
               <div className="flex items-start gap-4">
                 <span className="font-bebas text-5xl text-[#3E4C5E] leading-none select-none">“</span>
                 <div>
                   <p className="text-lg sm:text-xl font-medium text-[#E3E6DB] italic leading-snug">
-                    {t.quote}
+                    {t.quoteText}
                   </p>
                   <span className="text-xs font-mono-code tracking-wider text-[#E3E6DB]/50 uppercase mt-2 block font-semibold">
-                    // {lang === 'pl' ? 'KSIĘGA PRZYSŁÓW 27:17' : 'PROVERBS 27:17'}
+                    // {t.quoteRef}
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 3 Pillars Column - Borderless */}
+          {/* 3 Pillars Column - Stacked on the right */}
           <div className="lg:col-span-4 flex flex-col gap-4">
             {t.stats.map((stat, idx) => (
               <div
                 key={idx}
-                className="flex-1 bg-[#18212C] rounded-3xl p-6 sm:p-8 flex flex-col justify-center relative overflow-hidden shadow-xl hover:bg-[#202B39] transition-all group"
+                className="bg-[#18212C] rounded-3xl p-6 sm:p-8 flex flex-col justify-center relative overflow-hidden shadow-xl hover:bg-[#202B39] transition-all group"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-mono-code text-xs text-[#E3E6DB]/60 uppercase font-bold tracking-wider">
+                  <span className="font-mono-code text-xs text-[#E3E6DB]/50 uppercase font-bold tracking-wider">
                     // 0{idx + 1}
                   </span>
                   <div className="w-2.5 h-2.5 rounded-full bg-[#3E4C5E]" />
@@ -168,7 +204,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
                 <span className="font-bebas text-4xl sm:text-5xl text-[#E3E6DB] tracking-wide">
                   {stat.value}
                 </span>
-                <span className="text-xs font-mono-code uppercase tracking-wider text-[#E3E6DB]/60 mt-1">
+                <span className="text-xs font-mono-code uppercase tracking-wider text-[#E3E6DB]/70 mt-1 font-semibold">
                   {stat.label}
                 </span>
               </div>

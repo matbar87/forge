@@ -95,9 +95,9 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
           </nav>
 
           {/* Language Switcher & Quick Registration Button */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-5 sm:gap-6">
             {/* PL / EN Switcher - Clean, no heavy box background */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setLang('pl')}
                 className={`px-2.5 py-1 rounded-xl text-[11px] font-mono-code font-bold tracking-wider transition-all ${
@@ -119,6 +119,9 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
                 EN
               </button>
             </div>
+
+            {/* Subtle Divider for visual breathing room */}
+            <div className="h-5 w-px bg-[#3E4C5E]/40" />
 
             {/* Quick Registration Button */}
             <button

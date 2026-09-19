@@ -24,28 +24,65 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const logoSrc = lang === 'pl' ? './kuznia-logo.svg' : './forge-logo.svg';
   const logoAlt = lang === 'pl' ? 'Kuźnia Męski Wyjazd' : "Forge Men's Camp";
 
-  // Enforce 1080p full HD quality on YouTube iframe player without lag
+  // Seamless loop and zero-controls enforcement for YouTube background video
   useEffect(() => {
     const iframe = document.getElementById('hero-youtube-bg') as HTMLIFrameElement;
     if (!iframe) return;
 
-    const enforce1080p = () => {
+    // Direct postMessage commands to YouTube iframe (works even without external script loading)
+    const sendCommand = (func: string, args: any[] = []) => {
       try {
         iframe.contentWindow?.postMessage(
           JSON.stringify({
             event: 'command',
-            func: 'setPlaybackQuality',
-            args: ['hd1080'],
+            func,
+            args,
           }),
           '*'
         );
-      } catch {
-        // ignore cross-origin postMessage errors
-      }
+      } catch {}
     };
 
-    const timer = setTimeout(enforce1080p, 1200);
-    return () => clearTimeout(timer);
+    // Ensure 1080p and mute on start
+    const initTimer = setTimeout(() => {
+      sendCommand('mute');
+      sendCommand('playVideo');
+      sendCommand('setPlaybackQuality', ['hd1080']);
+      sendCommand('addEventListener', ['onStateChange']);
+    }, 1000);
+
+    // Listen for YouTube state changes to loop seamlessly
+    const handleMessage = (e: MessageEvent) => {
+      try {
+        const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (data && (data.event === 'onStateChange' || data.info === 0)) {
+          // 0 = ENDED: restart immediately
+          if (data.info === 0 || data.data === 0) {
+            sendCommand('seekTo', [0, true]);
+            sendCommand('playVideo');
+          }
+          // 2 = PAUSED: resume immediately
+          if (data.info === 2 || data.data === 2) {
+            sendCommand('playVideo');
+          }
+        }
+      } catch {}
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        sendCommand('playVideo');
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearTimeout(initTimer);
+      window.removeEventListener('message', handleMessage);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   return (
@@ -54,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
       className="relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#121820] pt-[72px] sm:pt-[80px]"
     >
       {/* Background Video Layer - Starts precisely under the header and covers 100% of all screens including portrait mobile */}
-      <div className="absolute top-[72px] sm:top-[80px] inset-x-0 bottom-0 overflow-hidden pointer-events-none select-none">
+      <div className="absolute top-[72px] sm:top-[80px] inset-x-0 bottom-0 overflow-hidden select-none pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,180vh)] h-[max(60vw,100vh)] min-w-[max(100vw,180vh)] min-h-[max(60vw,100vh)] scale-[1.5] sm:scale-[1.38] pointer-events-none">
           <iframe
             id="hero-youtube-bg"
@@ -66,12 +103,15 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         </div>
 
         {/* Ambient Dark Overlay - Subtly toned down to reveal rich video detail */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/45 to-[#161E28]/55" />
-        <div className="absolute inset-0 bg-radial-vignette opacity-45" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/45 to-[#161E28]/55 pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-45 pointer-events-none" />
+
+        {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
+        <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
       </div>
 
-      {/* Hero Foreground Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 my-auto flex flex-col items-center text-center">
+      {/* Hero Foreground Content - Elevated above the shield */}
+      <div className="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 my-auto flex flex-col items-center text-center">
         {/* Logo Container - Calibrated so Polish logo has the exact same visual height as English logo */}
         <div
           className={`relative w-full ${
