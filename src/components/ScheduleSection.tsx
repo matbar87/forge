@@ -159,7 +159,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                   className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${cardBg}`}
                 >
                   {/* Time & Badge */}
-                  <div className="flex items-center gap-3 flex-wrap md:flex-nowrap shrink-0">
+                  <div className="flex items-center gap-3 flex-wrap md:flex-nowrap md:w-72 shrink-0">
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap">
                       <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
                       <span>{item.time}</span>

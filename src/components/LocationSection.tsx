@@ -35,11 +35,11 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
         </div>
 
         {/* Section Headline */}
-        <div className="pt-14 mb-14">
+        <div className="text-center max-w-3xl mx-auto pt-14 mb-14">
           <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9]">
             {t.title}
           </h2>
-          <p className="text-base sm:text-lg text-[#E3E6DB]/70 font-medium max-w-2xl mt-4">
+          <p className="text-base sm:text-lg text-[#E3E6DB]/70 font-medium mt-4">
             {t.subtitle}
           </p>
         </div>
