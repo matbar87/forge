@@ -113,8 +113,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
         </div>
 
         {/* Section Headline */}
-        <div className="pt-12 mb-12">
-          <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.95] max-w-5xl">
+        <div className="text-center max-w-3xl mx-auto pt-12 mb-12">
+          <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.95]">
             {t.title}
           </h2>
         </div>
