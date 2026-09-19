@@ -234,7 +234,7 @@ export const translations = {
         features: [
           'Full board throughout the camp (3 hearty meals daily)',
           '2 nights accommodation in comfortable camp rooms',
-          'Evening bonfire with sausage roasting and bonding',
+          'Evening fire pit with sausage roasting and bonding',
         ],
         cta: 'Go to Registration Form',
         note: 'Redirects to secure external registration form',
@@ -268,7 +268,7 @@ export const translations = {
             { time: '18:30 – 19:15', title: 'Kickoff / Worship', type: 'session' },
             { time: '19:15 – 20:00', title: 'Session 1', type: 'session' },
             { time: '20:00 – 21:00', title: 'Group Assignments / Icebreakers', type: 'activity' },
-            { time: '21:00 – 23:00', title: 'Night Game / Bonfire', description: 'Snacks', type: 'activity' },
+            { time: '21:00 – 23:00', title: 'Night Game / Fire Pit', description: 'Snacks', type: 'activity' },
           ],
         },
         {
