@@ -23,7 +23,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
         return {
           bg: 'bg-[#4A5D75] text-[#E3E6DB]',
           labelPl: 'OGIEŃ',
-          labelEn: 'FIRE',
+          labelEn: 'FIRE PIT',
           icon: <Flame className="w-3.5 h-3.5" />,
         };
       case 'meal':
@@ -94,7 +94,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                       isSelected ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/50'
                     }`}
                   >
-                    // DZIEŃ 0{idx + 1}
+                    // {lang === 'pl' ? `DZIEŃ 0${idx + 1}` : `DAY 0${idx + 1}`}
                   </span>
                   <span
                     className={`text-[11px] font-mono-code px-2.5 py-0.5 rounded-full ${

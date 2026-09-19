@@ -260,8 +260,8 @@ export const translations = {
       days: [
         {
           date: 'November 12 (Thursday)',
-          dayName: 'Day 1',
-          theme: 'Arrival & Kindling the Fire',
+          dayName: 'DAY 1 — WARMING UP',
+          theme: 'Stop. Step into the fire.',
           items: [
             { time: '16:00 – 17:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break' },
             { time: '17:00 – 18:30', title: 'Dinner', type: 'meal' },
@@ -273,8 +273,8 @@ export const translations = {
         },
         {
           date: 'November 13 (Friday)',
-          dayName: 'Day 2',
-          theme: 'Tempering Steel — A Day of Challenge and Depth',
+          dayName: 'DAY 2 — FORGING',
+          theme: 'Let yourself be shaped.',
           items: [
             { time: '07:30 – 08:15', title: 'Breakfast', description: 'Group A', type: 'meal' },
             { time: '08:15 – 09:00', title: 'Breakfast', description: 'Group B', type: 'meal' },
@@ -298,8 +298,8 @@ export const translations = {
         },
         {
           date: 'November 14 (Saturday)',
-          dayName: 'Day 3',
-          theme: 'Forged & Commissioned to the World',
+          dayName: 'DAY 3 — TEMPERING',
+          theme: 'Leave stronger.',
           items: [
             { time: '07:30 – 08:15', title: 'Breakfast', description: 'Group A', type: 'meal' },
             { time: '08:15 – 09:00', title: 'Breakfast', description: 'Group B', type: 'meal' },
