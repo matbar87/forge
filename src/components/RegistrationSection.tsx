@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { Check, ArrowUpRight, Sparkles, User, Users } from 'lucide-react';
+import { Check, ArrowUpRight, User, Users } from 'lucide-react';
 
 interface RegistrationSectionProps {
   lang: Language;
@@ -120,12 +120,6 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
             id="ticket-group"
             className="flex flex-col justify-between bg-[#1E2937] rounded-3xl p-8 sm:p-10 shadow-2xl relative group hover:bg-[#253346] transition-all duration-300"
           >
-            {/* Top Badge - Borderless */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-5 py-1 rounded-full bg-[#E3E6DB] text-[#121820] font-bebas text-base tracking-widest uppercase shadow-xl flex items-center gap-1.5 whitespace-nowrap">
-              <Sparkles className="w-4 h-4 fill-current" />
-              {t.group.popularBadge}
-            </div>
-
             <div>
               {/* Header Meta */}
               <div className="flex items-center justify-between gap-4 pb-6 mb-6 border-b border-[#3E4C5E]/40">

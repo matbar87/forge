@@ -78,7 +78,6 @@ export const translations = {
       group: {
         title: 'Rejestracja Grupowa',
         badge: 'DLA GRUP OD 6 OSÓB',
-        popularBadge: 'REKOMENDOWANA',
         description: 'Dla zorganizowanej grupy z jednej wspólnoty',
         price: '300 zł',
         priceSub: '/ osoba w grupie (min. 6 os.)',
@@ -96,9 +95,9 @@ export const translations = {
       subtitle: 'Trzy intensywne dni zaprojektowane z myślą o równowadze między treścią, działaniem i odpoczynkiem.',
       days: [
         {
-          date: '12 Listopada (Piątek)',
-          dayName: 'Dzień 1',
-          theme: 'Przybycie & Rozpalenie Ognia',
+          date: '12 Listopada (Czwartek)',
+          dayName: 'DZIEŃ 1 — ROZGRZEWANIE',
+          theme: 'Zatrzymaj się. Wejdź w ogień.',
           items: [
             { time: '16:00 – 18:00', title: 'Przyjazd i rejestracja', description: 'Zakwaterowanie w pokojach, odbiór pakietów powitalnych i powitalna kawa.', type: 'break' },
             { time: '18:30 – 19:30', title: 'Kolacja powitalna', description: 'Ciepły posiłek i pierwsze rozmowy przy stołach.', type: 'meal' },
@@ -107,9 +106,9 @@ export const translations = {
           ],
         },
         {
-          date: '13 Listopada (Sobota)',
-          dayName: 'Dzień 2',
-          theme: 'Hartowanie Stali — Dzień Wyzwań i Głębi',
+          date: '13 Listopada (Piątek)',
+          dayName: 'DZIEŃ 2 — KUCIE',
+          theme: 'Pozwól się kształtować.',
           items: [
             { time: '07:30 – 08:15', title: 'Męski Rozruch / Czas w ciszy', description: 'Opcjonalny poranny trening na świeżym powietrzu lub indywidualna medytacja.', type: 'activity' },
             { time: '08:30 – 09:30', title: 'Śniadanie Wojowników', description: 'Pożywne śniadanie dające siłę na cały dzień.', type: 'meal' },
@@ -123,9 +122,9 @@ export const translations = {
           ],
         },
         {
-          date: '14 Listopada (Niedziela)',
-          dayName: 'Dzień 3',
-          theme: 'Wykucie & Powrót do Świata',
+          date: '14 Listopada (Sobota)',
+          dayName: 'DZIEŃ 3 — HARTOWANIE',
+          theme: 'Wyjedź mocniejszy.',
           items: [
             { time: '08:00 – 09:00', title: 'Śniadanie', description: 'Wspólny poranny posiłek.', type: 'meal' },
             { time: '09:30 – 11:00', title: 'Sesja Finałowa: Z Kuźni do Codzienności', description: 'Jak przenieść wykuty ogień do domu, pracy, małżeństwa i ojcostwa.', type: 'session' },
@@ -225,7 +224,6 @@ export const translations = {
       group: {
         title: 'Group Registration',
         badge: 'FOR GROUPS OF 6+ MEN',
-        popularBadge: 'RECOMMENDED',
         description: 'For an organized group from one fellowship / community',
         price: '300 PLN',
         priceSub: '/ person in group (min. 6)',
@@ -243,7 +241,7 @@ export const translations = {
       subtitle: 'Three focused days designed to balance depth, physical exertion, and fellowship.',
       days: [
         {
-          date: 'November 12 (Friday)',
+          date: 'November 12 (Thursday)',
           dayName: 'Day 1',
           theme: 'Arrival & Kindling the Fire',
           items: [
@@ -254,7 +252,7 @@ export const translations = {
           ],
         },
         {
-          date: 'November 13 (Saturday)',
+          date: 'November 13 (Friday)',
           dayName: 'Day 2',
           theme: 'Tempering Steel — A Day of Challenge and Depth',
           items: [
@@ -270,7 +268,7 @@ export const translations = {
           ],
         },
         {
-          date: 'November 14 (Sunday)',
+          date: 'November 14 (Saturday)',
           dayName: 'Day 3',
           theme: 'Forged & Commissioned to the World',
           items: [
