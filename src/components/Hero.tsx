@@ -126,6 +126,18 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/45 to-[#161E28]/55 pointer-events-none" />
         <div className="absolute inset-0 bg-radial-vignette opacity-45 pointer-events-none" />
 
+        {/* Center Mask - Strong dark radial patch behind the logo. YouTube briefly
+            flashes its own play/pause icon dead-center on every state change
+            (state start, loop restart) and controls=0 can't suppress it; this
+            permanently darkens that exact spot instead of trying to time-hide it. */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 42% 38% at center, rgba(18,24,32,0.94) 0%, rgba(18,24,32,0.6) 55%, transparent 85%)',
+          }}
+        />
+
         {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
         <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
 

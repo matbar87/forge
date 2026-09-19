@@ -133,24 +133,30 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
           {/* Timeline Items - Borderless */}
           <div className="space-y-4">
             {currentDay.items.map((item, itemIdx) => {
-              const badges = item.badges
-                ? item.badges.map((b) => ({ ...getBadgeForType(b.type), label: b.label }))
-                : [{ ...getBadgeForType(item.type), label: item.badge ?? (lang === 'pl' ? getBadgeForType(item.type).labelPl : getBadgeForType(item.type).labelEn) }];
+              const typeBadge = getBadgeForType(item.type);
+              const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
 
               // Plain "session" items (no title-specific override) are the core
-              // teaching blocks, so they get a stronger card background. Groups
-              // time keeps normal emphasis; everything else fades its title a
-              // touch to recede behind those two.
-              const isMainSession = item.type === 'session' && !item.badge && !item.badges;
+              // teaching blocks, so they get the strongest card background.
+              // Groups gets a middle-ground background; Prayer keeps full title
+              // emphasis without a highlighted background; everything else
+              // fades its title a touch to recede behind those.
+              const isMainSession = item.type === 'session' && !item.badge;
               const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
-              const isGroups = badges.some((b) => b.label.toUpperCase() === groupsLabel);
+              const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
+              const isGroups = badgeLabel.toUpperCase() === groupsLabel;
+              const isPrayer = badgeLabel.toUpperCase() === prayerLabel;
+
+              const cardBg = isMainSession
+                ? 'bg-[#2C3B4E] hover:bg-[#324259]'
+                : isGroups
+                ? 'bg-[#253243] hover:bg-[#2B394C]'
+                : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
 
               return (
                 <div
                   key={itemIdx}
-                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${
-                    isMainSession ? 'bg-[#2C3B4E] hover:bg-[#324259]' : 'bg-[#1E2937]/70 hover:bg-[#232F3F]'
-                  }`}
+                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${cardBg}`}
                 >
                   {/* Time & Badge */}
                   <div className="flex items-center gap-3 flex-wrap md:flex-nowrap shrink-0">
@@ -158,22 +164,19 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                       <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
                       <span>{item.time}</span>
                     </div>
-                    {badges.map((badge, badgeIdx) => (
-                      <span
-                        key={badgeIdx}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${badge.bg}`}
-                      >
-                        {badge.icon}
-                        <span>{badge.label}</span>
-                      </span>
-                    ))}
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${typeBadge.bg}`}
+                    >
+                      {typeBadge.icon}
+                      <span>{badgeLabel}</span>
+                    </span>
                   </div>
 
                   {/* Title & Description */}
                   <div className="flex-1">
                     <h4
                       className={`font-bebas text-2xl sm:text-3xl tracking-wide uppercase ${
-                        isMainSession || isGroups ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
+                        isMainSession || isGroups || isPrayer ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
                       }`}
                     >
                       {item.title}
