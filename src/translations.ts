@@ -293,7 +293,7 @@ export const translations = {
             { time: '19:00 – 20:00', title: 'Session 4', type: 'session' },
             { time: '20:00 – 20:30', title: 'Prayer & Ministry Time', type: 'session' },
             { time: '20:30 – 21:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '21:30 – 23:00', title: 'Bonfire', description: 'Cookout & grilling', type: 'activity' },
+            { time: '21:30 – 23:00', title: 'Fire Pit', description: 'Sausages & grill', type: 'activity' },
           ],
         },
         {
