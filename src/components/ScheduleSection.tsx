@@ -15,15 +15,15 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
       case 'session':
         return {
           bg: 'bg-[#3E4C5E] text-[#E3E6DB]',
-          labelPl: 'SESJA GŁÓWNA',
-          labelEn: 'MAIN SESSION',
+          labelPl: 'SESJA',
+          labelEn: 'SESSION',
           icon: <Award className="w-3.5 h-3.5" />,
         };
       case 'activity':
         return {
           bg: 'bg-[#4A5D75] text-[#E3E6DB]',
-          labelPl: 'OGIEŃ / WYZWANIE',
-          labelEn: 'FIRE & CHALLENGE',
+          labelPl: 'OGIEŃ',
+          labelEn: 'FIRE',
           icon: <Flame className="w-3.5 h-3.5" />,
         };
       case 'meal':
@@ -37,8 +37,8 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
       default:
         return {
           bg: 'bg-[#253242] text-[#E3E6DB]/70',
-          labelPl: 'ZAKWATEROWANIE / RELAKS',
-          labelEn: 'CHECK-IN / BREAK',
+          labelPl: 'RELAKS',
+          labelEn: 'BREAK',
           icon: <Coffee className="w-3.5 h-3.5" />,
         };
     }
@@ -133,24 +133,29 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
           {/* Timeline Items - Borderless */}
           <div className="space-y-4">
             {currentDay.items.map((item, itemIdx) => {
-              const badge = getBadgeForType(item.type);
+              const badges = item.badges
+                ? item.badges.map((b) => ({ ...getBadgeForType(b.type), label: b.label }))
+                : [{ ...getBadgeForType(item.type), label: item.badge ?? (lang === 'pl' ? getBadgeForType(item.type).labelPl : getBadgeForType(item.type).labelEn) }];
               return (
                 <div
                   key={itemIdx}
                   className="group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl bg-[#1E2937]/70 hover:bg-[#232F3F] transition-all shadow-md"
                 >
                   {/* Time & Badge */}
-                  <div className="flex items-center gap-3 md:w-64 shrink-0">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold">
-                      <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70" />
+                  <div className="flex items-center gap-3 flex-wrap md:flex-nowrap shrink-0">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap">
+                      <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
                       <span>{item.time}</span>
                     </div>
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider ${badge.bg}`}
-                    >
-                      {badge.icon}
-                      <span>{lang === 'pl' ? badge.labelPl : badge.labelEn}</span>
-                    </span>
+                    {badges.map((badge, badgeIdx) => (
+                      <span
+                        key={badgeIdx}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${badge.bg}`}
+                      >
+                        {badge.icon}
+                        <span>{badge.label}</span>
+                      </span>
+                    ))}
                   </div>
 
                   {/* Title & Description */}
