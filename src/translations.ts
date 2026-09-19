@@ -314,7 +314,7 @@ export const translations = {
             { time: '13:30 – 14:00', title: 'Small Group Time', description: 'Group A', type: 'session', badge: 'GROUPS' },
             { time: '14:00 – 14:30', title: 'Worship', type: 'session' },
             { time: '14:30 – 15:30', title: 'Session 7', type: 'session' },
-            { time: '15:30 – 16:00', title: 'Closing', type: 'session', badge: 'DEPARTURE' },
+            { time: '15:30 – 16:00', title: 'Ending', type: 'session', badge: 'DEPARTURE' },
           ],
         },
       ],
