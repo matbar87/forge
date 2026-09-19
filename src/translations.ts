@@ -265,7 +265,7 @@ export const translations = {
           items: [
             { time: '16:00 – 17:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break' },
             { time: '17:00 – 18:30', title: 'Dinner', type: 'meal' },
-            { time: '18:30 – 19:15', title: 'Kickoff / Worship', type: 'session' },
+            { time: '18:30 – 19:15', title: 'Welcome / Worship', type: 'session' },
             { time: '19:15 – 20:00', title: 'Session 1', type: 'session' },
             { time: '20:00 – 21:00', title: 'Group Assignments / Icebreakers', type: 'activity' },
             { time: '21:00 – 23:00', title: 'Night Game / Fire Pit', description: 'Snacks', type: 'activity' },
