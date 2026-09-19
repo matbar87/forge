@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Language, translations } from '../translations';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -6,13 +6,20 @@ interface HeroProps {
   lang: Language;
 }
 
+declare global {
+  interface Window {
+    YT?: any;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
 export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const t = translations[lang].hero;
-  // A solid cover hides YouTube's brief loading/play-button flash on start.
-  // It fades on a short, fixed timer instead of waiting on postMessage
-  // events from the iframe, which are unreliable and were causing a
-  // multi-second delay before the video ever appeared.
+  // A solid cover hides YouTube's UI (loading state, and the prev/pause/next
+  // strip the loop=1+playlist trick used to trigger) until the official
+  // IFrame API confirms real playback, so nothing but our own video ever shows.
   const [showVideoCover, setShowVideoCover] = useState(true);
+  const playerRef = useRef<any>(null);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -29,68 +36,71 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const logoSrc = lang === 'pl' ? './kuznia-logo.svg' : './forge-logo.svg';
   const logoAlt = lang === 'pl' ? 'Kuźnia Męski Wyjazd' : "Forge Men's Camp";
 
-  // Seamless loop and zero-controls enforcement for YouTube background video
+  const youtubeSrc =
+    'https://www.youtube-nocookie.com/embed/nbN9Uek2ixg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&fs=0&vq=hd1080&enablejsapi=1' +
+    (typeof window !== 'undefined' ? `&origin=${encodeURIComponent(window.location.origin)}` : '');
+
+  // Load the video through the official YouTube IFrame API for reliable
+  // ready/state events (raw postMessage without it rarely completes the
+  // handshake), and loop it ourselves via the ENDED event instead of the
+  // loop=1+playlist URL trick, which drags in YouTube's playlist nav strip
+  // that controls=0 does not suppress.
   useEffect(() => {
-    const iframe = document.getElementById('hero-youtube-bg') as HTMLIFrameElement;
-    if (!iframe) return;
+    let cancelled = false;
 
-    // Direct postMessage commands to YouTube iframe (works even without external script loading)
-    const sendCommand = (func: string, args: any[] = []) => {
-      try {
-        iframe.contentWindow?.postMessage(
-          JSON.stringify({
-            event: 'command',
-            func,
-            args,
-          }),
-          '*'
-        );
-      } catch {}
+    const createPlayer = () => {
+      if (cancelled || playerRef.current) return;
+      const YT = window.YT;
+      if (!YT?.Player) return;
+      playerRef.current = new YT.Player('hero-youtube-bg', {
+        events: {
+          onReady: (e: any) => {
+            e.target.mute();
+            e.target.playVideo();
+          },
+          onStateChange: (e: any) => {
+            if (e.data === YT.PlayerState.PLAYING) {
+              setShowVideoCover(false);
+            }
+            if (e.data === YT.PlayerState.ENDED) {
+              e.target.seekTo(0, true);
+              e.target.playVideo();
+            }
+          },
+        },
+      });
     };
 
-    // Ensure 1080p and mute on start
-    const initTimer = setTimeout(() => {
-      sendCommand('mute');
-      sendCommand('playVideo');
-      sendCommand('setPlaybackQuality', ['hd1080']);
-      sendCommand('addEventListener', ['onStateChange']);
-    }, 300);
-
-    // Listen for YouTube state changes to loop seamlessly
-    const handleMessage = (e: MessageEvent) => {
-      try {
-        const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-        if (data && (data.event === 'onStateChange' || data.info === 0)) {
-          // 0 = ENDED: restart immediately
-          if (data.info === 0 || data.data === 0) {
-            sendCommand('seekTo', [0, true]);
-            sendCommand('playVideo');
-          }
-          // 2 = PAUSED: resume immediately
-          if (data.info === 2 || data.data === 2) {
-            sendCommand('playVideo');
-          }
-        }
-      } catch {}
-    };
-
-    window.addEventListener('message', handleMessage);
+    if (window.YT?.Player) {
+      createPlayer();
+    } else {
+      if (!document.getElementById('youtube-iframe-api')) {
+        const script = document.createElement('script');
+        script.id = 'youtube-iframe-api';
+        script.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(script);
+      }
+      const previousReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previousReady?.();
+        createPlayer();
+      };
+    }
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        sendCommand('playVideo');
+        playerRef.current?.playVideo?.();
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    // Fixed, short reveal: hides YouTube's initial loading/play-button
-    // flash without waiting on unreliable postMessage confirmation.
-    const revealTimer = setTimeout(() => setShowVideoCover(false), 700);
+    // Last-resort safety net in case the API script itself is blocked
+    // (e.g. by an ad/privacy blocker), so the hero never stays covered forever.
+    const revealFallbackTimer = setTimeout(() => setShowVideoCover(false), 4000);
 
     return () => {
-      clearTimeout(initTimer);
-      clearTimeout(revealTimer);
-      window.removeEventListener('message', handleMessage);
+      cancelled = true;
+      clearTimeout(revealFallbackTimer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
@@ -105,7 +115,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[max(100vw,180vh)] h-[max(60vw,100vh)] min-w-[max(100vw,180vh)] min-h-[max(60vw,100vh)] scale-[1.5] sm:scale-[1.38] pointer-events-none">
           <iframe
             id="hero-youtube-bg"
-            src="https://www.youtube-nocookie.com/embed/nbN9Uek2ixg?autoplay=1&mute=1&loop=1&playlist=nbN9Uek2ixg&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&fs=0&vq=hd1080&enablejsapi=1"
+            src={youtubeSrc}
             title="Forge Background Video"
             className="w-full h-full border-0 pointer-events-none opacity-90"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -119,7 +129,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
         <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
 
-        {/* Startup Cover - Hides YouTube's brief loading/play-button flash, fades on a short fixed timer */}
+        {/* Startup Cover - Hides all YouTube chrome until the IFrame API confirms real playback */}
         <div
           className={`absolute inset-0 z-10 bg-[#121820] pointer-events-none transition-opacity duration-500 ${
             showVideoCover ? 'opacity-100' : 'opacity-0'
