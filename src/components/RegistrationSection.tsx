@@ -27,7 +27,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
         </div>
 
         {/* Section Headline */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto pt-20 mb-20">
           <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9] mb-4">
             {t.title}
           </h2>
