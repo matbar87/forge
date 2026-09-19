@@ -20,6 +20,10 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
 
   return (
     <section id="miejsce" className="py-28 bg-transparent relative overflow-hidden">
+      {/* Dark Ambient Gradient Blobs */}
+      <div className="absolute top-20 -right-48 w-[550px] h-[550px] bg-[#1E2938]/40 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute -bottom-20 -left-36 w-[480px] h-[480px] bg-[#16202B]/60 rounded-full blur-[140px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Tag - No borders */}
         <div className="flex items-center gap-3 mb-4">

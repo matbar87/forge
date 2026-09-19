@@ -48,6 +48,10 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
   return (
     <section id="plan" className="py-28 bg-transparent relative overflow-hidden">
+      {/* Dark Ambient Gradient Blobs */}
+      <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-[#16202B]/60 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute -bottom-24 -right-40 w-[450px] h-[450px] bg-[#1E2938]/40 rounded-full blur-[130px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Tag - No borders */}
         <div className="flex items-center gap-3 mb-4">

@@ -192,17 +192,6 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
             </div>
           </div>
         </div>
-
-        {/* Support Help Banner - Borderless */}
-        <div className="mt-16 max-w-2xl mx-auto text-center p-5 rounded-2xl bg-[#18212C] text-xs font-mono-code text-[#E3E6DB]/70 shadow-lg">
-          <span>{t.faqPrompt} </span>
-          <a
-            href={`mailto:${t.faqContact.split(': ')[1] || 'kontakt@kuznia.pl'}`}
-            className="text-[#E3E6DB] hover:underline font-bold"
-          >
-            {t.faqContact}
-          </a>
-        </div>
       </div>
     </section>
   );
