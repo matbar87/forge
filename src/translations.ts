@@ -234,7 +234,7 @@ export const translations = {
         features: [
           'Full board throughout the camp (3 hearty meals daily)',
           '2 nights accommodation in comfortable camp rooms',
-          'Evening bonfire cookout, camaraderie, and fellowship',
+          'Evening bonfire with sausage roasting and bonding',
         ],
         cta: 'Go to Registration Form',
         note: 'Redirects to secure external registration form',
