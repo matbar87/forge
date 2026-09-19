@@ -1,0 +1,8 @@
+{
+  "name": "Kuźnia / Forge - Męski Wyjazd",
+  "description": "Oficjalna strona męskiego wyjazdu Kuźnia / Forge (12 - 14 listopada). Informacje, plan, galeria i rejestracja.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
