@@ -159,7 +159,7 @@ export const translations = {
       venueTitle: 'Ośrodek Wypoczynkowo-Konferencyjny h2o',
       region: 'ul. Ochabska 133, 43-430 Kiczyce',
       description:
-        'Ośrodek położony jest z dala od miejskiego zgiełku, w bezpośrednim sąsiedztwie lasu i natury. Zapewnia naszej grupie pełną prywatność i swobodę. Do dyspozycji uczestników oddajemy salę spotkań, zadaszone miejsce na duże ognisko oraz darmowy parking.',
+        'Ośrodek położony jest z dala od miejskiego zgiełku, w bezpośrednim sąsiedztwie lasu i natury. Zapewnia naszej grupie pełną prywatność i swobodę. Do dyspozycji uczestników oddajemy salę spotkań, zadaszone miejsce na duże ognisko, boisko do piłki nożnej i koszykówki oraz darmowy parking.',
       amenities: [
         { label: 'Pokoje w domkach', desc: 'Komfortowe pokoje z łazienkami' },
         { label: 'Domowa kuchnia', desc: 'Świeże, pożywne posiłki przygotowywane na miejscu' },
@@ -321,7 +321,7 @@ export const translations = {
       venueTitle: 'h2o Leisure & Conference Center',
       region: 'ul. Ochabska 133, 43-430 Kiczyce',
       description:
-        'Nestled away from urban bustle and surrounded by dense peaceful forest, the center provides complete privacy for our group. Facilities include a dedicated gathering hall, an enclosed timber fire pit pavilion, and free parking.',
+        'Nestled away from urban bustle and surrounded by dense peaceful forest, the center provides complete privacy for our group. Facilities include a dedicated gathering hall, an enclosed timber fire pit pavilion, a football and basketball court, and free parking.',
       amenities: [
         { label: 'Cabin Rooms', desc: 'Comfortable rooms with private bathrooms' },
         { label: 'Home Cooked Meals', desc: 'Fresh, nutritious meals prepared on site' },
