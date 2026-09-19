@@ -330,7 +330,7 @@ export const translations = {
       amenities: [
         { label: 'Cabin Rooms', desc: 'Comfortable rooms with private bathrooms' },
         { label: 'Home Cooked Meals', desc: 'Fresh, nutritious meals prepared on site' },
-        { label: 'Sheltered Fire Pit', desc: 'Large timber pavilion for late-night bonfires' },
+        { label: 'Sheltered Fire Pit', desc: 'Large timber pavilion for late-night fire pit gatherings' },
         { label: 'Forest Surroundings', desc: 'Immediate direct access into peaceful woods' },
         { label: 'Free Parking', desc: 'Ample on-site parking for all cars' },
       ],
