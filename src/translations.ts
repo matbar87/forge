@@ -283,7 +283,7 @@ export const translations = {
             { time: '09:30 – 10:30', title: 'Session 2', type: 'session' },
             { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
             { time: '11:30 – 12:30', title: 'Session 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Personal Time with God', type: 'break', badge: 'PRAYER' },
+            { time: '12:30 – 13:00', title: 'Alone with God', type: 'break', badge: 'PRAYER' },
             { time: '13:00 – 13:30', title: 'Lunch', description: 'Group A', type: 'meal' },
             { time: '13:30 – 14:00', title: 'Lunch', description: 'Group B', type: 'meal' },
             { time: '14:00 – 17:00', title: 'Free Time', type: 'break' },
