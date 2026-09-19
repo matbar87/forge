@@ -138,9 +138,9 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
               // Plain "session" items (no title-specific override) are the core
               // teaching blocks, so they get the strongest card background.
-              // Groups gets a middle-ground background; Prayer keeps full title
-              // emphasis without a highlighted background; everything else
-              // fades its title a touch to recede behind those.
+              // Groups and Prayer share the same middle-ground background;
+              // everything else keeps the plain background. Titles stay at
+              // full brightness everywhere.
               const isMainSession = item.type === 'session' && !item.badge;
               const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
               const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
@@ -149,7 +149,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
               const cardBg = isMainSession
                 ? 'bg-[#2C3B4E] hover:bg-[#324259]'
-                : isGroups
+                : isGroups || isPrayer
                 ? 'bg-[#253243] hover:bg-[#2B394C]'
                 : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
 
@@ -174,11 +174,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
                   {/* Title & Description */}
                   <div className="flex-1">
-                    <h4
-                      className={`font-bebas text-2xl sm:text-3xl tracking-wide uppercase ${
-                        isMainSession || isGroups || isPrayer ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/70'
-                      }`}
-                    >
+                    <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
                       {item.title}
                     </h4>
                     {item.description && (
