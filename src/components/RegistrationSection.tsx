@@ -9,8 +9,8 @@ interface RegistrationSectionProps {
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }) => {
   const t = translations[lang].registration;
 
-  const individualRegistrationUrl = 'https://forms.google.com';
-  const groupRegistrationUrl = 'https://forms.google.com';
+  const individualRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
+  const groupRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
 
   return (
     <section id="rejestracja" className="py-28 bg-transparent relative overflow-hidden">
