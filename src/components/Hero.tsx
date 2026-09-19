@@ -47,6 +47,8 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   // that controls=0 does not suppress.
   useEffect(() => {
     let cancelled = false;
+    let hasRevealed = false;
+    let revealDelayTimer: ReturnType<typeof setTimeout> | null = null;
 
     const createPlayer = () => {
       if (cancelled || playerRef.current) return;
@@ -59,8 +61,13 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             e.target.playVideo();
           },
           onStateChange: (e: any) => {
-            if (e.data === YT.PlayerState.PLAYING) {
-              setShowVideoCover(false);
+            // On the very first PLAYING event, wait out YouTube's own
+            // transient play/pause icon flash (unsuppressible via URL
+            // params) before revealing the video. Later PLAYING events
+            // (looping) don't re-cover, so the loop stays seamless.
+            if (e.data === YT.PlayerState.PLAYING && !hasRevealed) {
+              hasRevealed = true;
+              revealDelayTimer = setTimeout(() => setShowVideoCover(false), 800);
             }
             if (e.data === YT.PlayerState.ENDED) {
               e.target.seekTo(0, true);
@@ -101,6 +108,7 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
     return () => {
       cancelled = true;
       clearTimeout(revealFallbackTimer);
+      if (revealDelayTimer) clearTimeout(revealDelayTimer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
