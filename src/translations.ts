@@ -232,9 +232,9 @@ export const translations = {
         price: '350 PLN',
         priceSub: '/ person',
         features: [
-          'Full board throughout the camp (3 hearty meals daily)',
+          'Full board throughout the camp (3 meals daily)',
           '2 nights accommodation in comfortable camp rooms',
-          'Evening bonfire with sausage roasting and bonding',
+          'Evening fire pit with sausages',
         ],
         cta: 'Go to Registration Form',
         note: 'Redirects to secure external registration form',
@@ -268,7 +268,7 @@ export const translations = {
             { time: '18:30 – 19:15', title: 'Kickoff / Worship', type: 'session' },
             { time: '19:15 – 20:00', title: 'Session 1', type: 'session' },
             { time: '20:00 – 21:00', title: 'Group Assignments / Icebreakers', type: 'activity' },
-            { time: '21:00 – 23:00', title: 'Night Game / Bonfire', description: 'Snacks', type: 'activity' },
+            { time: '21:00 – 23:00', title: 'Night Game / Fire Pit', description: 'Snacks', type: 'activity' },
           ],
         },
         {
@@ -293,7 +293,7 @@ export const translations = {
             { time: '19:00 – 20:00', title: 'Session 4', type: 'session' },
             { time: '20:00 – 20:30', title: 'Prayer & Ministry Time', type: 'session' },
             { time: '20:30 – 21:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '21:30 – 23:00', title: 'Bonfire', description: 'Cookout & grilling', type: 'activity' },
+            { time: '21:30 – 23:00', title: 'Fire Pit', description: 'Sausages & grill', type: 'activity' },
           ],
         },
         {
@@ -330,7 +330,7 @@ export const translations = {
       amenities: [
         { label: 'Cabin Rooms', desc: 'Comfortable rooms with private bathrooms' },
         { label: 'Home Cooked Meals', desc: 'Fresh, nutritious meals prepared on site' },
-        { label: 'Sheltered Fire Pit', desc: 'Large timber pavilion for late-night bonfires' },
+        { label: 'Sheltered Fire Pit', desc: 'Large timber pavilion for late-night fire pit gatherings' },
         { label: 'Forest Surroundings', desc: 'Immediate direct access into peaceful woods' },
         { label: 'Free Parking', desc: 'Ample on-site parking for all cars' },
       ],

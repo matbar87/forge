@@ -104,10 +104,10 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
                 href={individualRegistrationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl bg-[#253242] hover:bg-[#3E4C5E] text-[#E3E6DB] font-bebas text-2xl tracking-wider uppercase transition-all active:scale-95 shadow-xl"
+                className="group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-2xl tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95"
               >
                 <span>{t.individual.cta}</span>
-                <ArrowUpRight className="w-5 h-5 text-[#E3E6DB] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
               </a>
               <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
                 {t.individual.note}
