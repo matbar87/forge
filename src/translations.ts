@@ -42,14 +42,13 @@ export const translations = {
       p5: 'Będzie przestrzeń na moc, ale też na oddech. Na szczere uwielbienie, konkretne nauczanie i rozmowy bez ściemy. Będą obok Ciebie mężczyźni, którzy również mają swoje historie, pytania i zmagania. Nie po to, żeby się porównywać. Nie po to, żeby komukolwiek imponować. Tylko po to, żeby być razem, wzajemnie się umacniać i pozwolić, by jeden drugiego ostrzył.',
       manifesto: [
         'Przyjedź taki, jaki jesteś.',
-        'Zostaw za sobą to, co musisz udawać.',
         'Wejdź w przestrzeń, w której możesz być naprawdę sobą.',
       ],
       ctaText: 'Zarezerwuj swoje miejsce i dołącz do tej przygody.',
       quoteText: '„Żelazo ostrzy żelazo; człowieka ostrzy człowiek.”',
       quoteRef: 'Przypowieści Salomona 27:17 (SNP)',
       stats: [
-        { value: '3 DNI', label: 'Wyzwań i braterstwa' },
+        { value: '3 DNI', label: '12 - 14 Listopada 2026' },
         { value: '100%', label: 'Bez masek i pozerstwa' },
         { value: 'Limit', label: 'Ograniczona liczba miejsc' },
       ],
@@ -60,7 +59,7 @@ export const translations = {
     registration: {
       badge: 'DOŁĄCZ DO NAS',
       title: 'Rejestracja',
-      subtitle: 'Wybierz odpowiednią opcję dla siebie. Liczba miejsc w ośrodku jest ściśle limitowana.',
+      subtitle: 'Wybierz odpowiednią opcję dla siebie.',
       individual: {
         title: 'Rejestracja Indywidualna',
         badge: 'POJEDYNCZY UCZESTNIK',
@@ -92,7 +91,7 @@ export const translations = {
     schedule: {
       badge: 'HARMONOGRAM',
       title: 'Plan Wyjazdu',
-      subtitle: 'Trzy intensywne dni zaprojektowane z myślą o równowadze między treścią, działaniem i odpoczynkiem.',
+      subtitle: 'Trzy dni wyzwań, budowania relacji i dobrej zabawy.',
       days: [
         {
           date: '12 Listopada (Czwartek)',
@@ -149,7 +148,6 @@ export const translations = {
         { label: 'Otoczenie lasu', desc: 'Bezpośrednie sąsiedztwo natury' },
         { label: 'Darmowy parking', desc: 'Duży, bezpłatny parking dla wszystkich aut' },
       ],
-      transportInfo: 'Szczegółowy adres z pinezką GPS oraz wskazówki dojazdu zostaną przesłane zarejestrowanym uczestnikom drogą mailową przed wyjazdem.',
       mapsButton: 'Otwórz wskazówki dojazdu',
     },
     footer: {
@@ -187,14 +185,13 @@ export const translations = {
       p5: 'There will be room for strength, but also for rest. For authentic worship, solid teaching, and real talk without pretense. Men who also carry their own stories, questions, and struggles will stand beside you. Not to compare. Not to impress anyone. Just to stand together, strengthen one another, and let one sharpen the other.',
       manifesto: [
         'Come as you are.',
-        'Leave behind what you have to fake.',
         'Enter a space where you can truly be yourself.',
       ],
       ctaText: 'Reserve your spot and join this adventure.',
       quoteText: '"As iron sharpens iron, so one person sharpens another."',
       quoteRef: 'Proverbs 27:17 (NIV)',
       stats: [
-        { value: '3 DAYS', label: 'Brotherhood & challenges' },
+        { value: '3 DAYS', label: 'November 12 - 14, 2026' },
         { value: '100%', label: 'No masks or pretense' },
         { value: 'Limit', label: 'Limited accommodation' },
       ],
@@ -205,7 +202,7 @@ export const translations = {
     registration: {
       badge: 'JOIN US',
       title: 'Registration',
-      subtitle: 'Choose your registration type. Venue capacity is strictly limited.',
+      subtitle: 'Choose your registration type.',
       individual: {
         title: 'Individual Registration',
         badge: 'SOLO ATTENDEE',
@@ -237,7 +234,7 @@ export const translations = {
     schedule: {
       badge: 'AGENDA',
       title: 'Camp Schedule',
-      subtitle: 'Three focused days designed to balance depth, physical exertion, and fellowship.',
+      subtitle: 'Three days of challenges, building relationships, and good fun.',
       days: [
         {
           date: 'November 12 (Thursday)',
@@ -282,7 +279,7 @@ export const translations = {
     location: {
       badge: 'VENUE',
       title: 'h2o Center - Kiczyce',
-      subtitle: 'A setting designed for seclusion, clarity, and camaraderie in the heart of nature.',
+      subtitle: 'A space to slow down, focus, and be challenged as a man, surrounded by nature.',
       venueTitle: 'h2o Leisure & Conference Center',
       region: 'ul. Ochabska 133, 43-430 Kiczyce',
       description:
@@ -294,7 +291,6 @@ export const translations = {
         { label: 'Forest Surroundings', desc: 'Immediate direct access into peaceful woods' },
         { label: 'Free Parking', desc: 'Ample on-site parking for all cars' },
       ],
-      transportInfo: 'Exact venue address with GPS pin and travel recommendations will be delivered to confirmed attendees via email.',
       mapsButton: 'Open Driving Directions',
     },
     footer: {

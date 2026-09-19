@@ -62,16 +62,6 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
               <p className="text-[#E3E6DB]/80 text-base sm:text-lg leading-relaxed mb-8">
                 {t.description}
               </p>
-
-              {/* Transport notice box - Borderless */}
-              <div className="p-5 rounded-2xl bg-[#1E2937] mb-8">
-                <p className="text-xs font-mono-code text-[#E3E6DB]/75 leading-relaxed">
-                  <strong className="text-[#E3E6DB] uppercase block mb-1">
-                    // {lang === 'pl' ? 'DOJAZD I LOGISTYKA' : 'TRAVEL & LOGISTICS'}:
-                  </strong>
-                  {t.transportInfo}
-                </p>
-              </div>
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
