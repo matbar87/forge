@@ -214,7 +214,7 @@ export const translations = {
       quoteRef: 'Proverbs 27:17 (NIV)',
       stats: [
         { value: '3 DAYS', label: 'November 12 - 14, 2026' },
-        { value: '100%', label: 'No masks or pretense' },
+        { value: '100%', label: 'No masks or posturing' },
         { value: 'Limit', label: 'Limited accommodation' },
       ],
       galleryTitle: 'Photo Gallery',
