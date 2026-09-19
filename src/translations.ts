@@ -232,7 +232,7 @@ export const translations = {
         price: '350 PLN',
         priceSub: '/ person',
         features: [
-          'Full board throughout the camp (3 hearty meals daily)',
+          'Full board throughout the camp (3 meals daily)',
           '2 nights accommodation in comfortable camp rooms',
           'Evening fire pit with sausages',
         ],
