@@ -78,7 +78,7 @@ export function App() {
         {/* 2. Hero with background YouTube video, logo, date & registration CTA */}
         <Hero lang={lang} />
 
-        {/* 3. Męski Wyjazd - description and modern 8-photo gallery */}
+        {/* 3. Męski Wyjazd - description and modern 6-photo gallery */}
         <AboutSection lang={lang} />
 
         {/* 4. Rejestracja - individual & group registration cards */}

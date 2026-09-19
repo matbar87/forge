@@ -98,8 +98,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
 
   return (
     <section id="meski-wyjazd" className="py-28 bg-transparent relative overflow-hidden">
-      {/* Background ambient pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />
+      {/* Dark Ambient Gradient Blobs */}
+      <div className="absolute top-10 -left-48 w-[520px] h-[520px] bg-[#1E2938]/45 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 -right-48 w-[600px] h-[600px] bg-[#16202B]/60 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute -bottom-24 left-1/3 w-[460px] h-[460px] bg-[#3E4C5E]/20 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Tag - No borders */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { ArrowUp, Mail } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
@@ -49,16 +49,12 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
               </span>
             </div>
 
-            <p className="text-sm text-[#E3E6DB]/60 max-w-md leading-relaxed">
-              {lang === 'pl'
-                ? 'Spotkanie mężczyzn poszukujących prawdy, braterstwa i siły do codziennych zmagań. Wykuj charakter w ogniu wyzwań.'
-                : 'A gathering of men seeking truth, brotherhood, and grit for everyday battles. Forge your character in the fire of challenge.'}
+            <p className="text-sm text-[#E3E6DB]/70 max-w-md leading-relaxed">
+              {translations[lang].about.quoteText}
+              <span className="block mt-1.5 font-mono-code text-xs text-[#E3E6DB]/50">
+                — {translations[lang].about.quoteRef}
+              </span>
             </p>
-
-            <div className="flex items-center gap-2 text-xs font-mono-code text-[#E3E6DB]/70">
-              <Mail className="w-4 h-4 text-[#E3E6DB]" />
-              <span>{t.email}</span>
-            </div>
           </div>
 
           {/* Quick Navigation Links - Borderless */}
