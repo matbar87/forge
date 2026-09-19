@@ -47,8 +47,6 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
   // that controls=0 does not suppress.
   useEffect(() => {
     let cancelled = false;
-    let hasRevealed = false;
-    let revealDelayTimer: ReturnType<typeof setTimeout> | null = null;
 
     const createPlayer = () => {
       if (cancelled || playerRef.current) return;
@@ -61,13 +59,8 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             e.target.playVideo();
           },
           onStateChange: (e: any) => {
-            // On the very first PLAYING event, wait out YouTube's own
-            // transient play/pause icon flash (unsuppressible via URL
-            // params) before revealing the video. Later PLAYING events
-            // (looping) don't re-cover, so the loop stays seamless.
-            if (e.data === YT.PlayerState.PLAYING && !hasRevealed) {
-              hasRevealed = true;
-              revealDelayTimer = setTimeout(() => setShowVideoCover(false), 800);
+            if (e.data === YT.PlayerState.PLAYING) {
+              setShowVideoCover(false);
             }
             if (e.data === YT.PlayerState.ENDED) {
               e.target.seekTo(0, true);
@@ -108,7 +101,6 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
     return () => {
       cancelled = true;
       clearTimeout(revealFallbackTimer);
-      if (revealDelayTimer) clearTimeout(revealDelayTimer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
@@ -133,6 +125,18 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         {/* Ambient Dark Overlay - Subtly toned down to reveal rich video detail */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/45 to-[#161E28]/55 pointer-events-none" />
         <div className="absolute inset-0 bg-radial-vignette opacity-45 pointer-events-none" />
+
+        {/* Center Mask - Strong dark radial patch behind the logo. YouTube briefly
+            flashes its own play/pause icon dead-center on every state change
+            (state start, loop restart) and controls=0 can't suppress it; this
+            permanently darkens that exact spot instead of trying to time-hide it. */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse 42% 38% at center, rgba(18,24,32,0.94) 0%, rgba(18,24,32,0.6) 55%, transparent 85%)',
+          }}
+        />
 
         {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
         <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
