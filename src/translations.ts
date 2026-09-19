@@ -91,7 +91,7 @@ export const translations = {
     },
     schedule: {
       badge: 'HARMONOGRAM',
-      title: 'Plan Wyjazdu',
+      title: 'Plan Wydarzenia',
       subtitle: 'Trzy dni wyzwań, budowania relacji i dobrej zabawy.',
       days: [
         {
