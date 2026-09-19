@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Language, translations } from '../translations';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -8,6 +8,9 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ lang }) => {
   const t = translations[lang].hero;
+  // Keep the iframe hidden until playback is confirmed, so YouTube's
+  // loading state / play button never flashes on top of the hero
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -56,6 +59,10 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
       try {
         const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
         if (data && (data.event === 'onStateChange' || data.info === 0)) {
+          // 1 = PLAYING: reveal the video now that YouTube's own loading UI is gone
+          if (data.info === 1 || data.data === 1) {
+            setIsVideoPlaying(true);
+          }
           // 0 = ENDED: restart immediately
           if (data.info === 0 || data.data === 0) {
             sendCommand('seekTo', [0, true]);
@@ -78,8 +85,14 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    // Safety net: reveal anyway after a short delay in case the PLAYING
+    // event never arrives (e.g. blocked postMessage), so the video isn't
+    // hidden forever.
+    const revealFallbackTimer = setTimeout(() => setIsVideoPlaying(true), 2500);
+
     return () => {
       clearTimeout(initTimer);
+      clearTimeout(revealFallbackTimer);
       window.removeEventListener('message', handleMessage);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -97,7 +110,9 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
             id="hero-youtube-bg"
             src="https://www.youtube-nocookie.com/embed/nbN9Uek2ixg?autoplay=1&mute=1&loop=1&playlist=nbN9Uek2ixg&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&fs=0&vq=hd1080&enablejsapi=1"
             title="Forge Background Video"
-            className="w-full h-full border-0 pointer-events-none opacity-90"
+            className={`w-full h-full border-0 pointer-events-none transition-opacity duration-700 ${
+              isVideoPlaying ? 'opacity-90' : 'opacity-0'
+            }`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           />
         </div>
