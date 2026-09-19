@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { MapPin, Navigation, Shield, Trees, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
+import { MapPin, Navigation, Trees, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
 
 interface LocationSectionProps {
   lang: Language;
@@ -14,7 +14,6 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
     <UtensilsCrossed className="w-5 h-5 text-[#E3E6DB]" key="food" />,
     <Flame className="w-5 h-5 text-[#E3E6DB]" key="fire" />,
     <Trees className="w-5 h-5 text-[#E3E6DB]" key="trees" />,
-    <Shield className="w-5 h-5 text-[#E3E6DB]" key="sauna" />,
     <Car className="w-5 h-5 text-[#E3E6DB]" key="car" />,
   ];
 
@@ -85,31 +84,8 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             </a>
           </div>
 
-          {/* Visual Nature Card & Amenities - Borderless */}
+          {/* Amenities - Borderless */}
           <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Image Preview - Borderless */}
-            <div className="relative rounded-3xl overflow-hidden aspect-[16/10] bg-[#18212C] shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80"
-                alt="Retreat Venue Lodging in Pine Woods"
-                className="w-full h-full object-cover filter brightness-90 hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-transparent to-transparent opacity-90" />
-              <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
-                <div>
-                  <span className="text-[10px] font-mono-code uppercase tracking-wider text-[#E3E6DB]/70 block">
-                    // {lang === 'pl' ? 'OTOCZENIE' : 'SURROUNDINGS'}
-                  </span>
-                  <span className="font-bebas text-2xl text-[#E3E6DB] uppercase tracking-wide">
-                    {lang === 'pl' ? 'CISZA, LAS I PRZESTRZEŃ' : 'PEACE, WOODS & SPACE'}
-                  </span>
-                </div>
-                <span className="text-xs font-mono-code px-3 py-1 rounded-full bg-[#18212C]/90 text-[#E3E6DB] backdrop-blur-md">
-                  100% PRIVATE
-                </span>
-              </div>
-            </div>
-
             {/* Amenities Grid - Borderless */}
             <div className="grid grid-cols-2 gap-3">
               {t.amenities.map((item, idx) => (
