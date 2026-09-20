@@ -122,6 +122,20 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
           />
         </div>
 
+        {/* Startup Cover - A static frame shown instead of a blank background while
+            the video loads, and hides YouTube's own chrome until the IFrame API
+            confirms real playback. Sits in the same layer as the video (below the
+            darkening overlays below) so it gets identical treatment, and fades
+            smoothly into the video once playback is confirmed. */}
+        <img
+          src="./2.webp"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-700 ${
+            showVideoCover ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+
         {/* Ambient Dark Overlay - Subtly toned down to reveal rich video detail */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/45 to-[#161E28]/55 pointer-events-none" />
         <div className="absolute inset-0 bg-radial-vignette opacity-45 pointer-events-none" />
@@ -140,18 +154,6 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
 
         {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
         <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
-
-        {/* Startup Cover - A static frame shown instead of a blank background while
-            the video loads, and hides YouTube's own chrome until the IFrame API
-            confirms real playback. Fades smoothly into the video once it's ready. */}
-        <img
-          src="./2.webp"
-          alt=""
-          aria-hidden="true"
-          className={`absolute inset-0 w-full h-full object-cover z-10 pointer-events-none transition-opacity duration-700 ${
-            showVideoCover ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
       </div>
 
       {/* Hero Foreground Content - Elevated above the shield */}
