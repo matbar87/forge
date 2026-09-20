@@ -71,24 +71,35 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
           </p>
         </div>
 
-        {/* Day Switcher Cards - Borderless */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 max-w-5xl mx-auto">
+        {/* Day Switcher Cards - Borderless. Always 3 columns, even at 360px:
+            mobile leads with "Dzień 1/2/3" (more useful than repeating the
+            month) and a short "12 Lis" date underneath; full weekday name,
+            date and the theme line only reappear from `sm` up. */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-12 max-w-5xl mx-auto">
           {t.days.map((day, idx) => {
             const isSelected = selectedDayIndex === idx;
+            const weekdayLabel = day.date.includes('(')
+              ? day.date.split('(')[1].replace(')', '')
+              : day.dayName;
+            const dayLabel = lang === 'pl' ? `Dzień ${idx + 1}` : `Day ${idx + 1}`;
+            const dateWithoutWeekday = day.date.includes('(') ? day.date.split('(')[0].trim() : day.date;
+            const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
+            const monthWord = dateWithoutWeekday.split(' ').find((w) => !/\d/.test(w)) ?? '';
+            const shortDate = `${dayNumber} ${monthWord.slice(0, 3)}`;
             return (
               <button
                 key={idx}
                 onClick={() => setSelectedDayIndex(idx)}
-                className={`text-left p-6 rounded-3xl transition-all duration-300 relative overflow-hidden shadow-xl ${
+                className={`text-center sm:text-left p-3 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 relative overflow-hidden shadow-xl ${
                   isSelected
                     ? 'bg-[#1E2937] shadow-2xl scale-[1.02]'
                     : 'bg-[#18212C] hover:bg-[#1C2633]'
                 }`}
               >
                 {isSelected && (
-                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#E3E6DB]" />
+                  <div className="absolute top-0 left-0 right-0 h-1 sm:h-1.5 bg-[#E3E6DB]" />
                 )}
-                <div className="flex items-center justify-between mb-2">
+                <div className="hidden sm:flex items-center justify-between mb-2">
                   <span
                     className={`font-mono-code text-xs font-bold uppercase tracking-wider ${
                       isSelected ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/50'
@@ -101,13 +112,21 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                       isSelected ? 'bg-[#3E4C5E] text-[#E3E6DB]' : 'bg-[#253242] text-[#E3E6DB]/60'
                     }`}
                   >
-                    {day.date.split(' ')[0]} {day.date.split(' ')[1]}
+                    {dateWithoutWeekday}
                   </span>
                 </div>
-                <h4 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase">
-                  {day.date.includes('(') ? day.date.split('(')[1].replace(')', '') : day.dayName}
+                <h4 className="font-bebas text-lg sm:text-2xl md:text-3xl text-[#E3E6DB] tracking-wide uppercase">
+                  <span className="sm:hidden">{dayLabel}</span>
+                  <span className="hidden sm:inline">{weekdayLabel}</span>
                 </h4>
-                <p className="text-xs font-mono-code text-[#E3E6DB]/60 truncate mt-1">
+                <span
+                  className={`sm:hidden mt-1 inline-block text-[10px] font-mono-code px-2 py-0.5 rounded-full ${
+                    isSelected ? 'bg-[#3E4C5E] text-[#E3E6DB]' : 'bg-[#253242] text-[#E3E6DB]/60'
+                  }`}
+                >
+                  {shortDate}
+                </span>
+                <p className="hidden sm:block text-xs font-mono-code text-[#E3E6DB]/60 truncate mt-1">
                   {day.theme}
                 </p>
               </button>
