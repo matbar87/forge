@@ -141,9 +141,14 @@ export const Hero: React.FC<HeroProps> = ({ lang }) => {
         {/* Shield Overlay - Intercepts all clicks/taps over the video so YouTube player never wakes up or shows pause/play icons */}
         <div className="absolute inset-0 z-10 pointer-events-auto bg-transparent select-none" />
 
-        {/* Startup Cover - Hides all YouTube chrome until the IFrame API confirms real playback */}
-        <div
-          className={`absolute inset-0 z-10 bg-[#121820] pointer-events-none transition-opacity duration-500 ${
+        {/* Startup Cover - A static frame shown instead of a blank background while
+            the video loads, and hides YouTube's own chrome until the IFrame API
+            confirms real playback. Fades smoothly into the video once it's ready. */}
+        <img
+          src="./2.webp"
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover z-10 pointer-events-none transition-opacity duration-700 ${
             showVideoCover ? 'opacity-100' : 'opacity-0'
           }`}
         />
