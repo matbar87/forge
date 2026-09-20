@@ -72,17 +72,20 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
         </div>
 
         {/* Day Switcher Cards - Borderless. Always 3 columns, even at 360px:
-            mobile shows a compact weekday abbreviation + day number, full
-            labels and the theme line only reappear from `sm` up. */}
+            mobile leads with "Dzień 1/2/3" (more useful than repeating the
+            month) and a short "12 Lis" date underneath; full weekday name,
+            date and the theme line only reappear from `sm` up. */}
         <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-12 max-w-5xl mx-auto">
           {t.days.map((day, idx) => {
             const isSelected = selectedDayIndex === idx;
             const weekdayLabel = day.date.includes('(')
               ? day.date.split('(')[1].replace(')', '')
               : day.dayName;
-            const weekdayShort = weekdayLabel.slice(0, 3).toUpperCase();
-            const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
+            const dayLabel = lang === 'pl' ? `Dzień ${idx + 1}` : `Day ${idx + 1}`;
             const dateWithoutWeekday = day.date.includes('(') ? day.date.split('(')[0].trim() : day.date;
+            const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
+            const monthWord = dateWithoutWeekday.split(' ').find((w) => !/\d/.test(w)) ?? '';
+            const shortDate = `${dayNumber} ${monthWord.slice(0, 3)}`;
             return (
               <button
                 key={idx}
@@ -96,27 +99,33 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                 {isSelected && (
                   <div className="absolute top-0 left-0 right-0 h-1 sm:h-1.5 bg-[#E3E6DB]" />
                 )}
-                <div className="flex items-center justify-center sm:justify-between mb-1 sm:mb-2">
+                <div className="hidden sm:flex items-center justify-between mb-2">
                   <span
-                    className={`hidden sm:inline font-mono-code text-xs font-bold uppercase tracking-wider ${
+                    className={`font-mono-code text-xs font-bold uppercase tracking-wider ${
                       isSelected ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/50'
                     }`}
                   >
                     // {lang === 'pl' ? `DZIEŃ 0${idx + 1}` : `DAY 0${idx + 1}`}
                   </span>
                   <span
-                    className={`text-[10px] sm:text-[11px] font-mono-code px-2 sm:px-2.5 py-0.5 rounded-full ${
+                    className={`text-[11px] font-mono-code px-2.5 py-0.5 rounded-full ${
                       isSelected ? 'bg-[#3E4C5E] text-[#E3E6DB]' : 'bg-[#253242] text-[#E3E6DB]/60'
                     }`}
                   >
-                    <span className="sm:hidden">{dayNumber}</span>
-                    <span className="hidden sm:inline">{dateWithoutWeekday}</span>
+                    {dateWithoutWeekday}
                   </span>
                 </div>
                 <h4 className="font-bebas text-lg sm:text-2xl md:text-3xl text-[#E3E6DB] tracking-wide uppercase">
-                  <span className="sm:hidden">{weekdayShort}</span>
+                  <span className="sm:hidden">{dayLabel}</span>
                   <span className="hidden sm:inline">{weekdayLabel}</span>
                 </h4>
+                <span
+                  className={`sm:hidden mt-1 inline-block text-[10px] font-mono-code px-2 py-0.5 rounded-full ${
+                    isSelected ? 'bg-[#3E4C5E] text-[#E3E6DB]' : 'bg-[#253242] text-[#E3E6DB]/60'
+                  }`}
+                >
+                  {shortDate}
+                </span>
                 <p className="hidden sm:block text-xs font-mono-code text-[#E3E6DB]/60 truncate mt-1">
                   {day.theme}
                 </p>
