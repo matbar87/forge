@@ -47,7 +47,11 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   const currentDay = t.days[selectedDayIndex];
 
   return (
-    <section id="plan" className="py-28 bg-transparent relative overflow-hidden">
+    // overflow-anchor:none disables CSS scroll anchoring for this whole
+    // section: switching days swaps in a completely different item
+    // count/set below, and the browser's anchor heuristic otherwise
+    // mis-picks a reference node and scrolls the page far off after reflow.
+    <section id="plan" className="py-28 bg-transparent relative overflow-hidden [overflow-anchor:none]">
       {/* Dark Ambient Gradient Blobs */}
       <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-[#16202B]/60 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute -bottom-24 -right-40 w-[450px] h-[450px] bg-[#1E2938]/40 rounded-full blur-[130px] pointer-events-none" />
