@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Language, translations } from '../translations';
-import { Menu, X, ArrowUpRight, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 
 interface HeaderProps {
   lang: Language;
@@ -119,18 +119,6 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
                 EN
               </button>
             </div>
-
-            {/* Subtle Divider for visual breathing room */}
-            <div className="h-5 w-px bg-[#3E4C5E]/40" />
-
-            {/* Quick Registration Button */}
-            <button
-              onClick={() => scrollToSection('rejestracja')}
-              className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#161D26] font-bebas text-lg tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all transform active:scale-95"
-            >
-              <span>{t.registerBtn}</span>
-              <ArrowUpRight className="w-4 h-4 text-[#161D26] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
           </div>
 
           {/* Mobile Actions: Language & Hamburger */}
@@ -204,15 +192,6 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
               <span>{t.location}</span>
               <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
             </button>
-
-            <div className="pt-3">
-              <button
-                onClick={() => scrollToSection('rejestracja')}
-                className="w-full py-3.5 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#161D26] font-bebas text-xl tracking-wider uppercase text-center shadow-lg"
-              >
-                {t.registerBtn}
-              </button>
-            </div>
           </div>
         </div>
       )}
