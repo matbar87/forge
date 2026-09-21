@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { MapPin, Navigation, Trees, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
+import { MapPin, Navigation, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
 
 interface LocationSectionProps {
   lang: Language;
@@ -15,7 +15,6 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
     <BedDouble className="w-5 h-5 text-[#E3E6DB]" key="bed" />,
     <UtensilsCrossed className="w-5 h-5 text-[#E3E6DB]" key="food" />,
     <Flame className="w-5 h-5 text-[#E3E6DB]" key="fire" />,
-    <Trees className="w-5 h-5 text-[#E3E6DB]" key="trees" />,
     <Car className="w-5 h-5 text-[#E3E6DB]" key="car" />,
   ];
 
