@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Language, translations } from '../translations';
 import { Clock, Flame, Utensils, Award, Coffee } from 'lucide-react';
 
@@ -9,6 +9,26 @@ interface ScheduleSectionProps {
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   const t = translations[lang].schedule;
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+  const switcherRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Switching days keeps the tab bar sticky under the header, but a reader
+  // who scrolled deep into a long day's items would otherwise land mid-way
+  // through the newly selected day. Snap back to the top of the timeline
+  // only when the click happened while already scrolled past it.
+  const handleSelectDay = (idx: number) => {
+    setSelectedDayIndex(idx);
+    requestAnimationFrame(() => {
+      const switcherEl = switcherRef.current;
+      const timelineEl = timelineRef.current;
+      if (!switcherEl || !timelineEl) return;
+      const offset = switcherEl.getBoundingClientRect().bottom + 16;
+      const target = timelineEl.getBoundingClientRect().top + window.scrollY - offset;
+      if (window.scrollY > target) {
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }
+    });
+  };
 
   const getBadgeForType = (type?: string) => {
     switch (type) {
@@ -51,10 +71,14 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
     // section: switching days swaps in a completely different item
     // count/set below, and the browser's anchor heuristic otherwise
     // mis-picks a reference node and scrolls the page far off after reflow.
-    <section id="plan" className="py-28 bg-transparent relative overflow-hidden [overflow-anchor:none]">
-      {/* Dark Ambient Gradient Blobs */}
-      <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-[#16202B]/60 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute -bottom-24 -right-40 w-[450px] h-[450px] bg-[#1E2938]/40 rounded-full blur-[130px] pointer-events-none" />
+    <section id="plan" className="py-28 bg-transparent relative [overflow-anchor:none]">
+      {/* Dark Ambient Gradient Blobs - clipped by their own wrapper (not the
+          section) so this stays clipped without constraining the sticky day
+          switcher below, which needs the section as its unclipped container. */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 -left-48 w-[500px] h-[500px] bg-[#16202B]/60 rounded-full blur-[150px]" />
+        <div className="absolute -bottom-24 -right-40 w-[450px] h-[450px] bg-[#1E2938]/40 rounded-full blur-[130px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Tag - No borders */}
@@ -78,8 +102,14 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
         {/* Day Switcher Cards - Borderless. Always 3 columns, even at 360px:
             mobile leads with "Dzień 1/2/3" (more useful than repeating the
             month) and a short "12 Lis" date underneath; full weekday name,
-            date and the theme line only reappear from `sm` up. */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-12 max-w-5xl mx-auto">
+            date and the theme line only reappear from `sm` up. Sticks below
+            the fixed header while scrolling so switching days stays within
+            reach. */}
+        <div
+          ref={switcherRef}
+          className="sticky top-[72px] sm:top-[80px] z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 mb-8 sm:mb-12 bg-[#121820]/95 backdrop-blur-xl shadow-xl"
+        >
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-5xl mx-auto">
           {t.days.map((day, idx) => {
             const isSelected = selectedDayIndex === idx;
             const weekdayLabel = day.date.includes('(')
@@ -93,7 +123,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
             return (
               <button
                 key={idx}
-                onClick={() => setSelectedDayIndex(idx)}
+                onClick={() => handleSelectDay(idx)}
                 className={`text-center sm:text-left p-3 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 relative overflow-hidden shadow-xl ${
                   isSelected
                     ? 'bg-[#1E2937] shadow-2xl scale-[1.02]'
@@ -137,9 +167,10 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
             );
           })}
         </div>
+        </div>
 
         {/* Active Day Timeline Container - Borderless */}
-        <div className="max-w-5xl mx-auto bg-[#18212C] rounded-3xl p-6 sm:p-10 shadow-2xl">
+        <div ref={timelineRef} className="max-w-5xl mx-auto bg-[#18212C] rounded-3xl p-6 sm:p-10 shadow-2xl">
           {/* Day Theme Banner */}
           <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
             <div className="flex items-center gap-2 mb-1">
