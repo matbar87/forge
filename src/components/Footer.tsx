@@ -56,7 +56,7 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
               </span>
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-col items-start gap-3 pt-2">
               <span className="font-mono-code text-xs font-bold uppercase tracking-widest text-[#E3E6DB]/50">
                 {t.organizedBy}
               </span>
@@ -67,9 +67,9 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
                 className="opacity-80 hover:opacity-100 transition-opacity"
               >
                 <img
-                  src="https://cdn.churchtrac.com/image?ci=41752&file=3ervxte6tpw7.png"
+                  src="./kdm-logo.png"
                   alt="Kościół Dla Miasta Krakowa"
-                  className="h-9 w-auto object-contain"
+                  className="h-16 w-auto object-contain"
                 />
               </a>
             </div>
