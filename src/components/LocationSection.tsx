@@ -48,36 +48,20 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Main Info Card - Borderless */}
           <div className="lg:col-span-7 bg-[#18212C] rounded-3xl p-8 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden">
-            <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-8">
-              <div className="flex-1">
-                {/* Region Pill */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#253242] text-[#E3E6DB] text-xs font-mono-code font-bold uppercase mb-6">
-                  <MapPin className="w-3.5 h-3.5 text-[#E3E6DB]" />
-                  <span>{t.region}</span>
-                </div>
-
-                <h3 className="font-bebas text-4xl sm:text-5xl text-[#E3E6DB] tracking-wide uppercase mb-4 leading-tight">
-                  {t.venueTitle}
-                </h3>
-
-                <p className="text-[#E3E6DB]/80 text-base sm:text-lg leading-relaxed mb-8 lg:mb-0">
-                  {t.description}
-                </p>
+            <div>
+              {/* Region Pill */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#253242] text-[#E3E6DB] text-xs font-mono-code font-bold uppercase mb-6">
+                <MapPin className="w-3.5 h-3.5 text-[#E3E6DB]" />
+                <span>{t.region}</span>
               </div>
 
-              {/* Venue Photo - links out to the venue's own site in a new tab */}
-              <a
-                href="https://osrodekh2o.pl/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 w-full lg:w-56 block rounded-2xl overflow-hidden border border-[#3E4C5E]/40 shadow-xl hover:opacity-90 transition-opacity"
-              >
-                <img
-                  src="https://osrodekh2o.pl/wp-content/uploads/2022/11/gallery-04.jpg"
-                  alt={t.venueTitle}
-                  className="w-full h-48 lg:h-full object-cover"
-                />
-              </a>
+              <h3 className="font-bebas text-4xl sm:text-5xl text-[#E3E6DB] tracking-wide uppercase mb-4 leading-tight">
+                {t.venueTitle}
+              </h3>
+
+              <p className="text-[#E3E6DB]/80 text-base sm:text-lg leading-relaxed mb-8">
+                {t.description}
+              </p>
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
@@ -92,8 +76,22 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             </a>
           </div>
 
-          {/* Amenities - Borderless */}
+          {/* Photo & Amenities - Borderless */}
           <div className="lg:col-span-5 flex flex-col gap-6">
+            {/* Venue Photo - links out to the venue's own site in a new tab */}
+            <a
+              href="https://osrodekh2o.pl/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-2xl overflow-hidden border border-[#3E4C5E]/40 shadow-xl hover:opacity-90 transition-opacity"
+            >
+              <img
+                src="https://osrodekh2o.pl/wp-content/uploads/2022/11/gallery-04.jpg"
+                alt={t.venueTitle}
+                className="w-full h-48 sm:h-56 object-cover"
+              />
+            </a>
+
             {/* Amenities Grid - Borderless */}
             <div className="grid grid-cols-2 gap-3">
               {t.amenities.map((item, idx) => (

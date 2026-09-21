@@ -178,6 +178,7 @@ export const translations = {
       rights: 'Wszelkie prawa zastrzeżone.',
       nav: 'Nawigacja',
       top: 'Do góry',
+      organizedBy: 'Organizator',
     },
   },
   en: {
@@ -342,6 +343,7 @@ export const translations = {
       rights: 'All rights reserved.',
       nav: 'Navigation',
       top: 'Back to Top',
+      organizedBy: 'Organized by',
     },
   },
 };

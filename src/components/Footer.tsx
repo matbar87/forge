@@ -55,6 +55,24 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
                 — {translations[lang].about.quoteRef}
               </span>
             </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <span className="font-mono-code text-xs font-bold uppercase tracking-widest text-[#E3E6DB]/50">
+                {t.organizedBy}
+              </span>
+              <a
+                href="https://www.koscioldlamiasta.pl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-80 hover:opacity-100 transition-opacity"
+              >
+                <img
+                  src="https://cdn.churchtrac.com/image?ci=41752&file=3ervxte6tpw7.png"
+                  alt="Kościół Dla Miasta Krakowa"
+                  className="h-9 w-auto object-contain"
+                />
+              </a>
+            </div>
           </div>
 
           {/* Quick Navigation Links - Borderless */}
