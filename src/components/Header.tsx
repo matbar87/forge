@@ -5,9 +5,10 @@ import { Menu, X, ChevronRight } from 'lucide-react';
 interface HeaderProps {
   lang: Language;
   setLang: (lang: Language) => void;
+  isEventLive: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
+export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = translations[lang].nav;
@@ -68,30 +69,36 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
             >
               {t.start}
             </button>
-            <button
-              onClick={() => scrollToSection('meski-wyjazd')}
-              className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
-            >
-              {t.about}
-            </button>
-            <button
-              onClick={() => scrollToSection('rejestracja')}
-              className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
-            >
-              {t.registration}
-            </button>
+            {!isEventLive && (
+              <>
+                <button
+                  onClick={() => scrollToSection('meski-wyjazd')}
+                  className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
+                >
+                  {t.about}
+                </button>
+                <button
+                  onClick={() => scrollToSection('rejestracja')}
+                  className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
+                >
+                  {t.registration}
+                </button>
+              </>
+            )}
             <button
               onClick={() => scrollToSection('plan')}
               className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
             >
               {t.schedule}
             </button>
-            <button
-              onClick={() => scrollToSection('miejsce')}
-              className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
-            >
-              {t.location}
-            </button>
+            {!isEventLive && (
+              <button
+                onClick={() => scrollToSection('miejsce')}
+                className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
+              >
+                {t.location}
+              </button>
+            )}
           </nav>
 
           {/* Language Switcher & Quick Registration Button */}
@@ -164,20 +171,24 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
               <span>{t.start}</span>
               <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
             </button>
-            <button
-              onClick={() => scrollToSection('meski-wyjazd')}
-              className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
-            >
-              <span>{t.about}</span>
-              <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
-            </button>
-            <button
-              onClick={() => scrollToSection('rejestracja')}
-              className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
-            >
-              <span>{t.registration}</span>
-              <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
-            </button>
+            {!isEventLive && (
+              <>
+                <button
+                  onClick={() => scrollToSection('meski-wyjazd')}
+                  className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
+                >
+                  <span>{t.about}</span>
+                  <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
+                </button>
+                <button
+                  onClick={() => scrollToSection('rejestracja')}
+                  className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
+                >
+                  <span>{t.registration}</span>
+                  <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
+                </button>
+              </>
+            )}
             <button
               onClick={() => scrollToSection('plan')}
               className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
@@ -185,13 +196,15 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
               <span>{t.schedule}</span>
               <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
             </button>
-            <button
-              onClick={() => scrollToSection('miejsce')}
-              className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
-            >
-              <span>{t.location}</span>
-              <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
-            </button>
+            {!isEventLive && (
+              <button
+                onClick={() => scrollToSection('miejsce')}
+                className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
+              >
+                <span>{t.location}</span>
+                <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
+              </button>
+            )}
           </div>
         </div>
       )}

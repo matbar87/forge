@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { Clock, Flame, Utensils, Award, Coffee } from 'lucide-react';
 
@@ -6,11 +6,54 @@ interface ScheduleSectionProps {
   lang: Language;
 }
 
+// Fixed calendar dates behind t.days[0..2], used to default to "today's" tab
+// and to highlight whichever item is happening right now, based on the
+// viewer's own device clock.
+const EVENT_DAYS = [
+  { year: 2026, month: 11, day: 12 },
+  { year: 2026, month: 11, day: 13 },
+  { year: 2026, month: 11, day: 14 },
+];
+
+const toLocalISODate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+const getTodayEventDayIndex = (): number => {
+  const today = toLocalISODate(new Date());
+  return EVENT_DAYS.findIndex(
+    ({ year, month, day }) => `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` === today
+  );
+};
+
+const parseItemRange = (dayIndex: number, time: string): { start: Date; end: Date } | null => {
+  const eventDay = EVENT_DAYS[dayIndex];
+  const [startStr, endStr] = time.split('–').map((s) => s.trim());
+  if (!eventDay || !startStr || !endStr) return null;
+  const [sh, sm] = startStr.split(':').map(Number);
+  const [eh, em] = endStr.split(':').map(Number);
+  if ([sh, sm, eh, em].some((n) => Number.isNaN(n))) return null;
+  return {
+    start: new Date(eventDay.year, eventDay.month - 1, eventDay.day, sh, sm),
+    end: new Date(eventDay.year, eventDay.month - 1, eventDay.day, eh, em),
+  };
+};
+
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   const t = translations[lang].schedule;
-  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(() => {
+    const todayIdx = getTodayEventDayIndex();
+    return todayIdx >= 0 ? todayIdx : 0;
+  });
+  const [now, setNow] = useState<Date>(() => new Date());
   const switcherRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+
+  // Keeps the "happening now" border current, and lets a tester watch it
+  // update live after nudging their device clock forward.
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(id);
+  }, []);
 
   // Switching days keeps the tab bar sticky under the header, but a reader
   // who scrolled deep into a long day's items would otherwise land mid-way
@@ -207,10 +250,17 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                 ? 'bg-[#253243] hover:bg-[#2B394C]'
                 : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
 
+              const itemRange = parseItemRange(selectedDayIndex, item.time);
+              const isLiveNow = !!itemRange && now >= itemRange.start && now < itemRange.end;
+
               return (
                 <div
                   key={itemIdx}
-                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${cardBg}`}
+                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md border-2 ${cardBg} ${
+                    isLiveNow
+                      ? 'border-[#E3E6DB] shadow-[0_0_25px_-6px_rgba(227,230,219,0.55)]'
+                      : 'border-transparent'
+                  }`}
                 >
                   {/* Time & Badge */}
                   <div className="flex items-center gap-3 flex-wrap md:flex-nowrap md:w-72 shrink-0">

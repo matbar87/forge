@@ -4,9 +4,10 @@ import { ArrowUp } from 'lucide-react';
 
 interface FooterProps {
   lang: Language;
+  isEventLive: boolean;
 }
 
-export const Footer: React.FC<FooterProps> = ({ lang }) => {
+export const Footer: React.FC<FooterProps> = ({ lang, isEventLive }) => {
   const t = translations[lang].footer;
 
   const scrollToTop = () => {
@@ -89,22 +90,26 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
                   {translations[lang].nav.start}
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('meski-wyjazd')}
-                  className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
-                >
-                  {translations[lang].nav.about}
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('rejestracja')}
-                  className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
-                >
-                  {translations[lang].nav.registration}
-                </button>
-              </li>
+              {!isEventLive && (
+                <li>
+                  <button
+                    onClick={() => scrollToSection('meski-wyjazd')}
+                    className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
+                  >
+                    {translations[lang].nav.about}
+                  </button>
+                </li>
+              )}
+              {!isEventLive && (
+                <li>
+                  <button
+                    onClick={() => scrollToSection('rejestracja')}
+                    className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
+                  >
+                    {translations[lang].nav.registration}
+                  </button>
+                </li>
+              )}
               <li>
                 <button
                   onClick={() => scrollToSection('plan')}
@@ -113,14 +118,16 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
                   {translations[lang].nav.schedule}
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection('miejsce')}
-                  className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
-                >
-                  {translations[lang].nav.location}
-                </button>
-              </li>
+              {!isEventLive && (
+                <li>
+                  <button
+                    onClick={() => scrollToSection('miejsce')}
+                    className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
+                  >
+                    {translations[lang].nav.location}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -134,12 +141,14 @@ export const Footer: React.FC<FooterProps> = ({ lang }) => {
               <ArrowUp className="w-4 h-4 text-[#E3E6DB] group-hover:-translate-y-0.5 transition-transform" />
             </button>
 
-            <button
-              onClick={() => scrollToSection('rejestracja')}
-              className="px-6 py-3 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase shadow-xl transition-all"
-            >
-              {translations[lang].nav.registerBtn}
-            </button>
+            {!isEventLive && (
+              <button
+                onClick={() => scrollToSection('rejestracja')}
+                className="px-6 py-3 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase shadow-xl transition-all"
+              >
+                {translations[lang].nav.registerBtn}
+              </button>
+            )}
           </div>
         </div>
 
