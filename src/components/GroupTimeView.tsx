@@ -87,14 +87,7 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
       <div className="absolute bottom-0 -left-40 w-[420px] h-[420px] bg-[#16202B]/60 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-[#E3E6DB] font-mono-code text-xs font-bold tracking-widest uppercase bg-[#3E4C5E]/50 px-3 py-1 rounded-full">
-            [ // {t.badge} ]
-          </span>
-          <div className="h-0.5 bg-[#3E4C5E]/30 flex-1 rounded-full" />
-        </div>
-
-        <div className="text-center max-w-xl mx-auto pt-4 mb-12">
+        <div className="text-center max-w-xl mx-auto mb-12">
           <h2 className="font-bebas text-5xl sm:text-6xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9] mb-4">
             {t.title}
           </h2>
@@ -144,14 +137,9 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
                   key={idx}
                   className="bg-[#18212C] rounded-2xl p-6 sm:p-8 shadow-xl"
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="font-mono-code text-xs font-bold uppercase tracking-widest text-[#E3E6DB]/50">
-                      // {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase">
-                      {session.title}
-                    </h3>
-                  </div>
+                  <h3 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase mb-4">
+                    {session.title}
+                  </h3>
 
                   {session.questions.length > 0 ? (
                     <ul className="space-y-3">
