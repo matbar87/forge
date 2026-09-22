@@ -5,33 +5,24 @@ import { ArrowUp } from 'lucide-react';
 interface FooterProps {
   lang: Language;
   isEventLive: boolean;
+  onNavigate: (id: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ lang, isEventLive }) => {
+export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate }) => {
   const t = translations[lang].footer;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (id: string) => {
-    if (id === 'start') {
-      scrollToTop();
-      return;
-    }
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth',
-      });
-    }
-  };
+  const scrollToSection = (id: string) => onNavigate(id);
 
   return (
-    <footer className="bg-[#0E131A] text-[#E3E6DB] pt-20 pb-12 relative overflow-hidden">
+    <footer
+      className={`bg-[#0E131A] text-[#E3E6DB] pt-20 relative overflow-hidden ${
+        isEventLive ? 'pb-28' : 'pb-12'
+      }`}
+    >
       {/* Background ambient accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-[#3E4C5E]/10 blur-3xl pointer-events-none" />
 

@@ -15,6 +15,11 @@ export interface DaySchedule {
   items: ScheduleItem[];
 }
 
+export interface GroupSession {
+  title: string;
+  questions: string[];
+}
+
 export const translations = {
   pl: {
     nav: {
@@ -24,6 +29,7 @@ export const translations = {
       schedule: 'Plan',
       location: 'Miejsce',
       registerBtn: 'Zarejestruj się',
+      groupTime: 'Czas w grupach',
     },
     hero: {
       date: '12 – 14 LISTOPADA 2026',
@@ -172,6 +178,24 @@ export const translations = {
       ],
       mapsButton: 'Otwórz wskazówki dojazdu',
     },
+    groupTime: {
+      badge: 'CZAS W GRUPACH',
+      title: 'Czas w grupach',
+      subtitle: 'Pytania do rozmowy w grupie, dopasowane do każdej sesji.',
+      pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
+      pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      forgetCode: 'Zapomnij kod na tym urządzeniu',
+      questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
+      sessions: [
+        { title: 'Sesja 1', questions: [] },
+        { title: 'Sesja 2', questions: [] },
+        { title: 'Sesja 3', questions: [] },
+        { title: 'Sesja 4', questions: [] },
+        { title: 'Sesja 5', questions: [] },
+        { title: 'Sesja 6', questions: [] },
+        { title: 'Sesja 7', questions: [] },
+      ],
+    },
     footer: {
       verseText: '„Żelazo ostrzy żelazo; człowieka ostrzy człowiek.”',
       verseRef: 'Przypowieści Salomona 27:17 (SNP)',
@@ -189,6 +213,7 @@ export const translations = {
       schedule: 'Schedule',
       location: 'Location',
       registerBtn: 'Register Now',
+      groupTime: 'Group Time',
     },
     hero: {
       date: 'NOVEMBER 12 – 14, 2026',
@@ -336,6 +361,24 @@ export const translations = {
         { label: 'Free Parking', desc: 'Ample on-site parking for all cars' },
       ],
       mapsButton: 'Open Driving Directions',
+    },
+    groupTime: {
+      badge: 'GROUP TIME',
+      title: 'Group Time',
+      subtitle: 'Discussion questions for each session, ready to go.',
+      pinPrompt: 'Enter the 4-digit access code',
+      pinError: 'Wrong code, try again.',
+      forgetCode: 'Forget code on this device',
+      questionsComingSoon: 'Questions for this session are coming soon.',
+      sessions: [
+        { title: 'Session 1', questions: [] },
+        { title: 'Session 2', questions: [] },
+        { title: 'Session 3', questions: [] },
+        { title: 'Session 4', questions: [] },
+        { title: 'Session 5', questions: [] },
+        { title: 'Session 6', questions: [] },
+        { title: 'Session 7', questions: [] },
+      ],
     },
     footer: {
       verseText: '"As iron sharpens iron, so one person sharpens another."',

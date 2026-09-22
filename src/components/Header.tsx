@@ -6,9 +6,10 @@ interface HeaderProps {
   lang: Language;
   setLang: (lang: Language) => void;
   isEventLive: boolean;
+  onNavigate: (id: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive }) => {
+export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const t = translations[lang].nav;
@@ -23,19 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive }) =>
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
-    if (id === 'start') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth',
-      });
-    }
+    onNavigate(id);
   };
 
   return (

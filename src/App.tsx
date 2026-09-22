@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Language } from './translations';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -7,6 +7,10 @@ import { RegistrationSection } from './components/RegistrationSection';
 import { ScheduleSection } from './components/ScheduleSection';
 import { LocationSection } from './components/LocationSection';
 import { Footer } from './components/Footer';
+import { GroupTimeView } from './components/GroupTimeView';
+import { EventTabBar } from './components/EventTabBar';
+
+type View = 'site' | 'group-time';
 
 // While the camp itself is running, the marketing/registration content stops
 // being relevant — only Hero and the live Schedule stay up. Once it's over,
@@ -47,6 +51,54 @@ export function App() {
       document.removeEventListener('visibilitychange', check);
     };
   }, []);
+
+  // "Czas w grupach" is a separate full-screen view (not a section on the
+  // main page), reachable from the bottom tab bar that appears only while
+  // the event is live. Navigating to a section id while on that view first
+  // switches back to the site, then scrolls once the site's DOM is mounted.
+  const [view, setView] = useState<View>('site');
+  const pendingScrollRef = useRef<string | null>(null);
+
+  const scrollToId = (id: string) => {
+    if (id === 'start') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    }
+  };
+
+  const navigateToSection = (id: string) => {
+    if (view !== 'site') {
+      pendingScrollRef.current = id;
+      setView('site');
+    } else {
+      scrollToId(id);
+    }
+  };
+
+  useEffect(() => {
+    if (view === 'site' && pendingScrollRef.current) {
+      const id = pendingScrollRef.current;
+      pendingScrollRef.current = null;
+      requestAnimationFrame(() => requestAnimationFrame(() => scrollToId(id)));
+    }
+    if (view === 'group-time') {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+  }, [view]);
+
+  // The tab bar only exists during the event; if the event window ends
+  // while someone is sitting on the Group Time view, bring them back.
+  useEffect(() => {
+    if (!isEventLive && view === 'group-time') {
+      setView('site');
+    }
+  }, [isEventLive, view]);
 
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
@@ -104,32 +156,49 @@ export function App() {
       </div>
 
       {/* 1. Header with sygnet.svg and navigation menu */}
-      <Header lang={lang} setLang={handleSetLang} isEventLive={isEventLive} />
+      <Header lang={lang} setLang={handleSetLang} isEventLive={isEventLive} onNavigate={navigateToSection} />
 
       {/* Main Landing Sections */}
-      <main className="flex-1 w-full">
-        {/* 2. Hero with background YouTube video, logo, date & registration CTA */}
-        <Hero lang={lang} isEventLive={isEventLive} />
-
-        {!isEventLive && (
+      <main className={`flex-1 w-full ${isEventLive ? 'pb-20' : ''}`}>
+        {view === 'site' ? (
           <>
-            {/* 3. Męski Wyjazd - description and modern 6-photo gallery */}
-            <AboutSection lang={lang} />
+            {/* 2. Hero with background YouTube video, logo, date & registration CTA */}
+            <Hero lang={lang} isEventLive={isEventLive} onNavigate={navigateToSection} />
 
-            {/* 4. Rejestracja - individual & group registration cards */}
-            <RegistrationSection lang={lang} isRegistrationClosed={isRegistrationClosed} />
+            {!isEventLive && (
+              <>
+                {/* 3. Męski Wyjazd - description and modern 6-photo gallery */}
+                <AboutSection lang={lang} />
+
+                {/* 4. Rejestracja - individual & group registration cards */}
+                <RegistrationSection lang={lang} isRegistrationClosed={isRegistrationClosed} />
+              </>
+            )}
+
+            {/* 5. Plan - 3-day schedule table for 12, 13 and 14 Nov */}
+            <ScheduleSection lang={lang} />
+
+            {/* 6. Miejsce - location and venue details */}
+            {!isEventLive && <LocationSection lang={lang} />}
           </>
+        ) : (
+          /* Czas w grupach - PIN-gated discussion questions, one per session */
+          <GroupTimeView lang={lang} />
         )}
-
-        {/* 5. Plan - 3-day schedule table for 12, 13 and 14 Nov */}
-        <ScheduleSection lang={lang} />
-
-        {/* 6. Miejsce - location and venue details */}
-        {!isEventLive && <LocationSection lang={lang} />}
       </main>
 
-      {/* Footer */}
-      <Footer lang={lang} isEventLive={isEventLive} />
+      {/* Footer only makes sense as part of the full scrolling site */}
+      {view === 'site' && <Footer lang={lang} isEventLive={isEventLive} onNavigate={navigateToSection} />}
+
+      {/* Bottom tab bar - only while the event itself is running */}
+      {isEventLive && (
+        <EventTabBar
+          lang={lang}
+          activeView={view}
+          onSelectPlan={() => navigateToSection('plan')}
+          onSelectGroupTime={() => setView('group-time')}
+        />
+      )}
     </div>
   );
 }
