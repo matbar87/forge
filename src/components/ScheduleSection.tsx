@@ -67,7 +67,17 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
       const switcherEl = switcherRef.current;
       const timelineEl = timelineRef.current;
       if (!switcherEl || !timelineEl) return;
-      const offset = switcherEl.getBoundingClientRect().bottom + 16;
+      // Reaching this branch always means scrolling upward, and the header
+      // reveals itself on any upward scroll — so by the time it settles the
+      // switcher will be pinned below the header again, not wherever it was
+      // (possibly at top-0, header hidden) at click time. Use the header's
+      // own rendered height rather than the switcher's current position,
+      // which would otherwise undershoot the target while the header is
+      // hidden and leave the timeline's top edge covered.
+      const headerEl = document.querySelector('header');
+      const headerHeight = headerEl?.getBoundingClientRect().height ?? 80;
+      const switcherHeight = switcherEl.getBoundingClientRect().height;
+      const offset = headerHeight + switcherHeight + 16;
       const target = timelineEl.getBoundingClientRect().top + window.scrollY - offset;
       if (window.scrollY > target) {
         window.scrollTo({ top: target, behavior: 'smooth' });
