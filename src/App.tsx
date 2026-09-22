@@ -8,11 +8,13 @@ import { ScheduleSection } from './components/ScheduleSection';
 import { LocationSection } from './components/LocationSection';
 import { Footer } from './components/Footer';
 
-// Once the camp itself starts, the marketing/registration content stops being
-// relevant — only Hero and the live Schedule stay up. Based on the viewer's
-// own device clock (not a server date), so it's also easy to test: just
-// change the system clock.
+// While the camp itself is running, the marketing/registration content stops
+// being relevant — only Hero and the live Schedule stay up. Once it's over,
+// the full site returns, but registration is closed (see isRegistrationClosed
+// below). Both are based on the viewer's own device clock (not a server
+// date), so it's also easy to test: just change the system clock.
 const EVENT_START = new Date(2026, 10, 12, 0, 0, 0);
+const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
 
 export function App() {
   // Initialize language preference from localStorage, or detect it from the browser/device language
@@ -27,10 +29,17 @@ export function App() {
     return isPolish ? 'pl' : 'en';
   });
 
-  const [isEventLive, setIsEventLive] = useState(() => new Date() >= EVENT_START);
+  const isWithinEvent = (d: Date) => d >= EVENT_START && d < EVENT_END;
+
+  const [isEventLive, setIsEventLive] = useState(() => isWithinEvent(new Date()));
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(() => new Date() >= EVENT_END);
 
   useEffect(() => {
-    const check = () => setIsEventLive(new Date() >= EVENT_START);
+    const check = () => {
+      const now = new Date();
+      setIsEventLive(isWithinEvent(now));
+      setIsRegistrationClosed(now >= EVENT_END);
+    };
     const id = setInterval(check, 60000);
     document.addEventListener('visibilitychange', check);
     return () => {
@@ -108,7 +117,7 @@ export function App() {
             <AboutSection lang={lang} />
 
             {/* 4. Rejestracja - individual & group registration cards */}
-            <RegistrationSection lang={lang} />
+            <RegistrationSection lang={lang} isRegistrationClosed={isRegistrationClosed} />
           </>
         )}
 

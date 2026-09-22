@@ -4,9 +4,10 @@ import { Check, ArrowUpRight, User, Users } from 'lucide-react';
 
 interface RegistrationSectionProps {
   lang: Language;
+  isRegistrationClosed: boolean;
 }
 
-export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }) => {
+export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, isRegistrationClosed }) => {
   const t = translations[lang].registration;
 
   const individualRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
@@ -101,16 +102,25 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/30">
               <a
-                href={individualRegistrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-2xl tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95"
+                href={isRegistrationClosed ? undefined : individualRegistrationUrl}
+                target={isRegistrationClosed ? undefined : '_blank'}
+                rel={isRegistrationClosed ? undefined : 'noopener noreferrer'}
+                aria-disabled={isRegistrationClosed}
+                tabIndex={isRegistrationClosed ? -1 : undefined}
+                onClick={(e) => isRegistrationClosed && e.preventDefault()}
+                className={`group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all ${
+                  isRegistrationClosed
+                    ? 'bg-[#3E4C5E]/30 text-[#E3E6DB]/40 cursor-not-allowed pointer-events-none'
+                    : 'bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95'
+                }`}
               >
                 <span>{t.individual.cta}</span>
-                <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                {!isRegistrationClosed && (
+                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                )}
               </a>
               <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
-                {t.individual.note}
+                {isRegistrationClosed ? t.closedNote : t.individual.note}
               </span>
             </div>
           </div>
@@ -178,16 +188,25 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang }
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/40">
               <a
-                href={groupRegistrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-2xl tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95"
+                href={isRegistrationClosed ? undefined : groupRegistrationUrl}
+                target={isRegistrationClosed ? undefined : '_blank'}
+                rel={isRegistrationClosed ? undefined : 'noopener noreferrer'}
+                aria-disabled={isRegistrationClosed}
+                tabIndex={isRegistrationClosed ? -1 : undefined}
+                onClick={(e) => isRegistrationClosed && e.preventDefault()}
+                className={`group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all ${
+                  isRegistrationClosed
+                    ? 'bg-[#3E4C5E]/30 text-[#E3E6DB]/40 cursor-not-allowed pointer-events-none'
+                    : 'bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95'
+                }`}
               >
                 <span>{t.group.cta}</span>
-                <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                {!isRegistrationClosed && (
+                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                )}
               </a>
               <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
-                {t.group.note}
+                {isRegistrationClosed ? t.closedNote : t.group.note}
               </span>
             </div>
           </div>
