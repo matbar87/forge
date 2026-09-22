@@ -75,8 +75,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
               </p>
 
               {/* Price Callout */}
-              <div className="flex items-baseline gap-3 pb-8 mb-8 border-b border-[#3E4C5E]/30">
-                <span className="font-bebas text-5xl sm:text-6xl text-[#E3E6DB] tracking-tight">
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 pb-8 mb-8 border-b border-[#3E4C5E]/30">
+                <span className="font-bebas text-5xl sm:text-6xl text-[#E3E6DB] tracking-tight whitespace-nowrap">
                   {t.individual.price}
                 </span>
                 <span className="text-xs font-mono-code text-[#E3E6DB]/60 uppercase">
@@ -161,8 +161,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
               </p>
 
               {/* Price Callout */}
-              <div className="flex items-baseline gap-3 pb-8 mb-8 border-b border-[#3E4C5E]/40">
-                <span className="font-bebas text-5xl sm:text-6xl text-[#E3E6DB] tracking-tight">
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 pb-8 mb-8 border-b border-[#3E4C5E]/40">
+                <span className="font-bebas text-5xl sm:text-6xl text-[#E3E6DB] tracking-tight whitespace-nowrap">
                   {t.group.price}
                 </span>
                 <span className="text-xs font-mono-code text-[#E3E6DB]/60 uppercase">
