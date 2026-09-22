@@ -4,7 +4,6 @@ import { X, Download, Share } from 'lucide-react';
 
 interface InstallBannerProps {
   lang: Language;
-  isEventLive: boolean;
 }
 
 // Visible only on mobile (sm:hidden), and only while the device clock falls
@@ -29,7 +28,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive }) => {
+export const InstallBanner: React.FC<InstallBannerProps> = ({ lang }) => {
   const t = translations[lang].installBanner;
 
   const [withinWindow, setWithinWindow] = useState(() => {
@@ -98,14 +97,8 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
   if (!shouldShow) return null;
 
   return (
-    <div
-      className={`sm:hidden fixed left-0 right-0 z-40 px-4 ${
-        isEventLive ? 'bottom-[76px]' : 'bottom-0 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-0'
-      }`}
-    >
-      <div className={`relative max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4 ${
-        isEventLive ? 'mb-0' : 'mb-4'
-      }`}>
+    <div className="sm:hidden fixed top-[72px] sm:top-[80px] left-0 right-0 z-40 px-4 pt-3">
+      <div className="relative max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4">
         <button
           onClick={handleDismiss}
           aria-label={t.dismiss}

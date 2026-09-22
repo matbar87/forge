@@ -201,8 +201,8 @@ export function App() {
         />
       )}
 
-      {/* Mobile PWA install nudge - Nov 11-14, sits above the tab bar once it appears */}
-      <InstallBanner lang={lang} isEventLive={isEventLive} />
+      {/* Mobile PWA install nudge - Nov 11-14, pinned under the header so it never covers the bottom event tab bar */}
+      <InstallBanner lang={lang} />
     </div>
   );
 }
