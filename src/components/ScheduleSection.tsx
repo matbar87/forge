@@ -49,11 +49,23 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   const switcherRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const headerHidden = useHeaderVisibility();
+  // Once the reader taps a day tab themselves, stop overriding their choice
+  // — only the still-on-"today" default should keep tracking the calendar.
+  const hasManuallySelectedDay = useRef(false);
 
   // Keeps the "happening now" border current, and lets a tester watch it
-  // update live after nudging their device clock forward.
+  // update live after nudging their device clock forward. Also keeps the
+  // default day tab in sync if the calendar day rolls over while the page
+  // is left open (e.g. across midnight) instead of only computing it once
+  // at mount.
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30000);
+    const id = setInterval(() => {
+      setNow(new Date());
+      if (!hasManuallySelectedDay.current) {
+        const todayIdx = getTodayEventDayIndex();
+        if (todayIdx >= 0) setSelectedDayIndex(todayIdx);
+      }
+    }, 30000);
     return () => clearInterval(id);
   }, []);
 
@@ -62,6 +74,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   // through the newly selected day. Snap back to the top of the timeline
   // only when the click happened while already scrolled past it.
   const handleSelectDay = (idx: number) => {
+    hasManuallySelectedDay.current = true;
     setSelectedDayIndex(idx);
     requestAnimationFrame(() => {
       const switcherEl = switcherRef.current;
