@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { Clock, Flame, Utensils, Award, Coffee } from 'lucide-react';
+import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
 
 interface ScheduleSectionProps {
   lang: Language;
@@ -47,6 +48,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
   const [now, setNow] = useState<Date>(() => new Date());
   const switcherRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const headerHidden = useHeaderVisibility();
 
   // Keeps the "happening now" border current, and lets a tester watch it
   // update live after nudging their device clock forward.
@@ -147,10 +149,13 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
             month) and a short "12 Lis" date underneath; full weekday name,
             date and the theme line only reappear from `sm` up. Sticks below
             the fixed header while scrolling so switching days stays within
-            reach. */}
+            reach, and rises to the very top when the header slides away so
+            it doesn't leave a gap behind. */}
         <div
           ref={switcherRef}
-          className="sticky top-[72px] sm:top-[80px] z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 mb-8 sm:mb-12 bg-[#121820]/95 backdrop-blur-xl shadow-xl"
+          className={`sticky z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 mb-8 sm:mb-12 bg-[#121820]/95 backdrop-blur-xl shadow-xl transition-[top] duration-300 ${
+            headerHidden ? 'top-0' : 'top-[72px] sm:top-[80px]'
+          }`}
         >
         <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-5xl mx-auto">
           {t.days.map((day, idx) => {

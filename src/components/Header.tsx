@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { Menu, X, ChevronRight } from 'lucide-react';
+import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
 
 interface HeaderProps {
   lang: Language;
@@ -9,36 +10,19 @@ interface HeaderProps {
   onNavigate: (id: string) => void;
 }
 
-const HIDE_THRESHOLD = 100;
-
 export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNavigate }) => {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const lastScrollY = useRef(0);
+  const scrollHidden = useHeaderVisibility();
+  // Never let the header slide away while the mobile drawer is open.
+  const hidden = scrollHidden && !mobileMenuOpen;
   const t = translations[lang].nav;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
-      setScrolled(currentY > 25);
-
-      if (currentY < HIDE_THRESHOLD) {
-        setHidden(false);
-      } else {
-        setHidden(currentY > lastScrollY.current);
-      }
-      lastScrollY.current = currentY;
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 25);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Keep the header visible whenever the mobile drawer is open, so it can't
-  // slide away with the menu still showing.
-  useEffect(() => {
-    if (mobileMenuOpen) setHidden(false);
-  }, [mobileMenuOpen]);
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
