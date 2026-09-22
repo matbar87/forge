@@ -75,12 +75,6 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
     }
   };
 
-  const forgetCode = () => {
-    localStorage.removeItem(PIN_STORAGE_KEY);
-    setUnlocked(false);
-    setDigits(['', '', '', '']);
-  };
-
   return (
     <section className="min-h-screen w-full pt-[104px] sm:pt-[128px] pb-16 bg-transparent relative overflow-hidden">
       <div className="absolute top-1/4 -right-40 w-[450px] h-[450px] bg-[#1E2938]/40 rounded-full blur-[140px] pointer-events-none" />
@@ -130,40 +124,36 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
             )}
           </div>
         ) : (
-          <>
-            <div className="space-y-4">
-              {t.sessions.map((session, idx) => (
-                <div
-                  key={idx}
-                  className="bg-[#18212C] rounded-2xl p-6 sm:p-8 shadow-xl"
-                >
-                  <h3 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase mb-4">
+          <div className="space-y-4">
+            {t.sessions.map((session, idx) => (
+              <div
+                key={idx}
+                className="bg-[#18212C] rounded-2xl p-6 sm:p-8 shadow-xl"
+              >
+                <div className="mb-4">
+                  <span className="font-mono-code text-xs font-bold uppercase tracking-widest text-[#E3E6DB]/50">
                     {session.title}
+                  </span>
+                  <h3 className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase mt-1">
+                    {session.topic}
                   </h3>
-
-                  {session.questions.length > 0 ? (
-                    <ul className="space-y-3">
-                      {session.questions.map((q, qIdx) => (
-                        <li key={qIdx} className="flex items-start gap-3">
-                          <MessageCircleQuestion className="w-4 h-4 text-[#E3E6DB]/50 shrink-0 mt-1" />
-                          <span className="text-sm text-[#E3E6DB]/85 leading-relaxed">{q}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-[#E3E6DB]/50 italic">{t.questionsComingSoon}</p>
-                  )}
                 </div>
-              ))}
-            </div>
 
-            <button
-              onClick={forgetCode}
-              className="block mx-auto mt-10 text-[11px] font-mono-code text-[#E3E6DB]/30 hover:text-[#E3E6DB]/60 uppercase tracking-wider transition-colors"
-            >
-              {t.forgetCode}
-            </button>
-          </>
+                {session.questions.length > 0 ? (
+                  <ul className="space-y-3">
+                    {session.questions.map((q, qIdx) => (
+                      <li key={qIdx} className="flex items-start gap-3">
+                        <MessageCircleQuestion className="w-4 h-4 text-[#E3E6DB]/50 shrink-0 mt-1" />
+                        <span className="text-sm text-[#E3E6DB]/85 leading-relaxed">{q}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-[#E3E6DB]/50 italic">{t.questionsComingSoon}</p>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </section>
