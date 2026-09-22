@@ -5,26 +5,15 @@ import { ArrowUpRight } from 'lucide-react';
 interface HeroProps {
   lang: Language;
   isEventLive: boolean;
+  onNavigate: (id: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ lang, isEventLive }) => {
+export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => {
   const t = translations[lang].hero;
   // A static frame (2.webp) covers the video while it loads, and stays as a
   // fallback if the video never plays. It fades out once playback starts.
   const [showVideoCover, setShowVideoCover] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      const offset = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - offset,
-        behavior: 'smooth',
-      });
-    }
-  };
 
   const logoSrc = lang === 'pl' ? './kuznia-logo.svg' : './forge-logo.svg';
   const logoAlt = lang === 'pl' ? 'Kuźnia Męski Wyjazd' : "Forge Men's Camp";
@@ -107,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive }) => {
           {/* Main Registration Button - hidden once the camp itself has started */}
           {!isEventLive && (
             <button
-              onClick={() => scrollToSection('rejestracja')}
+              onClick={() => onNavigate('rejestracja')}
               className="group w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-2xl tracking-wider uppercase shadow-2xl hover:shadow-white/20 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center justify-center gap-3"
             >
               <span>{t.registerCta}</span>
@@ -117,7 +106,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive }) => {
 
           {/* Secondary Plan Button */}
           <button
-            onClick={() => scrollToSection('plan')}
+            onClick={() => onNavigate('plan')}
             className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#1E2937]/90 hover:bg-[#28374A] text-[#E3E6DB] font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all active:scale-95"
           >
             {t.explorePlan}
