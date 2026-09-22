@@ -103,43 +103,47 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
         isEventLive ? 'bottom-[76px]' : 'bottom-0 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-0'
       }`}
     >
-      <div className={`max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4 flex items-center gap-3 ${
+      <div className={`relative max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4 ${
         isEventLive ? 'mb-0' : 'mb-4'
       }`}>
-        <img
-          src="./pwa-192x192.png"
-          alt=""
-          className="w-11 h-11 rounded-xl shrink-0"
-        />
-        <div className="flex-1 min-w-0">
-          <p className="font-bebas text-lg text-[#E3E6DB] tracking-wide uppercase leading-tight">
-            {t.title}
-          </p>
-          {isIOS && !deferredPrompt ? (
-            <p className="text-[11px] text-[#E3E6DB]/60 leading-snug flex items-center gap-1 mt-0.5">
-              <Share className="w-3 h-3 shrink-0" />
-              {t.iosInstructions}
+        <button
+          onClick={handleDismiss}
+          aria-label={t.dismiss}
+          className="absolute top-2.5 right-2.5 p-1.5 rounded-lg text-[#E3E6DB]/40 hover:text-[#E3E6DB]/80 hover:bg-[#253242] transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="flex items-center gap-3 pr-7">
+          <img
+            src="./pwa-192x192.png"
+            alt=""
+            className="w-11 h-11 rounded-xl shrink-0"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="font-bebas text-lg text-[#E3E6DB] tracking-wide uppercase leading-tight">
+              {t.title}
             </p>
-          ) : (
-            <p className="text-[11px] text-[#E3E6DB]/60 leading-snug mt-0.5">{t.subtitle}</p>
-          )}
+            {isIOS && !deferredPrompt ? (
+              <p className="text-[11px] text-[#E3E6DB]/60 leading-snug flex items-center gap-1 mt-0.5">
+                <Share className="w-3 h-3 shrink-0" />
+                {t.iosInstructions}
+              </p>
+            ) : (
+              <p className="text-[11px] text-[#E3E6DB]/60 leading-snug mt-0.5">{t.subtitle}</p>
+            )}
+          </div>
         </div>
+
         {deferredPrompt && (
           <button
             onClick={handleInstallClick}
-            className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-mono-code text-xs font-bold uppercase tracking-wider transition-colors"
+            className="w-full mt-3.5 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-mono-code text-xs font-bold uppercase tracking-wider transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             {t.installBtn}
           </button>
         )}
-        <button
-          onClick={handleDismiss}
-          aria-label={t.dismiss}
-          className="shrink-0 p-1.5 rounded-lg text-[#E3E6DB]/40 hover:text-[#E3E6DB]/80 hover:bg-[#253242] transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
       </div>
     </div>
   );
