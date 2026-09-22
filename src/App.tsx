@@ -8,6 +8,14 @@ import { ScheduleSection } from './components/ScheduleSection';
 import { LocationSection } from './components/LocationSection';
 import { Footer } from './components/Footer';
 
+// While the camp itself is running, the marketing/registration content stops
+// being relevant — only Hero and the live Schedule stay up. Once it's over,
+// the full site returns, but registration is closed (see isRegistrationClosed
+// below). Both are based on the viewer's own device clock (not a server
+// date), so it's also easy to test: just change the system clock.
+const EVENT_START = new Date(2026, 10, 12, 0, 0, 0);
+const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
+
 export function App() {
   // Initialize language preference from localStorage, or detect it from the browser/device language
   const [lang, setLang] = useState<Language>(() => {
@@ -20,6 +28,25 @@ export function App() {
     const isPolish = browserLangs.some((l) => l?.toLowerCase().startsWith('pl'));
     return isPolish ? 'pl' : 'en';
   });
+
+  const isWithinEvent = (d: Date) => d >= EVENT_START && d < EVENT_END;
+
+  const [isEventLive, setIsEventLive] = useState(() => isWithinEvent(new Date()));
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(() => new Date() >= EVENT_END);
+
+  useEffect(() => {
+    const check = () => {
+      const now = new Date();
+      setIsEventLive(isWithinEvent(now));
+      setIsRegistrationClosed(now >= EVENT_END);
+    };
+    const id = setInterval(check, 60000);
+    document.addEventListener('visibilitychange', check);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', check);
+    };
+  }, []);
 
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
@@ -77,28 +104,32 @@ export function App() {
       </div>
 
       {/* 1. Header with sygnet.svg and navigation menu */}
-      <Header lang={lang} setLang={handleSetLang} />
+      <Header lang={lang} setLang={handleSetLang} isEventLive={isEventLive} />
 
       {/* Main Landing Sections */}
       <main className="flex-1 w-full">
         {/* 2. Hero with background YouTube video, logo, date & registration CTA */}
-        <Hero lang={lang} />
+        <Hero lang={lang} isEventLive={isEventLive} />
 
-        {/* 3. Męski Wyjazd - description and modern 6-photo gallery */}
-        <AboutSection lang={lang} />
+        {!isEventLive && (
+          <>
+            {/* 3. Męski Wyjazd - description and modern 6-photo gallery */}
+            <AboutSection lang={lang} />
 
-        {/* 4. Rejestracja - individual & group registration cards */}
-        <RegistrationSection lang={lang} />
+            {/* 4. Rejestracja - individual & group registration cards */}
+            <RegistrationSection lang={lang} isRegistrationClosed={isRegistrationClosed} />
+          </>
+        )}
 
         {/* 5. Plan - 3-day schedule table for 12, 13 and 14 Nov */}
         <ScheduleSection lang={lang} />
 
         {/* 6. Miejsce - location and venue details */}
-        <LocationSection lang={lang} />
+        {!isEventLive && <LocationSection lang={lang} />}
       </main>
 
       {/* Footer */}
-      <Footer lang={lang} />
+      <Footer lang={lang} isEventLive={isEventLive} />
     </div>
   );
 }

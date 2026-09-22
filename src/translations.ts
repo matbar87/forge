@@ -61,6 +61,7 @@ export const translations = {
       badge: 'DOŁĄCZ DO NAS',
       title: 'Rejestracja',
       subtitle: 'Wybierz odpowiednią opcję dla siebie.',
+      closedNote: 'Rejestracja na to wydarzenie została zakończona.',
       individual: {
         title: 'Indywidualna',
         badge: 'POJEDYNCZY UCZESTNIK',
@@ -225,6 +226,7 @@ export const translations = {
       badge: 'JOIN US',
       title: 'Registration',
       subtitle: 'Choose your registration type.',
+      closedNote: 'Registration for this event has closed.',
       individual: {
         title: 'Individual',
         badge: 'SOLO ATTENDEE',
