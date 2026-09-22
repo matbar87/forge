@@ -17,6 +17,7 @@ export interface DaySchedule {
 
 export interface GroupSession {
   title: string;
+  topic: string;
   questions: string[];
 }
 
@@ -184,16 +185,15 @@ export const translations = {
       subtitle: 'Pytania do rozmowy w grupie, dopasowane do każdej sesji.',
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
-      forgetCode: 'Zapomnij kod na tym urządzeniu',
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
       sessions: [
-        { title: 'Sesja 1', questions: [] },
-        { title: 'Sesja 2', questions: [] },
-        { title: 'Sesja 3', questions: [] },
-        { title: 'Sesja 4', questions: [] },
-        { title: 'Sesja 5', questions: [] },
-        { title: 'Sesja 6', questions: [] },
-        { title: 'Sesja 7', questions: [] },
+        { title: 'Sesja 1', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 2', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 3', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 4', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 5', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 6', topic: 'Brak tematu', questions: [] },
+        { title: 'Sesja 7', topic: 'Brak tematu', questions: [] },
       ],
     },
     installBanner: {
@@ -375,16 +375,15 @@ export const translations = {
       subtitle: 'Discussion questions for each session, ready to go.',
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
-      forgetCode: 'Forget code on this device',
       questionsComingSoon: 'Questions for this session are coming soon.',
       sessions: [
-        { title: 'Session 1', questions: [] },
-        { title: 'Session 2', questions: [] },
-        { title: 'Session 3', questions: [] },
-        { title: 'Session 4', questions: [] },
-        { title: 'Session 5', questions: [] },
-        { title: 'Session 6', questions: [] },
-        { title: 'Session 7', questions: [] },
+        { title: 'Session 1', topic: 'No topic', questions: [] },
+        { title: 'Session 2', topic: 'No topic', questions: [] },
+        { title: 'Session 3', topic: 'No topic', questions: [] },
+        { title: 'Session 4', topic: 'No topic', questions: [] },
+        { title: 'Session 5', topic: 'No topic', questions: [] },
+        { title: 'Session 6', topic: 'No topic', questions: [] },
+        { title: 'Session 7', topic: 'No topic', questions: [] },
       ],
     },
     installBanner: {
