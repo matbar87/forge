@@ -9,6 +9,7 @@ import { LocationSection } from './components/LocationSection';
 import { Footer } from './components/Footer';
 import { GroupTimeView } from './components/GroupTimeView';
 import { EventTabBar } from './components/EventTabBar';
+import { InstallBanner } from './components/InstallBanner';
 
 type View = 'site' | 'group-time';
 
@@ -199,6 +200,9 @@ export function App() {
           onSelectGroupTime={() => setView('group-time')}
         />
       )}
+
+      {/* Mobile PWA install nudge - Nov 11-14, sits above the tab bar once it appears */}
+      <InstallBanner lang={lang} isEventLive={isEventLive} />
     </div>
   );
 }

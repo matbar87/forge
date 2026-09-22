@@ -196,6 +196,13 @@ export const translations = {
         { title: 'Sesja 7', questions: [] },
       ],
     },
+    installBanner: {
+      title: 'Zainstaluj aplikację',
+      subtitle: 'Szybki dostęp do planu i czasu w grupach — nawet offline.',
+      installBtn: 'Zainstaluj',
+      iosInstructions: 'Dotknij Udostępnij, a potem „Dodaj do ekranu głównego”.',
+      dismiss: 'Zamknij',
+    },
     footer: {
       verseText: '„Żelazo ostrzy żelazo; człowieka ostrzy człowiek.”',
       verseRef: 'Przypowieści Salomona 27:17 (SNP)',
@@ -379,6 +386,13 @@ export const translations = {
         { title: 'Session 6', questions: [] },
         { title: 'Session 7', questions: [] },
       ],
+    },
+    installBanner: {
+      title: 'Install the app',
+      subtitle: 'Quick access to the schedule and group time — even offline.',
+      installBtn: 'Install',
+      iosInstructions: 'Tap Share, then "Add to Home Screen".',
+      dismiss: 'Dismiss',
     },
     footer: {
       verseText: '"As iron sharpens iron, so one person sharpens another."',
