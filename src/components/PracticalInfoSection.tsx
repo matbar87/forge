@@ -1,14 +1,18 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee } from 'lucide-react';
+import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee, MapPin, Navigation } from 'lucide-react';
 
 interface PracticalInfoSectionProps {
   lang: Language;
   // Used as a standalone full-screen view (the event tab bar's "Informacje"
   // tab) instead of embedded in the scrolling site — drops the section
-  // numbering tag and switches to a fixed-header-aware top offset.
+  // numbering tag and switches to a fixed-header-aware top offset. Also
+  // adds a Location card up top, since the full Location section (with its
+  // own maps button) isn't shown anywhere else during the live event.
   standalone?: boolean;
 }
+
+const GOOGLE_MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Ośrodek h2o, ul. Ochabska 133, 43-430 Kiczyce')}`;
 
 const groupIcons = [
   <Backpack className="w-5 h-5 text-[#E3E6DB]" key="backpack" />,
@@ -20,6 +24,7 @@ const groupIcons = [
 
 export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang, standalone }) => {
   const t = translations[lang].practicalInfo;
+  const locationT = translations[lang].location;
 
   return (
     <section
@@ -50,6 +55,32 @@ export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang
             {t.subtitle}
           </p>
         </div>
+
+        {standalone && (
+          /* Location Card - Borderless */
+          <div className="bg-[#18212C] rounded-3xl p-6 sm:p-8 shadow-2xl mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 rounded-2xl bg-[#253242] w-fit shrink-0">
+                <MapPin className="w-5 h-5 text-[#E3E6DB]" />
+              </div>
+              <div>
+                <h3 className="font-bebas text-2xl text-[#E3E6DB] tracking-wide uppercase mb-1 leading-tight">
+                  {t.locationTitle}
+                </h3>
+                <p className="text-sm text-[#E3E6DB]/70">{locationT.region}</p>
+              </div>
+            </div>
+            <a
+              href={GOOGLE_MAPS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto px-4 sm:px-6 py-3 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-base sm:text-lg tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95 shrink-0 whitespace-nowrap"
+            >
+              <Navigation className="w-4 h-4 text-[#121820]" />
+              <span>{locationT.mapsButton}</span>
+            </a>
+          </div>
+        )}
 
         {/* Info Cards Grid - Borderless */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

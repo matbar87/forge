@@ -38,16 +38,16 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
             {t.schedule}
           </span>
         </button>
+        <button onClick={onSelectInfo} className={tabClass(activeView === 'info')}>
+          <Info className="w-5 h-5" />
+          <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
+            {t.tabInfo}
+          </span>
+        </button>
         <button onClick={onSelectGroupTime} className={tabClass(activeView === 'group-time')}>
           <Users className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
             {t.groupTime}
-          </span>
-        </button>
-        <button onClick={onSelectInfo} className={tabClass(activeView === 'info')}>
-          <Info className="w-5 h-5" />
-          <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
-            {t.practicalInfo}
           </span>
         </button>
         <button onClick={onSelectTranslation} className={tabClass(activeView === 'translation')}>
