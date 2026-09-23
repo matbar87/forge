@@ -85,12 +85,20 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
               {t.schedule}
             </button>
             {!isEventLive && (
-              <button
-                onClick={() => scrollToSection('miejsce')}
-                className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
-              >
-                {t.location}
-              </button>
+              <>
+                <button
+                  onClick={() => scrollToSection('miejsce')}
+                  className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
+                >
+                  {t.location}
+                </button>
+                <button
+                  onClick={() => scrollToSection('informacje')}
+                  className="px-3.5 py-2 rounded-xl text-xs font-mono-code font-semibold tracking-wider text-[#E3E6DB]/80 hover:text-[#E3E6DB] hover:bg-[#3E4C5E]/40 transition-all uppercase"
+                >
+                  {t.practicalInfo}
+                </button>
+              </>
             )}
           </nav>
 
@@ -190,13 +198,22 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
               <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
             </button>
             {!isEventLive && (
-              <button
-                onClick={() => scrollToSection('miejsce')}
-                className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
-              >
-                <span>{t.location}</span>
-                <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
-              </button>
+              <>
+                <button
+                  onClick={() => scrollToSection('miejsce')}
+                  className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
+                >
+                  <span>{t.location}</span>
+                  <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
+                </button>
+                <button
+                  onClick={() => scrollToSection('informacje')}
+                  className="w-full text-left py-3 px-4 rounded-xl text-sm font-mono-code font-semibold tracking-wider text-[#E3E6DB] hover:bg-[#253242] flex items-center justify-between"
+                >
+                  <span>{t.practicalInfo}</span>
+                  <ChevronRight className="w-4 h-4 text-[#E3E6DB]/40" />
+                </button>
+              </>
             )}
           </div>
         </div>

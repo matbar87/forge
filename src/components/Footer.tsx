@@ -119,6 +119,16 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
                   </button>
                 </li>
               )}
+              {!isEventLive && (
+                <li>
+                  <button
+                    onClick={() => scrollToSection('informacje')}
+                    className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors uppercase"
+                  >
+                    {translations[lang].nav.practicalInfo}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
