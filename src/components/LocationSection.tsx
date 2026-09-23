@@ -65,7 +65,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
-            <CtaButton href={GOOGLE_MAPS_URL} external>
+            <CtaButton href={GOOGLE_MAPS_URL} external allowWrap>
               {t.mapsButton}
             </CtaButton>
           </div>
