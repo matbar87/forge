@@ -1,6 +1,8 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { CalendarDays, Users, Info } from 'lucide-react';
+import { CalendarDays, Users, Info, Languages } from 'lucide-react';
+
+const TRANSLATION_URL = 'https://speakmic.com/r/p1Lq589yiU7T3ByteJ9Bqg?lp=forge';
 
 interface EventTabBarProps {
   lang: Language;
@@ -48,6 +50,17 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
             {t.practicalInfo}
           </span>
         </button>
+        <a
+          href={TRANSLATION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={tabClass(false)}
+        >
+          <Languages className="w-5 h-5" />
+          <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
+            {t.translation}
+          </span>
+        </a>
       </div>
     </nav>
   );
