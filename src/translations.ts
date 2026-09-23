@@ -114,8 +114,7 @@ export const translations = {
           items: [
             { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
             { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
-            { time: '19:30 – 20:15', title: 'Rozpoczęcie / Uwielbienie', description: '4-5 piosenek', type: 'session' },
-            { time: '20:15 – 21:00', title: 'Sesja 1', type: 'session' },
+            { time: '19:30 – 21:00', title: 'Sesja 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Ogłoszenia', description: 'Podział na grupy', type: 'activity' },
             { time: '21:30 – 00:00', title: 'Gra nocna', type: 'activity' },
           ],
@@ -374,8 +373,7 @@ export const translations = {
           items: [
             { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
             { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
-            { time: '19:30 – 20:15', title: 'Welcome / Worship', description: '4-5 songs', type: 'session' },
-            { time: '20:15 – 21:00', title: 'Session 1', type: 'session' },
+            { time: '19:30 – 21:00', title: 'Session 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Announcements', description: 'Group Assignments', type: 'activity' },
             { time: '21:30 – 00:00', title: 'Night Game', type: 'activity' },
           ],
