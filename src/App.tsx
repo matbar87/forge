@@ -177,7 +177,7 @@ export function App() {
             )}
 
             {/* 5. Plan - 3-day schedule table for 12, 13 and 14 Nov */}
-            <ScheduleSection lang={lang} />
+            <ScheduleSection lang={lang} isEventLive={isEventLive} />
 
             {/* 6. Miejsce - location and venue details */}
             {!isEventLive && <LocationSection lang={lang} />}

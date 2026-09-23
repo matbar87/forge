@@ -15,6 +15,17 @@ export interface DaySchedule {
   items: ScheduleItem[];
 }
 
+export interface SimpleScheduleItem {
+  time: string;
+  title: string;
+  description?: string;
+}
+
+export interface SimpleDaySchedule {
+  date: string;
+  items: SimpleScheduleItem[];
+}
+
 export interface GroupSession {
   title: string;
   topic: string;
@@ -159,6 +170,52 @@ export const translations = {
             { time: '14:00 – 14:30', title: 'Uwielbienie', type: 'session' },
             { time: '14:30 – 15:30', title: 'Sesja 7', type: 'session' },
             { time: '15:30 – 16:00', title: 'Zakończenie', type: 'session', badge: 'WYJAZD' },
+          ],
+        },
+      ],
+    },
+    simplifiedSchedule: {
+      days: [
+        {
+          date: '12 Listopada (Czwartek)',
+          items: [
+            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach' },
+            { time: '18:00 – 19:30', title: 'Kolacja' },
+            { time: '19:30 – 21:00', title: 'Sesja 1' },
+            { time: '21:00 – 21:30', title: 'Ogłoszenia / Podział na grupy' },
+            { time: '21:30 – 00:00', title: 'Gra nocna' },
+          ],
+        },
+        {
+          date: '13 Listopada (Piątek)',
+          items: [
+            { time: '8:00 – 9:30', title: 'Śniadanie' },
+            { time: '9:30 – 10:30', title: 'Sesja 2' },
+            { time: '10:30 – 11:30', title: 'Czas w grupach' },
+            { time: '11:30 – 12:30', title: 'Sesja 3' },
+            { time: '12:30 – 13:00', title: 'Osobisty czas z Bogiem' },
+            { time: '13:00 – 14:00', title: 'Obiad' },
+            { time: '14:00 – 17:00', title: 'Czas wolny' },
+            { time: '15:00 – 16:00', title: 'Warsztaty (dla chętnych)' },
+            { time: '17:00 – 18:30', title: 'Kolacja' },
+            { time: '18:30 – 20:00', title: 'Sesja 4' },
+            { time: '20:00 – 20:30', title: 'Czas modlitwy i usługiwania' },
+            { time: '20:30 – 21:30', title: 'Czas w grupach' },
+            { time: '21:30 – 00:00', title: 'Ognisko', description: 'Kiełbaski oraz grill' },
+          ],
+        },
+        {
+          date: '14 Listopada (Sobota)',
+          items: [
+            { time: '8:00 – 9:30', title: 'Śniadanie' },
+            { time: '9:30 – 10:30', title: 'Sesja 5' },
+            { time: '10:30 – 11:30', title: 'Czas w grupach' },
+            { time: '11:30 – 12:30', title: 'Sesja 6' },
+            { time: '12:30 – 13:00', title: 'Czas modlitwy i usługiwania' },
+            { time: '12:30 – 13:30', title: 'Czas w grupach' },
+            { time: '13:30 – 14:30', title: 'Obiad' },
+            { time: '14:30 – 16:00', title: 'Sesja 7' },
+            { time: '16:00', title: 'Zakończenie' },
           ],
         },
       ],
@@ -349,6 +406,52 @@ export const translations = {
             { time: '14:00 – 14:30', title: 'Worship', type: 'session' },
             { time: '14:30 – 15:30', title: 'Session 7', type: 'session' },
             { time: '15:30 – 16:00', title: 'Ending', type: 'session', badge: 'DEPARTURE' },
+          ],
+        },
+      ],
+    },
+    simplifiedSchedule: {
+      days: [
+        {
+          date: 'November 12 (Thursday)',
+          items: [
+            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in' },
+            { time: '18:00 – 19:30', title: 'Dinner' },
+            { time: '19:30 – 21:00', title: 'Session 1' },
+            { time: '21:00 – 21:30', title: 'Announcements / Group Assignments' },
+            { time: '21:30 – 00:00', title: 'Night Game' },
+          ],
+        },
+        {
+          date: 'November 13 (Friday)',
+          items: [
+            { time: '8:00 – 9:30', title: 'Breakfast' },
+            { time: '9:30 – 10:30', title: 'Session 2' },
+            { time: '10:30 – 11:30', title: 'Small Group Time' },
+            { time: '11:30 – 12:30', title: 'Session 3' },
+            { time: '12:30 – 13:00', title: 'Alone Time with God' },
+            { time: '13:00 – 14:00', title: 'Lunch' },
+            { time: '14:00 – 17:00', title: 'Free Time' },
+            { time: '15:00 – 16:00', title: 'Workshops (optional)' },
+            { time: '17:00 – 18:30', title: 'Dinner' },
+            { time: '18:30 – 20:00', title: 'Session 4' },
+            { time: '20:00 – 20:30', title: 'Prayer & Ministry Time' },
+            { time: '20:30 – 21:30', title: 'Small Group Time' },
+            { time: '21:30 – 00:00', title: 'Fire Pit', description: 'Sausages & grill' },
+          ],
+        },
+        {
+          date: 'November 14 (Saturday)',
+          items: [
+            { time: '8:00 – 9:30', title: 'Breakfast' },
+            { time: '9:30 – 10:30', title: 'Session 5' },
+            { time: '10:30 – 11:30', title: 'Small Group Time' },
+            { time: '11:30 – 12:30', title: 'Session 6' },
+            { time: '12:30 – 13:00', title: 'Prayer & Ministry Time' },
+            { time: '12:30 – 13:30', title: 'Small Group Time' },
+            { time: '13:30 – 14:30', title: 'Lunch' },
+            { time: '14:30 – 16:00', title: 'Session 7' },
+            { time: '16:00', title: 'Ending' },
           ],
         },
       ],

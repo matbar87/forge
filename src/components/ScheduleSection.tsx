@@ -5,6 +5,7 @@ import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
 
 interface ScheduleSectionProps {
   lang: Language;
+  isEventLive: boolean;
 }
 
 // Fixed calendar dates behind t.days[0..2], used to default to "today's" tab
@@ -39,8 +40,14 @@ const parseItemRange = (dayIndex: number, time: string): { start: Date; end: Dat
   };
 };
 
-export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
+export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventLive }) => {
   const t = translations[lang].schedule;
+  // Before and after the camp, show a plain time/title list instead of the
+  // full badge-and-highlight timeline — that detailed view only makes sense
+  // while the event itself is running (it'll also be swapped for a
+  // different in-event schedule later).
+  const detailedDays = t.days;
+  const simpleDays = translations[lang].simplifiedSchedule.days;
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(() => {
     const todayIdx = getTodayEventDayIndex();
     return todayIdx >= 0 ? todayIdx : 0;
@@ -132,8 +139,6 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
     }
   };
 
-  const currentDay = t.days[selectedDayIndex];
-
   return (
     // overflow-anchor:none disables CSS scroll anchoring for this whole
     // section: switching days swaps in a completely different item
@@ -181,16 +186,15 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
           }`}
         >
         <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-5xl mx-auto">
-          {t.days.map((day, idx) => {
+          {(isEventLive ? detailedDays : simpleDays).map((day, idx) => {
             const isSelected = selectedDayIndex === idx;
-            const weekdayLabel = day.date.includes('(')
-              ? day.date.split('(')[1].replace(')', '')
-              : day.dayName;
+            const weekdayLabel = day.date.includes('(') ? day.date.split('(')[1].replace(')', '') : '';
             const dayLabel = lang === 'pl' ? `Dzień ${idx + 1}` : `Day ${idx + 1}`;
             const dateWithoutWeekday = day.date.includes('(') ? day.date.split('(')[0].trim() : day.date;
             const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
             const monthWord = dateWithoutWeekday.split(' ').find((w) => !/\d/.test(w)) ?? '';
             const shortDate = `${dayNumber} ${monthWord.slice(0, 3)}`;
+            const theme = isEventLive ? detailedDays[idx].theme : undefined;
             return (
               <button
                 key={idx}
@@ -231,9 +235,11 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
                 >
                   {shortDate}
                 </span>
-                <p className="hidden sm:block text-xs font-mono-code text-[#E3E6DB]/60 truncate mt-1">
-                  {day.theme}
-                </p>
+                {theme && (
+                  <p className="hidden sm:block text-xs font-mono-code text-[#E3E6DB]/60 truncate mt-1">
+                    {theme}
+                  </p>
+                )}
               </button>
             );
           })}
@@ -242,83 +248,123 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang }) => {
 
         {/* Active Day Timeline Container - Borderless */}
         <div ref={timelineRef} className="max-w-5xl mx-auto bg-[#18212C] rounded-3xl p-6 sm:p-10 shadow-2xl">
-          {/* Day Theme Banner */}
-          <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E3E6DB]" />
-              <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                {currentDay.dayName} // {currentDay.date}
-              </span>
-            </div>
-            <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
-              {currentDay.theme}
-            </h3>
-          </div>
+          {isEventLive ? (
+            <>
+              {/* Day Theme Banner */}
+              <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E3E6DB]" />
+                  <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
+                    {detailedDays[selectedDayIndex].dayName} // {detailedDays[selectedDayIndex].date}
+                  </span>
+                </div>
+                <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
+                  {detailedDays[selectedDayIndex].theme}
+                </h3>
+              </div>
 
-          {/* Timeline Items - Borderless */}
-          <div className="space-y-4">
-            {currentDay.items.map((item, itemIdx) => {
-              const typeBadge = getBadgeForType(item.type);
-              const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
+              {/* Timeline Items - Borderless */}
+              <div className="space-y-4">
+                {detailedDays[selectedDayIndex].items.map((item, itemIdx) => {
+                  const typeBadge = getBadgeForType(item.type);
+                  const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
 
-              // Plain "session" items (no title-specific override) are the core
-              // teaching blocks, so they get the strongest card background.
-              // Groups and Prayer share the same middle-ground background;
-              // everything else keeps the plain background. Titles stay at
-              // full brightness everywhere.
-              const isMainSession = item.type === 'session' && !item.badge;
-              const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
-              const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
-              const isGroups = badgeLabel.toUpperCase() === groupsLabel;
-              const isPrayer = badgeLabel.toUpperCase() === prayerLabel;
+                  // Plain "session" items (no title-specific override) are the core
+                  // teaching blocks, so they get the strongest card background.
+                  // Groups and Prayer share the same middle-ground background;
+                  // everything else keeps the plain background. Titles stay at
+                  // full brightness everywhere.
+                  const isMainSession = item.type === 'session' && !item.badge;
+                  const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
+                  const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
+                  const isGroups = badgeLabel.toUpperCase() === groupsLabel;
+                  const isPrayer = badgeLabel.toUpperCase() === prayerLabel;
 
-              const cardBg = isMainSession
-                ? 'bg-[#2C3B4E] hover:bg-[#324259]'
-                : isGroups || isPrayer
-                ? 'bg-[#253243] hover:bg-[#2B394C]'
-                : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
+                  const cardBg = isMainSession
+                    ? 'bg-[#2C3B4E] hover:bg-[#324259]'
+                    : isGroups || isPrayer
+                    ? 'bg-[#253243] hover:bg-[#2B394C]'
+                    : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
 
-              const itemRange = parseItemRange(selectedDayIndex, item.time);
-              const isLiveNow = !!itemRange && now >= itemRange.start && now < itemRange.end;
+                  const itemRange = parseItemRange(selectedDayIndex, item.time);
+                  const isLiveNow = !!itemRange && now >= itemRange.start && now < itemRange.end;
 
-              return (
-                <div
-                  key={itemIdx}
-                  className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md border-2 ${cardBg} ${
-                    isLiveNow
-                      ? 'border-[#E3E6DB] shadow-[0_0_25px_-6px_rgba(227,230,219,0.55)]'
-                      : 'border-transparent'
-                  }`}
-                >
-                  {/* Time & Badge */}
-                  <div className="flex items-center gap-3 flex-wrap md:flex-nowrap md:w-72 shrink-0">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap">
+                  return (
+                    <div
+                      key={itemIdx}
+                      className={`group relative flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md border-2 ${cardBg} ${
+                        isLiveNow
+                          ? 'border-[#E3E6DB] shadow-[0_0_25px_-6px_rgba(227,230,219,0.55)]'
+                          : 'border-transparent'
+                      }`}
+                    >
+                      {/* Time & Badge */}
+                      <div className="flex items-center gap-3 flex-wrap md:flex-nowrap md:w-72 shrink-0">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap">
+                          <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
+                          <span>{item.time}</span>
+                        </div>
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${typeBadge.bg}`}
+                        >
+                          {typeBadge.icon}
+                          <span>{badgeLabel}</span>
+                        </span>
+                      </div>
+
+                      {/* Title & Description */}
+                      <div className="flex-1">
+                        <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
+                          {item.title}
+                        </h4>
+                        {item.description && (
+                          <p className="text-sm text-[#E3E6DB]/70 mt-1 leading-relaxed">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Simplified schedule (before/after the event): plain date
+                  heading, no type badges or live-item highlighting — those
+                  only mean anything while the camp is actually running. */}
+              <div className="pb-6 mb-6 border-b border-[#3E4C5E]/30">
+                <span className="font-mono-code text-xs text-[#E3E6DB]/60 uppercase font-bold tracking-widest">
+                  {simpleDays[selectedDayIndex].date}
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {simpleDays[selectedDayIndex].items.map((item, itemIdx) => (
+                  <div
+                    key={itemIdx}
+                    className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md bg-[#1E2937]/70 hover:bg-[#232F3F]"
+                  >
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap md:w-56 shrink-0">
                       <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
                       <span>{item.time}</span>
                     </div>
-                    <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${typeBadge.bg}`}
-                    >
-                      {typeBadge.icon}
-                      <span>{badgeLabel}</span>
-                    </span>
-                  </div>
 
-                  {/* Title & Description */}
-                  <div className="flex-1">
-                    <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
-                      {item.title}
-                    </h4>
-                    {item.description && (
-                      <p className="text-sm text-[#E3E6DB]/70 mt-1 leading-relaxed">
-                        {item.description}
-                      </p>
-                    )}
+                    <div className="flex-1">
+                      <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
+                        {item.title}
+                      </h4>
+                      {item.description && (
+                        <p className="text-sm text-[#E3E6DB]/70 mt-1 leading-relaxed">
+                          {item.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>
