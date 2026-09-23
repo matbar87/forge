@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { Languages, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { usePinGate } from '../hooks/usePinGate';
 import { PinEntryCard } from './PinEntryCard';
 
@@ -37,7 +37,6 @@ export const TranslationView: React.FC<TranslationViewProps> = ({ lang }) => {
               rel="noopener noreferrer"
               className="group/btn w-full inline-flex items-center justify-center gap-2 sm:gap-3 py-4 px-5 sm:px-6 rounded-2xl font-bebas text-lg sm:text-2xl tracking-wider uppercase shadow-xl transition-all bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95"
             >
-              <Languages className="w-5 h-5 text-[#121820] shrink-0" />
               <span className="whitespace-nowrap">{t.button}</span>
               <ArrowUpRight className="w-5 h-5 text-[#121820] shrink-0 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
             </a>

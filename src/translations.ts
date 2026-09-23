@@ -277,7 +277,7 @@ export const translations = {
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
-      button: 'Tłumaczenie PL → EN',
+      button: 'Uruchom',
     },
     installBanner: {
       title: 'Zainstaluj aplikację',
@@ -545,7 +545,7 @@ export const translations = {
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',
-      button: 'Translation PL → EN',
+      button: 'Start',
     },
     installBanner: {
       title: 'Install the app',
