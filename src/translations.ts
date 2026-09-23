@@ -37,7 +37,7 @@ export const translations = {
       practicalInfo: 'Informacje',
       translation: 'Tłumaczenie',
       registerBtn: 'Zarejestruj się',
-      groupTime: 'Czas w grupach',
+      groupTime: 'Grupy',
     },
     hero: {
       date: '12 – 14 LISTOPADA 2026',
