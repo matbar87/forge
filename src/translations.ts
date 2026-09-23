@@ -30,7 +30,7 @@ export const translations = {
   pl: {
     nav: {
       start: 'Start',
-      about: 'Męski Wyjazd',
+      about: 'O wydarzeniu',
       registration: 'Rejestracja',
       schedule: 'Plan',
       location: 'Miejsce',
@@ -289,7 +289,7 @@ export const translations = {
   en: {
     nav: {
       start: 'Home',
-      about: "Men's Camp",
+      about: 'About the Event',
       registration: 'Registration',
       schedule: 'Schedule',
       location: 'Location',
