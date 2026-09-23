@@ -231,6 +231,7 @@ export const translations = {
       badge: 'WARTO WIEDZIEĆ',
       title: 'Zanim wyruszysz',
       subtitle: 'Kilka krótkich informacji przed wyjazdem.',
+      locationTitle: 'Lokalizacja',
       groups: [
         {
           heading: 'Co musisz ze sobą zabrać',
@@ -500,6 +501,7 @@ export const translations = {
       badge: 'GOOD TO KNOW',
       title: 'Before You Go',
       subtitle: 'A few quick things to know before the trip.',
+      locationTitle: 'Location',
       groups: [
         {
           heading: 'What to bring',
