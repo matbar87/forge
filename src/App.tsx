@@ -9,10 +9,11 @@ import { LocationSection } from './components/LocationSection';
 import { PracticalInfoSection } from './components/PracticalInfoSection';
 import { Footer } from './components/Footer';
 import { GroupTimeView } from './components/GroupTimeView';
+import { TranslationView } from './components/TranslationView';
 import { EventTabBar } from './components/EventTabBar';
 import { InstallBanner } from './components/InstallBanner';
 
-type View = 'site' | 'group-time' | 'info';
+type View = 'site' | 'group-time' | 'info' | 'translation';
 
 // While the camp itself is running, the marketing/registration content stops
 // being relevant — only Hero and the live Schedule stay up. Once it's over,
@@ -89,15 +90,15 @@ export function App() {
       pendingScrollRef.current = null;
       requestAnimationFrame(() => requestAnimationFrame(() => scrollToId(id)));
     }
-    if (view === 'group-time' || view === 'info') {
+    if (view !== 'site') {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
   }, [view]);
 
   // The tab bar only exists during the event; if the event window ends
-  // while someone is sitting on the Group Time or Info view, bring them back.
+  // while someone is sitting on a tab-bar-only view, bring them back.
   useEffect(() => {
-    if (!isEventLive && (view === 'group-time' || view === 'info')) {
+    if (!isEventLive && view !== 'site') {
       setView('site');
     }
   }, [isEventLive, view]);
@@ -189,9 +190,12 @@ export function App() {
         ) : view === 'group-time' ? (
           /* Czas w grupach - PIN-gated discussion questions, one per session */
           <GroupTimeView lang={lang} />
-        ) : (
+        ) : view === 'info' ? (
           /* Informacje - what to bring, what's provided, as its own tab during the event */
           <PracticalInfoSection lang={lang} standalone />
+        ) : (
+          /* Tłumaczenie - PIN-gated link to the live PL->EN translation stream */
+          <TranslationView lang={lang} />
         )}
       </main>
 
@@ -206,6 +210,7 @@ export function App() {
           onSelectPlan={() => navigateToSection('plan')}
           onSelectGroupTime={() => setView('group-time')}
           onSelectInfo={() => setView('info')}
+          onSelectTranslation={() => setView('translation')}
         />
       )}
 

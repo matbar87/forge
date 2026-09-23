@@ -2,14 +2,13 @@ import React from 'react';
 import { Language, translations } from '../translations';
 import { CalendarDays, Users, Info, Languages } from 'lucide-react';
 
-const TRANSLATION_URL = 'https://speakmic.com/r/p1Lq589yiU7T3ByteJ9Bqg?lp=forge';
-
 interface EventTabBarProps {
   lang: Language;
-  activeView: 'site' | 'group-time' | 'info';
+  activeView: 'site' | 'group-time' | 'info' | 'translation';
   onSelectPlan: () => void;
   onSelectGroupTime: () => void;
   onSelectInfo: () => void;
+  onSelectTranslation: () => void;
 }
 
 export const EventTabBar: React.FC<EventTabBarProps> = ({
@@ -18,6 +17,7 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
   onSelectPlan,
   onSelectGroupTime,
   onSelectInfo,
+  onSelectTranslation,
 }) => {
   const t = translations[lang].nav;
 
@@ -50,17 +50,12 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
             {t.practicalInfo}
           </span>
         </button>
-        <a
-          href={TRANSLATION_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={tabClass(false)}
-        >
+        <button onClick={onSelectTranslation} className={tabClass(activeView === 'translation')}>
           <Languages className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
             {t.translation}
           </span>
-        </a>
+        </button>
       </div>
     </nav>
   );

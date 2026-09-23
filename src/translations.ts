@@ -259,6 +259,7 @@ export const translations = {
       subtitle: 'Pytania do rozmowy w grupie, dopasowane do każdej sesji.',
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
       sessions: [
         { title: 'Sesja 1', topic: 'Brak tematu', questions: [] },
@@ -269,6 +270,14 @@ export const translations = {
         { title: 'Sesja 6', topic: 'Brak tematu', questions: [] },
         { title: 'Sesja 7', topic: 'Brak tematu', questions: [] },
       ],
+    },
+    translationView: {
+      title: 'Tłumaczenie',
+      subtitle: 'Tłumaczenie na żywo z polskiego na angielski.',
+      pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
+      pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
+      button: 'Tłumaczenie PL → EN',
     },
     installBanner: {
       title: 'Zainstaluj aplikację',
@@ -518,6 +527,7 @@ export const translations = {
       subtitle: 'Discussion questions for each session, ready to go.',
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
+      pinLocked: 'Too many attempts. Try again in {time}.',
       questionsComingSoon: 'Questions for this session are coming soon.',
       sessions: [
         { title: 'Session 1', topic: 'No topic', questions: [] },
@@ -528,6 +538,14 @@ export const translations = {
         { title: 'Session 6', topic: 'No topic', questions: [] },
         { title: 'Session 7', topic: 'No topic', questions: [] },
       ],
+    },
+    translationView: {
+      title: 'Translation',
+      subtitle: 'Live translation from Polish to English.',
+      pinPrompt: 'Enter the 4-digit access code',
+      pinError: 'Wrong code, try again.',
+      pinLocked: 'Too many attempts. Try again in {time}.',
+      button: 'Translation PL → EN',
     },
     installBanner: {
       title: 'Install the app',
