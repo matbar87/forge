@@ -111,7 +111,7 @@ export const translations = {
           dayName: 'DZIEŃ 1 — ROZGRZEWANIE',
           theme: 'Zatrzymaj się. Wejdź w ogień.',
           items: [
-            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break' },
+            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
             { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
             { time: '19:30 – 20:15', title: 'Rozpoczęcie / Uwielbienie', description: '4-5 piosenek', type: 'session' },
             { time: '20:15 – 21:00', title: 'Sesja 1', type: 'session' },
@@ -169,7 +169,7 @@ export const translations = {
         {
           date: '12 Listopada (Czwartek)',
           items: [
-            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break' },
+            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
             { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
             { time: '19:30 – 21:00', title: 'Sesja 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Ogłoszenia', description: 'Podział na grupy', type: 'activity' },
@@ -370,7 +370,7 @@ export const translations = {
           dayName: 'DAY 1 — WARMING UP',
           theme: 'Stop. Step into the fire.',
           items: [
-            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break' },
+            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
             { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
             { time: '19:30 – 20:15', title: 'Welcome / Worship', description: '4-5 songs', type: 'session' },
             { time: '20:15 – 21:00', title: 'Session 1', type: 'session' },
@@ -428,7 +428,7 @@ export const translations = {
         {
           date: 'November 12 (Thursday)',
           items: [
-            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break' },
+            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
             { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
             { time: '19:30 – 21:00', title: 'Session 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Announcements', description: 'Group Assignments', type: 'activity' },
