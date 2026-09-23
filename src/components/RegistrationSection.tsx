@@ -11,7 +11,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
   const t = translations[lang].registration;
 
   const individualRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
-  const groupRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
+  const groupMailtoUrl = `mailto:info@koscioldlamiasta.pl?subject=${encodeURIComponent('Kuźnia - Rejestracja Grupowa')}`;
 
   return (
     <section id="rejestracja" className="py-28 bg-transparent relative overflow-hidden">
@@ -46,23 +46,12 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
           >
             <div>
               {/* Header Meta */}
-              <div className="flex items-center justify-between gap-4 pb-6 mb-6 border-b border-[#3E4C5E]/30">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-[#253242] text-[#E3E6DB]">
-                    <User className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-mono-code text-[11px] uppercase tracking-widest text-[#E3E6DB]/50 block font-bold">
-                      // PASS #001
-                    </span>
-                    <span className="text-xs font-mono-code text-[#E3E6DB] font-semibold">
-                      {t.individual.badge}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-3 pb-6 mb-6 border-b border-[#3E4C5E]/30">
+                <div className="p-2.5 rounded-2xl bg-[#253242] text-[#E3E6DB]">
+                  <User className="w-5 h-5" />
                 </div>
-
-                <span className="text-[10px] font-mono-code uppercase tracking-wider px-3 py-1 rounded-full bg-[#253242] text-[#E3E6DB]/70">
-                  STANDARD
+                <span className="text-xs font-mono-code text-[#E3E6DB] font-semibold">
+                  {t.individual.badge}
                 </span>
               </div>
 
@@ -132,23 +121,12 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
           >
             <div>
               {/* Header Meta */}
-              <div className="flex items-center justify-between gap-4 pb-6 mb-6 border-b border-[#3E4C5E]/40">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-[#3E4C5E]/60 text-[#E3E6DB]">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="font-mono-code text-[11px] uppercase tracking-widest text-[#E3E6DB]/60 block font-bold">
-                      // PASS #002 - GROUP
-                    </span>
-                    <span className="text-xs font-mono-code text-[#E3E6DB] font-semibold">
-                      {t.group.badge}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-3 pb-6 mb-6 border-b border-[#3E4C5E]/40">
+                <div className="p-2.5 rounded-2xl bg-[#3E4C5E]/60 text-[#E3E6DB]">
+                  <Users className="w-5 h-5" />
                 </div>
-
-                <span className="text-[10px] font-mono-code uppercase tracking-wider px-3 py-1 rounded-full bg-[#3E4C5E]/60 text-[#E3E6DB] font-bold">
-                  BEST VALUE
+                <span className="text-xs font-mono-code text-[#E3E6DB] font-semibold">
+                  {t.group.badge}
                 </span>
               </div>
 
@@ -161,13 +139,10 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
               </p>
 
               {/* Price Callout */}
-              <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 pb-8 mb-8 border-b border-[#3E4C5E]/40">
-                <span className="font-bebas text-5xl sm:text-6xl text-[#E3E6DB] tracking-tight whitespace-nowrap">
-                  {t.group.price}
-                </span>
-                <span className="text-xs font-mono-code text-[#E3E6DB]/60 uppercase">
-                  {t.group.priceSub}
-                </span>
+              <div className="pb-8 mb-8 border-b border-[#3E4C5E]/40">
+                <p className="font-bebas text-2xl sm:text-3xl text-[#E3E6DB] tracking-wide uppercase">
+                  {t.group.priceNote}
+                </p>
               </div>
 
               {/* Inclusions Checklist */}
@@ -188,9 +163,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/40">
               <a
-                href={isRegistrationClosed ? undefined : groupRegistrationUrl}
-                target={isRegistrationClosed ? undefined : '_blank'}
-                rel={isRegistrationClosed ? undefined : 'noopener noreferrer'}
+                href={isRegistrationClosed ? undefined : groupMailtoUrl}
                 aria-disabled={isRegistrationClosed}
                 tabIndex={isRegistrationClosed ? -1 : undefined}
                 onClick={(e) => isRegistrationClosed && e.preventDefault()}

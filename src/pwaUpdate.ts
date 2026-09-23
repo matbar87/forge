@@ -8,9 +8,15 @@
 export function setupPwaAutoReload() {
   if (!('serviceWorker' in navigator)) return;
 
+  // clientsClaim() makes the very first service worker install also fire
+  // 'controllerchange' — not just later updates — so reloading unconditionally
+  // on that event caused an unwanted reload on every first-ever visit. Only
+  // reload when an older controller is being replaced by a newer one (a
+  // real update); never on the initial hand-off from no controller at all.
+  const hadControllerAtLoad = !!navigator.serviceWorker.controller;
   let reloaded = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloaded) return;
+    if (reloaded || !hadControllerAtLoad) return;
     reloaded = true;
     window.location.reload();
   });
