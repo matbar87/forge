@@ -47,7 +47,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
         {/* Location Bento Grid - Borderless */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Main Info Card - Borderless */}
-          <div className="lg:col-span-7 bg-[#18212C] rounded-3xl p-8 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-7 bg-[#18212C] rounded-3xl p-6 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden">
             <div>
               {/* Region Pill */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#253242] text-[#E3E6DB] text-xs font-mono-code font-bold uppercase mb-6">
@@ -68,7 +68,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             <CtaButton
               href={GOOGLE_MAPS_URL}
               external
-              icon={<Navigation className="w-5 h-5 text-[#121820] shrink-0" />}
+              icon={<Navigation className="w-4 h-4 text-[#121820] shrink-0" />}
               iconPosition="leading"
               size="compact"
             >

@@ -99,12 +99,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
           )}
 
           {/* Secondary Plan Button */}
-          <button
-            onClick={() => onNavigate('plan')}
-            className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#1E2937]/90 hover:bg-[#28374A] text-[#E3E6DB] font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all active:scale-95"
-          >
+          <CtaButton onClick={() => onNavigate('plan')} variant="dark" hideIcon>
             {t.explorePlan}
-          </button>
+          </CtaButton>
         </div>
       </div>
     </section>
