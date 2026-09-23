@@ -78,7 +78,7 @@ export const translations = {
         title: 'Indywidualna',
         badge: 'POJEDYNCZY UCZESTNIK',
         description: 'Dla każdego mężczyzny, który przyjeżdża sam lub ze znajomym',
-        price: '350 zł',
+        price: '450 zł',
         priceSub: '/ osoba',
         features: [
           'Pełne wyżywienie przez cały czas trwania wyjazdu (3 posiłki dziennie)',
@@ -92,14 +92,12 @@ export const translations = {
         title: 'Grupowa',
         badge: 'DLA GRUP OD 6 OSÓB',
         description: 'Dla zorganizowanej grupy z jednej wspólnoty',
-        price: '300 zł',
-        priceSub: '/ osoba w grupie (min. 6 os.)',
+        priceNote: 'Kwota do ustalenia po kontakcie mailowym',
         features: [
           'Wszystkie świadczenia z pakietu indywidualnego',
-          'Zniżka grupowa — w grupie 50 zł taniej na osobie (od 6 osób)',
         ],
-        cta: 'Zgłoś grupę',
-        note: 'Przekierowanie do zewnętrznego formularza dla liderów grup',
+        cta: 'Napisz do nas',
+        note: 'Otworzy Twój program pocztowy',
       },
     },
     schedule: {
@@ -311,7 +309,7 @@ export const translations = {
         title: 'Individual',
         badge: 'SOLO ATTENDEE',
         description: 'For every man arriving solo or with a friend',
-        price: '350 PLN',
+        price: '450 PLN',
         priceSub: '/ person',
         features: [
           'Full board throughout the camp (3 meals daily)',
@@ -325,14 +323,12 @@ export const translations = {
         title: 'Group',
         badge: 'FOR GROUPS OF 6+ MEN',
         description: 'For an organized group from one fellowship / community',
-        price: '300 PLN',
-        priceSub: '/ person in group (min. 6)',
+        priceNote: 'Price to be arranged by email',
         features: [
           'All benefits included in the individual package',
-          'Group discount — 50 PLN cheaper per person in a group (from 6 people)',
         ],
-        cta: 'Register Group',
-        note: 'Redirects to secure external leader registration form',
+        cta: 'Contact Us',
+        note: 'Opens your email app',
       },
     },
     schedule: {

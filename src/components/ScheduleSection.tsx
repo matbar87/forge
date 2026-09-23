@@ -181,7 +181,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             it doesn't leave a gap behind. */}
         <div
           ref={switcherRef}
-          className={`sticky z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 mb-8 sm:mb-12 bg-[#121820]/95 backdrop-blur-xl shadow-xl transition-[top] duration-300 ${
+          className={`sticky z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 sm:py-4 mb-8 sm:mb-12 bg-[#121820]/95 backdrop-blur-xl transition-[top] duration-300 ${
             headerHidden ? 'top-0' : 'top-[72px] sm:top-[80px]'
           }`}
         >
