@@ -47,7 +47,7 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
         <button onClick={onSelectInfo} className={tabClass(activeView === 'info')}>
           <Info className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
-            {t.practicalInfo}
+            {t.tabInfo}
           </span>
         </button>
         <button onClick={onSelectTranslation} className={tabClass(activeView === 'translation')}>
