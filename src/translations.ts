@@ -225,6 +225,33 @@ export const translations = {
       ],
       mapsButton: 'Otwórz wskazówki dojazdu',
     },
+    practicalInfo: {
+      badge: 'WARTO WIEDZIEĆ',
+      title: 'Zanim wyruszysz',
+      subtitle: 'Kilka krótkich informacji przed wyjazdem.',
+      groups: [
+        {
+          heading: 'Co musisz ze sobą zabrać',
+          items: ['Ręcznik do kąpieli', 'Bidon na wodę', 'Ciepłe ubrania'],
+        },
+        {
+          heading: 'Potrzebujesz tłumaczenia z polskiego na angielski?',
+          items: ['Zabierz ze sobą telefon i własne słuchawki'],
+        },
+        {
+          heading: 'Zapewniamy',
+          items: ['3 posiłki dziennie', 'Kiełbaski na ognisko', 'Wodę', 'Przekąski'],
+        },
+        {
+          heading: 'Możesz zabrać ze sobą',
+          items: ['Ulubione napoje', 'Ulubione przekąski', 'Gry planszowe', 'Sprzęt do aktywności w czasie wolnym, np. piłkę do koszykówki'],
+        },
+        {
+          heading: 'Do kupienia na miejscu',
+          items: ['Kawa', 'Herbata', 'Ciasto'],
+        },
+      ],
+    },
     groupTime: {
       badge: 'CZAS W GRUPACH',
       title: 'Czas w grupach',
@@ -455,6 +482,33 @@ export const translations = {
         { label: 'Free Parking', desc: 'Ample on-site parking for all cars' },
       ],
       mapsButton: 'Open Driving Directions',
+    },
+    practicalInfo: {
+      badge: 'GOOD TO KNOW',
+      title: 'Before You Go',
+      subtitle: 'A few quick things to know before the trip.',
+      groups: [
+        {
+          heading: 'What to bring',
+          items: ['A bath towel', 'A water bottle', 'Warm clothes'],
+        },
+        {
+          heading: 'Need translation from Polish to English?',
+          items: ['Bring your phone and your own headphones'],
+        },
+        {
+          heading: "We'll provide",
+          items: ['3 meals a day', 'Sausages for the fire pit', 'Water', 'Snacks'],
+        },
+        {
+          heading: 'Feel free to bring',
+          items: ['Your favorite drinks', 'Your favorite snacks', 'Board games', 'Gear for free-time activities, e.g. a basketball'],
+        },
+        {
+          heading: 'Available to buy on site',
+          items: ['Coffee', 'Tea', 'Cake'],
+        },
+      ],
     },
     groupTime: {
       badge: 'GROUP TIME',
