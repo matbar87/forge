@@ -35,6 +35,7 @@ export const translations = {
       schedule: 'Plan',
       location: 'Miejsce',
       practicalInfo: 'Informacje',
+      translation: 'Tłumaczenie',
       registerBtn: 'Zarejestruj się',
       groupTime: 'Czas w grupach',
     },
@@ -113,8 +114,7 @@ export const translations = {
           items: [
             { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
             { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
-            { time: '19:30 – 20:15', title: 'Rozpoczęcie / Uwielbienie', description: '4-5 piosenek', type: 'session' },
-            { time: '20:15 – 21:00', title: 'Sesja 1', type: 'session' },
+            { time: '19:30 – 21:00', title: 'Sesja 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Ogłoszenia', description: 'Podział na grupy', type: 'activity' },
             { time: '21:30 – 00:00', title: 'Gra nocna', type: 'activity' },
           ],
@@ -259,6 +259,7 @@ export const translations = {
       subtitle: 'Pytania do rozmowy w grupie, dopasowane do każdej sesji.',
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
       sessions: [
         { title: 'Sesja 1', topic: 'Brak tematu', questions: [] },
@@ -269,6 +270,14 @@ export const translations = {
         { title: 'Sesja 6', topic: 'Brak tematu', questions: [] },
         { title: 'Sesja 7', topic: 'Brak tematu', questions: [] },
       ],
+    },
+    translationView: {
+      title: 'Tłumaczenie',
+      subtitle: 'Tłumaczenie na żywo z polskiego na angielski.',
+      pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
+      pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
+      button: 'Uruchom',
     },
     installBanner: {
       title: 'Zainstaluj aplikację',
@@ -294,6 +303,7 @@ export const translations = {
       schedule: 'Schedule',
       location: 'Location',
       practicalInfo: 'Good to Know',
+      translation: 'Translation',
       registerBtn: 'Register Now',
       groupTime: 'Group Time',
     },
@@ -372,8 +382,7 @@ export const translations = {
           items: [
             { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
             { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
-            { time: '19:30 – 20:15', title: 'Welcome / Worship', description: '4-5 songs', type: 'session' },
-            { time: '20:15 – 21:00', title: 'Session 1', type: 'session' },
+            { time: '19:30 – 21:00', title: 'Session 1', type: 'session' },
             { time: '21:00 – 21:30', title: 'Announcements', description: 'Group Assignments', type: 'activity' },
             { time: '21:30 – 00:00', title: 'Night Game', type: 'activity' },
           ],
@@ -518,6 +527,7 @@ export const translations = {
       subtitle: 'Discussion questions for each session, ready to go.',
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
+      pinLocked: 'Too many attempts. Try again in {time}.',
       questionsComingSoon: 'Questions for this session are coming soon.',
       sessions: [
         { title: 'Session 1', topic: 'No topic', questions: [] },
@@ -528,6 +538,14 @@ export const translations = {
         { title: 'Session 6', topic: 'No topic', questions: [] },
         { title: 'Session 7', topic: 'No topic', questions: [] },
       ],
+    },
+    translationView: {
+      title: 'Translation',
+      subtitle: 'Live translation from Polish to English.',
+      pinPrompt: 'Enter the 4-digit access code',
+      pinError: 'Wrong code, try again.',
+      pinLocked: 'Too many attempts. Try again in {time}.',
+      button: 'Start',
     },
     installBanner: {
       title: 'Install the app',

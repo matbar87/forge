@@ -4,6 +4,10 @@ import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee } from 'lucid
 
 interface PracticalInfoSectionProps {
   lang: Language;
+  // Used as a standalone full-screen view (the event tab bar's "Informacje"
+  // tab) instead of embedded in the scrolling site — drops the section
+  // numbering tag and switches to a fixed-header-aware top offset.
+  standalone?: boolean;
 }
 
 const groupIcons = [
@@ -14,24 +18,31 @@ const groupIcons = [
   <Coffee className="w-5 h-5 text-[#E3E6DB]" key="coffee" />,
 ];
 
-export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang }) => {
+export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang, standalone }) => {
   const t = translations[lang].practicalInfo;
 
   return (
-    <section id="informacje" className="py-28 bg-transparent relative overflow-hidden">
+    <section
+      id={standalone ? undefined : 'informacje'}
+      className={`bg-transparent relative overflow-hidden ${
+        standalone ? 'min-h-screen w-full pt-[104px] sm:pt-[128px] pb-16' : 'py-28'
+      }`}
+    >
       <div className="absolute top-1/3 -left-40 w-[500px] h-[500px] bg-[#1E2938]/40 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Tag - No borders */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-[#E3E6DB] font-mono-code text-xs font-bold tracking-widest uppercase bg-[#3E4C5E]/50 px-3 py-1 rounded-full">
-            [ 05 // {t.badge} ]
-          </span>
-          <div className="h-0.5 bg-[#3E4C5E]/30 flex-1 rounded-full" />
-        </div>
+        {!standalone && (
+          /* Section Tag - No borders */
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[#E3E6DB] font-mono-code text-xs font-bold tracking-widest uppercase bg-[#3E4C5E]/50 px-3 py-1 rounded-full">
+              [ 05 // {t.badge} ]
+            </span>
+            <div className="h-0.5 bg-[#3E4C5E]/30 flex-1 rounded-full" />
+          </div>
+        )}
 
         {/* Section Headline */}
-        <div className="text-center max-w-3xl mx-auto pt-14 mb-14">
+        <div className={`text-center max-w-3xl mx-auto mb-14 ${standalone ? '' : 'pt-14'}`}>
           <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9]">
             {t.title}
           </h2>
