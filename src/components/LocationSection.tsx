@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { MapPin, Navigation, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
+import { MapPin, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
 import { CtaButton } from './CtaButton';
 
 interface LocationSectionProps {
@@ -65,13 +65,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
-            <CtaButton
-              href={GOOGLE_MAPS_URL}
-              external
-              icon={<Navigation className="w-4 h-4 text-[#121820] shrink-0" />}
-              iconPosition="leading"
-              size="compact"
-            >
+            <CtaButton href={GOOGLE_MAPS_URL} external>
               {t.mapsButton}
             </CtaButton>
           </div>

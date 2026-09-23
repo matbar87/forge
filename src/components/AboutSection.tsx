@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { RETREAT_GALLERY } from '../data/gallery';
-import { Maximize2, X, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CtaButton } from './CtaButton';
 
 interface AboutSectionProps {
   lang: Language;
@@ -157,7 +158,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
 
               {/* CTA link / button */}
               <div className="pt-2">
-                <button
+                <CtaButton
                   onClick={() => {
                     const el = document.getElementById('rejestracja');
                     if (el) {
@@ -166,11 +167,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
                       window.scrollTo({ top: pos, behavior: 'smooth' });
                     }
                   }}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase transition-all shadow-xl active:scale-95 group"
+                  allowWrap
                 >
-                  <span>{t.ctaText}</span>
-                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </button>
+                  {t.ctaText}
+                </CtaButton>
               </div>
             </div>
 

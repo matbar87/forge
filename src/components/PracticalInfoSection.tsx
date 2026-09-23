@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee, MapPin, Navigation } from 'lucide-react';
+import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee, MapPin } from 'lucide-react';
 import { CtaButton } from './CtaButton';
 
 interface PracticalInfoSectionProps {
@@ -71,14 +71,7 @@ export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang
                 <p className="text-sm text-[#E3E6DB]/70">{locationT.region}</p>
               </div>
             </div>
-            <CtaButton
-              href={GOOGLE_MAPS_URL}
-              external
-              icon={<Navigation className="w-4 h-4 text-[#121820] shrink-0" />}
-              iconPosition="leading"
-              size="compact"
-              className="shrink-0"
-            >
+            <CtaButton href={GOOGLE_MAPS_URL} external className="shrink-0">
               {locationT.mapsButton}
             </CtaButton>
           </div>
