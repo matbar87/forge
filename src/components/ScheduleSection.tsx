@@ -252,10 +252,12 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             <>
               {/* Day Theme Banner */}
               <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#E3E6DB]" />
+                <div className="flex flex-col mb-1">
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {detailedDays[selectedDayIndex].dayName} // {detailedDays[selectedDayIndex].date}
+                    {detailedDays[selectedDayIndex].dayName}
+                  </span>
+                  <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
+                    {detailedDays[selectedDayIndex].date}
                   </span>
                 </div>
                 <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
@@ -336,10 +338,12 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
                   dropped, since that genuinely only means anything while
                   the camp is actually running. */}
               <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#E3E6DB]" />
+                <div className="flex flex-col mb-1">
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {detailedDays[selectedDayIndex].dayName} // {simpleDays[selectedDayIndex].date}
+                    {detailedDays[selectedDayIndex].dayName}
+                  </span>
+                  <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
+                    {simpleDays[selectedDayIndex].date}
                   </span>
                 </div>
                 <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">

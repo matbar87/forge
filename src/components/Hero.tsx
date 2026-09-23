@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Language, translations } from '../translations';
-import { ArrowUpRight } from 'lucide-react';
+import { CtaButton } from './CtaButton';
 
 interface HeroProps {
   lang: Language;
@@ -95,22 +95,13 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
           {/* Main Registration Button - hidden once the camp itself has started */}
           {!isEventLive && (
-            <button
-              onClick={() => onNavigate('rejestracja')}
-              className="group w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-2xl tracking-wider uppercase shadow-2xl hover:shadow-white/20 hover:-translate-y-0.5 transition-all active:scale-95 flex items-center justify-center gap-3"
-            >
-              <span>{t.registerCta}</span>
-              <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </button>
+            <CtaButton onClick={() => onNavigate('rejestracja')}>{t.registerCta}</CtaButton>
           )}
 
           {/* Secondary Plan Button */}
-          <button
-            onClick={() => onNavigate('plan')}
-            className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#1E2937]/90 hover:bg-[#28374A] text-[#E3E6DB] font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all active:scale-95"
-          >
+          <CtaButton onClick={() => onNavigate('plan')} variant="dark" hideIcon>
             {t.explorePlan}
-          </button>
+          </CtaButton>
         </div>
       </div>
     </section>

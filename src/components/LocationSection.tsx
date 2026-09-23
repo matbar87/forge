@@ -1,6 +1,7 @@
 import React from 'react';
 import { Language, translations } from '../translations';
 import { MapPin, Navigation, Flame, BedDouble, UtensilsCrossed, Car } from 'lucide-react';
+import { CtaButton } from './CtaButton';
 
 interface LocationSectionProps {
   lang: Language;
@@ -46,7 +47,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
         {/* Location Bento Grid - Borderless */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Main Info Card - Borderless */}
-          <div className="lg:col-span-7 bg-[#18212C] rounded-3xl p-8 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+          <div className="lg:col-span-7 bg-[#18212C] rounded-3xl p-6 sm:p-12 flex flex-col justify-between shadow-2xl relative overflow-hidden">
             <div>
               {/* Region Pill */}
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#253242] text-[#E3E6DB] text-xs font-mono-code font-bold uppercase mb-6">
@@ -64,15 +65,15 @@ export const LocationSection: React.FC<LocationSectionProps> = ({ lang }) => {
             </div>
 
             {/* Google Maps External Action Button - Borderless */}
-            <a
+            <CtaButton
               href={GOOGLE_MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-xl tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95"
+              external
+              icon={<Navigation className="w-4 h-4 text-[#121820] shrink-0" />}
+              iconPosition="leading"
+              size="compact"
             >
-              <Navigation className="w-5 h-5 text-[#121820]" />
-              <span>{t.mapsButton}</span>
-            </a>
+              {t.mapsButton}
+            </CtaButton>
           </div>
 
           {/* Photo & Amenities - Borderless */}

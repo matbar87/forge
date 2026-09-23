@@ -1,8 +1,8 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { ArrowUpRight } from 'lucide-react';
 import { usePinGate } from '../hooks/usePinGate';
 import { PinEntryCard } from './PinEntryCard';
+import { CtaButton } from './CtaButton';
 
 interface TranslationViewProps {
   lang: Language;
@@ -31,15 +31,9 @@ export const TranslationView: React.FC<TranslationViewProps> = ({ lang }) => {
           <PinEntryCard prompt={t.pinPrompt} errorText={t.pinError} lockedText={t.pinLocked} pinGate={pinGate} />
         ) : (
           <div className="max-w-sm mx-auto text-center">
-            <a
-              href={TRANSLATION_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/btn w-full inline-flex items-center justify-center gap-2 sm:gap-3 py-4 px-5 sm:px-6 rounded-2xl font-bebas text-lg sm:text-2xl tracking-wider uppercase shadow-xl transition-all bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95"
-            >
-              <span className="whitespace-nowrap">{t.button}</span>
-              <ArrowUpRight className="w-5 h-5 text-[#121820] shrink-0 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-            </a>
+            <CtaButton href={TRANSLATION_URL} external>
+              {t.button}
+            </CtaButton>
           </div>
         )}
       </div>
