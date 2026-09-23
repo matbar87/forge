@@ -330,9 +330,11 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             </>
           ) : (
             <>
-              {/* Simplified schedule (before/after the event): plain date
-                  heading, no type badges or live-item highlighting — those
-                  only mean anything while the camp is actually running. */}
+              {/* Simplified schedule (before/after the event): same type
+                  badges and card backgrounds as the detailed view, just
+                  without the per-day theme banner or live-item
+                  highlighting — those only mean anything while the camp is
+                  actually running. */}
               <div className="pb-6 mb-6 border-b border-[#3E4C5E]/30">
                 <span className="font-mono-code text-xs text-[#E3E6DB]/60 uppercase font-bold tracking-widest">
                   {simpleDays[selectedDayIndex].date}
@@ -340,28 +342,53 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
               </div>
 
               <div className="space-y-4">
-                {simpleDays[selectedDayIndex].items.map((item, itemIdx) => (
-                  <div
-                    key={itemIdx}
-                    className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md bg-[#1E2937]/70 hover:bg-[#232F3F]"
-                  >
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap md:w-56 shrink-0">
-                      <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
-                      <span>{item.time}</span>
-                    </div>
+                {simpleDays[selectedDayIndex].items.map((item, itemIdx) => {
+                  const typeBadge = getBadgeForType(item.type);
+                  const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
 
-                    <div className="flex-1">
-                      <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
-                        {item.title}
-                      </h4>
-                      {item.description && (
-                        <p className="text-sm text-[#E3E6DB]/70 mt-1 leading-relaxed">
-                          {item.description}
-                        </p>
-                      )}
+                  const isMainSession = item.type === 'session' && !item.badge;
+                  const groupsLabel = lang === 'pl' ? 'GRUPY' : 'GROUPS';
+                  const prayerLabel = lang === 'pl' ? 'MODLITWA' : 'PRAYER';
+                  const isGroups = badgeLabel.toUpperCase() === groupsLabel;
+                  const isPrayer = badgeLabel.toUpperCase() === prayerLabel;
+
+                  const cardBg = isMainSession
+                    ? 'bg-[#2C3B4E] hover:bg-[#324259]'
+                    : isGroups || isPrayer
+                    ? 'bg-[#253243] hover:bg-[#2B394C]'
+                    : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
+
+                  return (
+                    <div
+                      key={itemIdx}
+                      className={`flex flex-col md:flex-row md:items-start gap-4 p-5 sm:p-6 rounded-2xl transition-all shadow-md ${cardBg}`}
+                    >
+                      <div className="flex items-center gap-3 flex-wrap md:flex-nowrap md:w-72 shrink-0">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#293648] text-[#E3E6DB] font-mono-code text-xs font-bold whitespace-nowrap">
+                          <Clock className="w-3.5 h-3.5 text-[#E3E6DB]/70 shrink-0" />
+                          <span>{item.time}</span>
+                        </div>
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-mono-code text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${typeBadge.bg}`}
+                        >
+                          {typeBadge.icon}
+                          <span>{badgeLabel}</span>
+                        </span>
+                      </div>
+
+                      <div className="flex-1">
+                        <h4 className="font-bebas text-2xl sm:text-3xl tracking-wide uppercase text-[#E3E6DB]">
+                          {item.title}
+                        </h4>
+                        {item.description && (
+                          <p className="text-sm text-[#E3E6DB]/70 mt-1 leading-relaxed">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </>
           )}
