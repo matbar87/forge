@@ -1,6 +1,7 @@
 import React from 'react';
 import { Language, translations } from '../translations';
 import { Backpack, Languages, UtensilsCrossed, PartyPopper, Coffee, MapPin, Navigation } from 'lucide-react';
+import { CtaButton } from './CtaButton';
 
 interface PracticalInfoSectionProps {
   lang: Language;
@@ -70,15 +71,16 @@ export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang
                 <p className="text-sm text-[#E3E6DB]/70">{locationT.region}</p>
               </div>
             </div>
-            <a
+            <CtaButton
               href={GOOGLE_MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto px-4 sm:px-6 py-3 rounded-2xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-bebas text-base sm:text-lg tracking-wider uppercase shadow-xl hover:shadow-2xl transition-all active:scale-95 shrink-0 whitespace-nowrap"
+              external
+              icon={<Navigation className="w-5 h-5 text-[#121820] shrink-0" />}
+              iconPosition="leading"
+              size="compact"
+              className="shrink-0"
             >
-              <Navigation className="w-4 h-4 text-[#121820]" />
-              <span>{locationT.mapsButton}</span>
-            </a>
+              {locationT.mapsButton}
+            </CtaButton>
           </div>
         )}
 

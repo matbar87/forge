@@ -1,6 +1,7 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { Check, ArrowUpRight, User, Users } from 'lucide-react';
+import { Check, User, Users } from 'lucide-react';
+import { CtaButton } from './CtaButton';
 
 interface RegistrationSectionProps {
   lang: Language;
@@ -90,24 +91,9 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
 
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/30">
-              <a
-                href={isRegistrationClosed ? undefined : individualRegistrationUrl}
-                target={isRegistrationClosed ? undefined : '_blank'}
-                rel={isRegistrationClosed ? undefined : 'noopener noreferrer'}
-                aria-disabled={isRegistrationClosed}
-                tabIndex={isRegistrationClosed ? -1 : undefined}
-                onClick={(e) => isRegistrationClosed && e.preventDefault()}
-                className={`group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all ${
-                  isRegistrationClosed
-                    ? 'bg-[#3E4C5E]/30 text-[#E3E6DB]/40 cursor-not-allowed pointer-events-none'
-                    : 'bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95'
-                }`}
-              >
-                <span>{t.individual.cta}</span>
-                {!isRegistrationClosed && (
-                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                )}
-              </a>
+              <CtaButton href={individualRegistrationUrl} external disabled={isRegistrationClosed}>
+                {t.individual.cta}
+              </CtaButton>
               <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
                 {isRegistrationClosed ? t.closedNote : t.individual.note}
               </span>
@@ -162,22 +148,9 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
 
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/40">
-              <a
-                href={isRegistrationClosed ? undefined : groupMailtoUrl}
-                aria-disabled={isRegistrationClosed}
-                tabIndex={isRegistrationClosed ? -1 : undefined}
-                onClick={(e) => isRegistrationClosed && e.preventDefault()}
-                className={`group/btn w-full inline-flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-bebas text-2xl tracking-wider uppercase shadow-xl transition-all ${
-                  isRegistrationClosed
-                    ? 'bg-[#3E4C5E]/30 text-[#E3E6DB]/40 cursor-not-allowed pointer-events-none'
-                    : 'bg-[#E3E6DB] hover:bg-white text-[#121820] hover:shadow-2xl active:scale-95'
-                }`}
-              >
-                <span>{t.group.cta}</span>
-                {!isRegistrationClosed && (
-                  <ArrowUpRight className="w-5 h-5 text-[#121820] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                )}
-              </a>
+              <CtaButton href={groupMailtoUrl} disabled={isRegistrationClosed}>
+                {t.group.cta}
+              </CtaButton>
               <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
                 {isRegistrationClosed ? t.closedNote : t.group.note}
               </span>
