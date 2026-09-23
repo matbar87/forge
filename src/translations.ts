@@ -305,7 +305,7 @@ export const translations = {
       practicalInfo: 'Good to Know',
       translation: 'Translation',
       registerBtn: 'Register Now',
-      groupTime: 'Group Time',
+      groupTime: 'Groups',
     },
     hero: {
       date: 'NOVEMBER 12 – 14, 2026',
