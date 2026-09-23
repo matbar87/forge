@@ -12,7 +12,7 @@ import { GroupTimeView } from './components/GroupTimeView';
 import { EventTabBar } from './components/EventTabBar';
 import { InstallBanner } from './components/InstallBanner';
 
-type View = 'site' | 'group-time';
+type View = 'site' | 'group-time' | 'info';
 
 // While the camp itself is running, the marketing/registration content stops
 // being relevant — only Hero and the live Schedule stay up. Once it's over,
@@ -89,15 +89,15 @@ export function App() {
       pendingScrollRef.current = null;
       requestAnimationFrame(() => requestAnimationFrame(() => scrollToId(id)));
     }
-    if (view === 'group-time') {
+    if (view === 'group-time' || view === 'info') {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
   }, [view]);
 
   // The tab bar only exists during the event; if the event window ends
-  // while someone is sitting on the Group Time view, bring them back.
+  // while someone is sitting on the Group Time or Info view, bring them back.
   useEffect(() => {
-    if (!isEventLive && view === 'group-time') {
+    if (!isEventLive && (view === 'group-time' || view === 'info')) {
       setView('site');
     }
   }, [isEventLive, view]);
@@ -186,9 +186,12 @@ export function App() {
             {/* 7. Praktyczne info - what to bring, what's provided */}
             {!isEventLive && <PracticalInfoSection lang={lang} />}
           </>
-        ) : (
+        ) : view === 'group-time' ? (
           /* Czas w grupach - PIN-gated discussion questions, one per session */
           <GroupTimeView lang={lang} />
+        ) : (
+          /* Informacje - what to bring, what's provided, as its own tab during the event */
+          <PracticalInfoSection lang={lang} standalone />
         )}
       </main>
 
@@ -202,6 +205,7 @@ export function App() {
           activeView={view}
           onSelectPlan={() => navigateToSection('plan')}
           onSelectGroupTime={() => setView('group-time')}
+          onSelectInfo={() => setView('info')}
         />
       )}
 
