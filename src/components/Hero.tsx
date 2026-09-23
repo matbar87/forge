@@ -99,7 +99,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
           )}
 
           {/* Secondary Plan Button */}
-          <CtaButton onClick={() => onNavigate('plan')} variant="dark" hideIcon>
+          <CtaButton onClick={() => onNavigate('plan')} variant="dark">
             {t.explorePlan}
           </CtaButton>
         </div>
