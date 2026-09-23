@@ -39,7 +39,7 @@ export const CtaButton: React.FC<CtaButtonProps> = ({
 
   const classes = `inline-flex items-center justify-center text-center ${
     fullWidthOnMobile ? 'w-full sm:w-auto' : ''
-  } px-4 sm:px-8 py-4 rounded-2xl font-bebas text-base sm:text-2xl tracking-wider uppercase shadow-xl transition-all ${
+  } px-4 sm:px-8 py-4 rounded-2xl font-bebas text-lg sm:text-2xl tracking-wider uppercase shadow-xl transition-all ${
     allowWrap ? '' : 'whitespace-nowrap'
   } ${colorClasses} ${className}`;
 

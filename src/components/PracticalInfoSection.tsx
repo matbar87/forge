@@ -71,7 +71,7 @@ export const PracticalInfoSection: React.FC<PracticalInfoSectionProps> = ({ lang
                 <p className="text-sm text-[#E3E6DB]/70">{locationT.region}</p>
               </div>
             </div>
-            <CtaButton href={GOOGLE_MAPS_URL} external className="shrink-0">
+            <CtaButton href={GOOGLE_MAPS_URL} external allowWrap className="shrink-0">
               {locationT.mapsButton}
             </CtaButton>
           </div>
