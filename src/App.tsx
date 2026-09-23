@@ -6,6 +6,7 @@ import { AboutSection } from './components/AboutSection';
 import { RegistrationSection } from './components/RegistrationSection';
 import { ScheduleSection } from './components/ScheduleSection';
 import { LocationSection } from './components/LocationSection';
+import { PracticalInfoSection } from './components/PracticalInfoSection';
 import { Footer } from './components/Footer';
 import { GroupTimeView } from './components/GroupTimeView';
 import { EventTabBar } from './components/EventTabBar';
@@ -181,6 +182,9 @@ export function App() {
 
             {/* 6. Miejsce - location and venue details */}
             {!isEventLive && <LocationSection lang={lang} />}
+
+            {/* 7. Praktyczne info - what to bring, what's provided */}
+            {!isEventLive && <PracticalInfoSection lang={lang} />}
           </>
         ) : (
           /* Czas w grupach - PIN-gated discussion questions, one per session */
