@@ -194,7 +194,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
             const monthWord = dateWithoutWeekday.split(' ').find((w) => !/\d/.test(w)) ?? '';
             const shortDate = `${dayNumber} ${monthWord.slice(0, 3)}`;
-            const theme = isEventLive ? detailedDays[idx].theme : undefined;
+            const theme = detailedDays[idx].theme;
             return (
               <button
                 key={idx}
@@ -330,15 +330,21 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             </>
           ) : (
             <>
-              {/* Simplified schedule (before/after the event): same type
-                  badges and card backgrounds as the detailed view, just
-                  without the per-day theme banner or live-item
-                  highlighting — those only mean anything while the camp is
-                  actually running. */}
-              <div className="pb-6 mb-6 border-b border-[#3E4C5E]/30">
-                <span className="font-mono-code text-xs text-[#E3E6DB]/60 uppercase font-bold tracking-widest">
-                  {simpleDays[selectedDayIndex].date}
-                </span>
+              {/* Simplified schedule (before/after the event): same day
+                  theme banner and type badges/card backgrounds as the
+                  detailed view — only the live-item highlighting is
+                  dropped, since that genuinely only means anything while
+                  the camp is actually running. */}
+              <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E3E6DB]" />
+                  <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
+                    {detailedDays[selectedDayIndex].dayName} // {simpleDays[selectedDayIndex].date}
+                  </span>
+                </div>
+                <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
+                  {detailedDays[selectedDayIndex].theme}
+                </h3>
               </div>
 
               <div className="space-y-4">
