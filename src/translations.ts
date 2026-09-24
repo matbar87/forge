@@ -77,6 +77,7 @@ export const translations = {
       title: 'Rejestracja',
       subtitle: 'Wybierz odpowiednią opcję dla siebie.',
       closedNote: 'Rejestracja na to wydarzenie została zakończona.',
+      comingSoonCta: 'Już wkrótce',
       individual: {
         title: 'Indywidualna',
         badge: 'POJEDYNCZY UCZESTNIK',
@@ -347,6 +348,7 @@ export const translations = {
       title: 'Registration',
       subtitle: 'Choose your registration type.',
       closedNote: 'Registration for this event has closed.',
+      comingSoonCta: 'Coming Soon',
       individual: {
         title: 'Individual',
         badge: 'SOLO ATTENDEE',
