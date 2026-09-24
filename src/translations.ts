@@ -85,7 +85,7 @@ export const translations = {
         price: '450 zł',
         priceSub: '/ osoba',
         features: [
-          'Pełne wyżywienie przez cały czas trwania wyjazdu (3 posiłki dziennie)',
+          'Pełne wyżywienie przez cały czas trwania wyjazdu',
           '2 noclegi w komfortowych pokojach ośrodka',
           'Wieczorne ognisko z pieczeniem kiełbas i integracją',
         ],
@@ -244,7 +244,7 @@ export const translations = {
         },
         {
           heading: 'Zapewniamy',
-          items: ['3 posiłki dziennie', 'Kiełbaski na ognisko', 'Wodę', 'Przekąski'],
+          items: ['Posiłki zgodnie z planem', 'Kiełbaski na ognisko', 'Wodę', 'Przekąski'],
         },
         {
           heading: 'Możesz zabrać ze sobą',
@@ -356,7 +356,7 @@ export const translations = {
         price: '450 PLN',
         priceSub: '/ person',
         features: [
-          'Full board throughout the camp (3 meals daily)',
+          'Full board throughout the camp',
           '2 nights accommodation in comfortable camp rooms',
           'Evening fire pit with sausages',
         ],
@@ -515,7 +515,7 @@ export const translations = {
         },
         {
           heading: "We'll provide",
-          items: ['3 meals a day', 'Sausages for the fire pit', 'Water', 'Snacks'],
+          items: ['Meals as per the schedule', 'Sausages for the fire pit', 'Water', 'Snacks'],
         },
         {
           heading: 'Feel free to bring',
