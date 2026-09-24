@@ -91,12 +91,9 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
 
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/30">
-              <CtaButton href={individualRegistrationUrl} external disabled={isRegistrationClosed}>
-                {t.individual.cta}
+              <CtaButton href={individualRegistrationUrl} external disabled>
+                {t.comingSoonCta}
               </CtaButton>
-              <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
-                {isRegistrationClosed ? t.closedNote : t.individual.note}
-              </span>
             </div>
           </div>
 
