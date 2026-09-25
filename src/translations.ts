@@ -297,6 +297,7 @@ export const translations = {
       nav: 'Nawigacja',
       top: 'Do góry',
       organizedBy: 'Organizator',
+      contact: 'Kontakt',
     },
   },
   en: {
@@ -569,6 +570,7 @@ export const translations = {
       nav: 'Navigation',
       top: 'Back to Top',
       organizedBy: 'Organized by',
+      contact: 'Contact',
     },
   },
 };
