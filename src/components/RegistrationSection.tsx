@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Language, translations } from '../translations';
-import { Check, User, Users } from 'lucide-react';
+import { Check, User, Users, Copy } from 'lucide-react';
 import { CtaButton } from './CtaButton';
 
 interface RegistrationSectionProps {
@@ -8,11 +8,21 @@ interface RegistrationSectionProps {
   isRegistrationClosed: boolean;
 }
 
+const GROUP_EMAIL = 'info@koscioldlamiasta.pl';
+
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, isRegistrationClosed }) => {
   const t = translations[lang].registration;
 
   const individualRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
-  const groupMailtoUrl = `mailto:info@koscioldlamiasta.pl?subject=${encodeURIComponent('Kuźnia - Rejestracja Grupowa')}`;
+  const groupMailtoUrl = `mailto:${GROUP_EMAIL}?subject=${encodeURIComponent('Kuźnia - Rejestracja Grupowa')}`;
+
+  const [copied, setCopied] = useState(false);
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(GROUP_EMAIL).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   return (
     <section id="rejestracja" className="py-28 bg-transparent relative overflow-hidden">
@@ -148,9 +158,29 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
               <CtaButton href={groupMailtoUrl} disabled={isRegistrationClosed}>
                 {t.group.cta}
               </CtaButton>
-              <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
-                {isRegistrationClosed ? t.closedNote : t.group.note}
-              </span>
+              {isRegistrationClosed ? (
+                <span className="block text-center text-[11px] font-mono-code text-[#E3E6DB]/50 mt-2.5">
+                  {t.closedNote}
+                </span>
+              ) : (
+                <button
+                  onClick={handleCopyEmail}
+                  aria-label={t.group.copyLabel}
+                  className="w-full flex items-center justify-center gap-1.5 text-center text-[11px] font-mono-code text-[#E3E6DB]/50 hover:text-[#E3E6DB]/80 mt-2.5 transition-colors"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3 h-3 shrink-0" />
+                      <span>{t.group.copiedText}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3 shrink-0" />
+                      <span>{GROUP_EMAIL}</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
