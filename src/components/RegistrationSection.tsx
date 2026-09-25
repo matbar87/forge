@@ -100,7 +100,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
             </div>
 
             {/* CTA Button - Borderless */}
-            <div className="pt-4 border-t border-[#3E4C5E]/30">
+            <div className="pt-4 border-t border-[#3E4C5E]/30 text-center">
               <CtaButton href={individualRegistrationUrl} external disabled>
                 {t.comingSoonCta}
               </CtaButton>
@@ -154,7 +154,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
             </div>
 
             {/* CTA Button - Borderless */}
-            <div className="pt-4 border-t border-[#3E4C5E]/40">
+            <div className="pt-4 border-t border-[#3E4C5E]/40 text-center">
               <CtaButton href={groupMailtoUrl} disabled={isRegistrationClosed}>
                 {t.group.cta}
               </CtaButton>
