@@ -64,6 +64,15 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
                   className="h-16 w-auto object-contain"
                 />
               </a>
+              <p className="text-xs font-mono-code text-[#E3E6DB]/50">
+                {t.contact}:{' '}
+                <a
+                  href="mailto:info@koscioldlamiasta.pl"
+                  className="text-[#E3E6DB]/70 hover:text-[#E3E6DB] transition-colors"
+                >
+                  info@koscioldlamiasta.pl
+                </a>
+              </p>
             </div>
           </div>
 
