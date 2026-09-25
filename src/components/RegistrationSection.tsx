@@ -13,7 +13,7 @@ const GROUP_EMAIL = 'info@koscioldlamiasta.pl';
 export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, isRegistrationClosed }) => {
   const t = translations[lang].registration;
 
-  const individualRegistrationUrl = 'https://kdmkrakow.churchtrac.com/';
+  const individualRegistrationUrl = 'https://events.kdm.church/events/STnJl0S67GY4FT3Dm1DD?step=register';
   const groupMailtoUrl = `mailto:${GROUP_EMAIL}?subject=${encodeURIComponent('Kuźnia - Rejestracja Grupowa')}`;
 
   const [copied, setCopied] = useState(false);
@@ -101,8 +101,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({ lang, 
 
             {/* CTA Button - Borderless */}
             <div className="pt-4 border-t border-[#3E4C5E]/30 text-center">
-              <CtaButton href={individualRegistrationUrl} external disabled>
-                {t.comingSoonCta}
+              <CtaButton href={individualRegistrationUrl} external disabled={isRegistrationClosed}>
+                {t.individual.cta}
               </CtaButton>
             </div>
           </div>
