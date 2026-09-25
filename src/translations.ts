@@ -101,7 +101,8 @@ export const translations = {
           'Wszystkie świadczenia z pakietu indywidualnego',
         ],
         cta: 'Napisz do nas',
-        note: 'Otworzy Twój program pocztowy',
+        copiedText: 'Skopiowano!',
+        copyLabel: 'Skopiuj adres e-mail',
       },
     },
     schedule: {
@@ -372,7 +373,8 @@ export const translations = {
           'All benefits included in the individual package',
         ],
         cta: 'Contact Us',
-        note: 'Opens your email app',
+        copiedText: 'Copied!',
+        copyLabel: 'Copy email address',
       },
     },
     schedule: {
