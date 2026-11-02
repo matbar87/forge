@@ -4,10 +4,13 @@ import App from './App';
 import './index.css';
 import { setupPwaAutoReload } from './pwaUpdate';
 
-setupPwaAutoReload();
+// The event app's page (app/index.html) marks itself with data-page="app".
+const isEventApp = document.documentElement.dataset.page === 'app';
+
+setupPwaAutoReload(isEventApp);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App alwaysLive={document.documentElement.dataset.page === 'app'} />
+    <App alwaysLive={isEventApp} />
   </React.StrictMode>
 );
