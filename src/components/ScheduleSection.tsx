@@ -144,7 +144,14 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
     // section: switching days swaps in a completely different item
     // count/set below, and the browser's anchor heuristic otherwise
     // mis-picks a reference node and scrolls the page far off after reflow.
-    <section id="plan" className="py-28 bg-transparent relative [overflow-anchor:none]">
+    // In the event app the plan is one of the tab views, so its top spacing
+    // and headline match the other tabs (GroupTimeView, TranslationView).
+    <section
+      id="plan"
+      className={`bg-transparent relative [overflow-anchor:none] ${
+        isEventLive ? 'min-h-screen w-full pt-[104px] sm:pt-[128px] pb-16' : 'py-28'
+      }`}
+    >
       {/* Dark Ambient Gradient Blobs - clipped by their own wrapper (not the
           section) so this stays clipped without constraining the sticky day
           switcher below, which needs the section as its unclipped container. */}
@@ -166,8 +173,12 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
         )}
 
         {/* Section Headline */}
-        <div className={`text-center max-w-3xl mx-auto mb-16 ${isEventLive ? '' : 'pt-16'}`}>
-          <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9] mb-4">
+        <div className={`text-center mx-auto ${isEventLive ? 'max-w-xl mb-12' : 'max-w-3xl mb-16 pt-16'}`}>
+          <h2
+            className={`font-bebas tracking-tight text-[#E3E6DB] uppercase leading-[0.9] mb-4 ${
+              isEventLive ? 'text-5xl sm:text-6xl' : 'text-5xl sm:text-6xl md:text-7xl lg:text-8xl'
+            }`}
+          >
             {t.title}
           </h2>
           <p className="text-base sm:text-lg text-[#E3E6DB]/70 font-medium">
