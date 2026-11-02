@@ -56,6 +56,8 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
           </button>
 
           {/* Desktop Navigation Links - No nested background, sits cleanly in header */}
+          {/* Not in the event app: its bottom tab bar is the navigation there. */}
+          {!isEventLive && (
           <nav className="hidden lg:flex items-center gap-1 sm:gap-2">
             <button
               onClick={() => scrollToSection('start')}
@@ -102,6 +104,7 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
               </>
             )}
           </nav>
+          )}
 
           {/* Language Switcher & Quick Registration Button */}
           <div className="hidden sm:flex items-center gap-5 sm:gap-6">
@@ -151,6 +154,7 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
               </button>
             </div>
 
+            {!isEventLive && (
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2.5 rounded-xl bg-[#1F2B39] text-[#E3E6DB] hover:bg-[#3E4C5E] transition-colors"
@@ -158,12 +162,13 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* Mobile Drawer Menu - Full width directly beneath header without border radius */}
-      {mobileMenuOpen && (
+      {mobileMenuOpen && !isEventLive && (
         <div className="lg:hidden w-full bg-[#18212C]/98 backdrop-blur-2xl border-t border-[#3E4C5E]/20 px-4 sm:px-8 py-5 shadow-2xl animate-fade-in">
           <div className="w-full space-y-2">
             <button
