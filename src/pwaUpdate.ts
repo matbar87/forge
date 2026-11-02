@@ -7,16 +7,18 @@
 // backgrounded installed PWA, stuck on an old build for a while).
 import { publicUrl } from './publicUrl';
 
-export function setupPwaAutoReload(isEventApp: boolean) {
+export function setupPwaAutoReload() {
   // No service worker is generated in dev (`npm run dev`).
   if (import.meta.env.DEV || !('serviceWorker' in navigator)) return;
 
-  // Each page has its own service worker: the main site's at the site root,
-  // the event app's next to its own page (scoped to that folder only). The
-  // event app's is resolved relative to the document rather than spelled
-  // out here, since this bundle is shared with the main site.
-  const swUrl = isEventApp ? new URL('sw.js', document.baseURI).href : publicUrl('sw.js');
-  const scope = isEventApp ? new URL('./', document.baseURI).href : publicUrl('');
+  // Each page has its own service worker. A page can name its own worker
+  // and scope on <html data-sw="…" data-sw-scope="…"> (the event app does);
+  // otherwise it's the main site's worker at the site root. Keeping those
+  // names in the page itself means this bundle, which both pages share,
+  // doesn't mention the event app's files.
+  const { sw, swScope } = document.documentElement.dataset;
+  const swUrl = sw ? new URL(sw, document.baseURI).href : publicUrl('sw.js');
+  const scope = sw ? new URL(swScope ?? './', document.baseURI).href : publicUrl('');
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register(swUrl, { scope })

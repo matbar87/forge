@@ -16,13 +16,13 @@ import { InstallBanner } from './components/InstallBanner';
 type View = 'site' | 'group-time' | 'info' | 'translation';
 
 // The main site always shows its full content — it doesn't switch to the
-// in-event view during the camp (that lives at /app/, see alwaysLive below).
+// in-event view during the camp (that lives at /app, see alwaysLive below).
 // Only registration closes once the camp is over, based on the viewer's own
 // device clock (not a server date), so it's easy to test by changing it.
 const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
 
 interface AppProps {
-  // The standalone event app (served at /app/) is the in-event view of this
+  // The standalone event app (served at /app) is the in-event view of this
   // same site, permanently: Hero + live Schedule + the bottom tab bar, no
   // matter what the device clock says. The schedule itself comes from the
   // same ScheduleSection/translations as the main site, so both stay in sync.

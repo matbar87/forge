@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { generateSW, type RuntimeCaching } from 'workbox-build';
 import { resolve } from 'node:path';
+import { readFile, writeFile } from 'node:fs/promises';
 
 // Shared by both service workers. Each one gets its own cache names
 // (prefix), so the main site's and the event app's caches stay independent.
@@ -42,11 +43,20 @@ const runtimeCaching = (prefix: string): RuntimeCaching[] => [
 // streamed, so it's deliberately left out and cached lazily at runtime.
 const ASSET_GLOB = '**/*.{js,css,html,svg,png,webp,ico,woff2}';
 
-// The event app (/app/) gets its own service worker at /app/sw.js, scoped to
-// /app/, so the main site's service worker contains nothing about it. It's
-// generated after the build from the finished dist/ output: app/index.html
-// and its manifest, plus the shared JS/CSS bundles and public assets one
-// level up (precache URLs are relative to the worker, hence the '../').
+// The event app is a plain file, app.html, not app/index.html: hosts like
+// GitHub Pages serve /app from app.html directly, whereas a directory would
+// be answered with a 301 to /app/ on the host's own domain (breaking a
+// proxied deployment such as koscioldlamiasta.pl/kuznia/app).
+//
+// It gets its own service worker (app-sw.js, scoped to the page, registered
+// from app.html's data-sw attributes) and manifest (app.webmanifest), so the
+// main site's service worker, manifest and shared JS mention nothing about
+// it. The worker is generated after the build from the finished dist/
+// output: app.html, app.webmanifest and the shared bundles/public assets.
+// app.html's manifest link is pointed at app.webmanifest first, since
+// vite-plugin-pwa injects the main manifest into every page.
+const EVENT_APP_FILES = ['app.html', 'app.webmanifest', 'app-sw.js'];
+
 const eventAppServiceWorker = (): Plugin => {
   let outDir = 'dist';
   return {
@@ -56,33 +66,35 @@ const eventAppServiceWorker = (): Plugin => {
       outDir = resolve(config.root, config.build.outDir);
     },
     async closeBundle() {
+      const htmlPath = resolve(outDir, 'app.html');
+      const html = await readFile(htmlPath, 'utf8');
+      const fixed = html.replace(
+        /<link rel="manifest" href="[^"]*">/,
+        '<link rel="manifest" href="./app.webmanifest">'
+      );
+      if (fixed === html) throw new Error('app.html: manifest link not found');
+      await writeFile(htmlPath, fixed);
+
       const { count, warnings } = await generateSW({
         globDirectory: outDir,
-        globPatterns: [ASSET_GLOB, 'app/manifest.webmanifest'],
-        globIgnores: ['index.html', 'sw.js', 'workbox-*.js', 'app/sw.js', 'manifest.webmanifest'],
-        manifestTransforms: [
-          async (entries) => ({
-            manifest: entries.map((e) => ({
-              ...e,
-              url: e.url.startsWith('app/') ? e.url.slice('app/'.length) : `../${e.url}`,
-            })),
-            warnings: [],
-          }),
-        ],
-        swDest: resolve(outDir, 'app/sw.js'),
+        globPatterns: [ASSET_GLOB, 'app.webmanifest'],
+        globIgnores: ['index.html', 'sw.js', 'workbox-*.js', 'app-sw.js', 'manifest.webmanifest'],
+        swDest: resolve(outDir, 'app-sw.js'),
         inlineWorkboxRuntime: true,
         sourcemap: false,
         mode: 'production',
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
-        // Any navigation inside /app/ (e.g. with a query string) falls back
-        // to the event app's own page, also offline.
-        navigateFallback: 'index.html',
+        // /app is served from the precached app.html (Workbox tries the
+        // '.html' variant of a clean URL); anything else navigated to within
+        // the worker's scope, e.g. /app?ref=x, falls back to it as well.
+        navigateFallback: 'app.html',
+        navigateFallbackAllowlist: [/\/app(\.html)?(\?.*)?$/],
         runtimeCaching: runtimeCaching('app-'),
       });
       warnings.forEach((w) => console.warn(w));
-      console.log(`event app service worker: precache ${count} entries -> app/sw.js`);
+      console.log(`event app service worker: precache ${count} entries -> app-sw.js`);
     },
   };
 };
@@ -96,7 +108,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       // The generated registerSW.js uses document-relative paths and only
       // knows about one worker. Registration is done in src/pwaUpdate.ts
-      // instead: the main site registers /sw.js, the event app /app/sw.js.
+      // instead: the main site registers /sw.js, the event app app-sw.js.
       injectRegister: false,
       manifest: {
         name: 'Kuźnia / Forge — Męski Wyjazd',
@@ -117,7 +129,7 @@ export default defineConfig({
       workbox: {
         globPatterns: [ASSET_GLOB],
         // The event app has its own worker; keep its files out of this one.
-        globIgnores: ['app/**'],
+        globIgnores: EVENT_APP_FILES,
         // The main site is a single page, precached as index.html (which
         // also serves '/'). No catch-all fallback: it would otherwise hand
         // the main page to navigations elsewhere on the origin.
@@ -130,11 +142,11 @@ export default defineConfig({
   build: {
     rollupOptions: {
       // Two pages from one codebase: the main site, and the standalone
-      // event app at /app/ (always in the in-event view, see App's
+      // event app at /app (always in the in-event view, see App's
       // alwaysLive). They share components, translations and the schedule.
       input: {
         main: resolve(__dirname, 'index.html'),
-        app: resolve(__dirname, 'app/index.html'),
+        app: resolve(__dirname, 'app.html'),
       },
     },
   },
