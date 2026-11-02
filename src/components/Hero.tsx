@@ -94,7 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
 
         {/* Action Buttons - No borders, refined elevation */}
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-          {/* Main Registration Button - hidden once the camp itself has started */}
+          {/* Main Registration Button - hidden in the event app (/app/) */}
           {!isEventLive && (
             <CtaButton onClick={() => onNavigate('rejestracja')}>{t.registerCta}</CtaButton>
           )}

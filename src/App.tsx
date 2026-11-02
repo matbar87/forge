@@ -103,20 +103,17 @@ export function App({ alwaysLive = false }: AppProps) {
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
     localStorage.setItem('kuznia_lang', newLang);
-    // Update document title dynamically
-    document.title =
-      newLang === 'pl'
-        ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
-        : "Forge — Men's Camp | November 12 - 14";
   };
 
   useEffect(() => {
-    // Initial sync
-    document.title =
-      lang === 'pl'
-        ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
-        : "Forge — Men's Camp | November 12 - 14";
-  }, [lang]);
+    document.title = alwaysLive
+      ? lang === 'pl'
+        ? 'Kuźnia — App | 12 - 14 Listopada'
+        : 'Forge — App | November 12 - 14'
+      : lang === 'pl'
+      ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
+      : "Forge — Men's Camp | November 12 - 14";
+  }, [lang, alwaysLive]);
 
   return (
     <div className="min-h-screen bg-[#121820] text-[#E3E6DB] flex flex-col relative selection:bg-[#E3E6DB] selection:text-[#121820] font-['Plus_Jakarta_Sans']">
@@ -212,7 +209,7 @@ export function App({ alwaysLive = false }: AppProps) {
       )}
 
       {/* Mobile PWA install nudge - Nov 11-14 (always in the event app), sits above the tab bar once it appears */}
-      <InstallBanner lang={lang} isEventLive={isEventLive} ignoreDateWindow={alwaysLive} />
+      <InstallBanner lang={lang} isEventLive={isEventLive} />
     </div>
   );
 }

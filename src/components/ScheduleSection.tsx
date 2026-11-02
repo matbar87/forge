@@ -42,10 +42,10 @@ const parseItemRange = (dayIndex: number, time: string): { start: Date; end: Dat
 
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventLive }) => {
   const t = translations[lang].schedule;
-  // Before and after the camp, show a plain time/title list instead of the
-  // full badge-and-highlight timeline — that detailed view only makes sense
-  // while the event itself is running (it'll also be swapped for a
-  // different in-event schedule later).
+  // The main site shows the simplified schedule; the event app (/app/,
+  // isEventLive) shows the detailed timeline, with the "happening now"
+  // highlight driven by the device clock. Both read the same translations,
+  // so the plan stays in sync between the two pages.
   const detailedDays = t.days;
   const simpleDays = translations[lang].simplifiedSchedule.days;
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(() => {

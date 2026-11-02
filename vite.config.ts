@@ -42,10 +42,22 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,webp,ico,woff2}', 'app/manifest.webmanifest'],
         // Offline navigations fall back to the main site's index.html — but
         // never for the event app, which has its own precached page
-        // (app/index.html). Without this, opening /app (no trailing slash,
-        // so not an exact precache hit) would render the main site instead.
+        // (app/index.html, served for /app/). Without this, opening /app
+        // (no trailing slash, or with a query string — not an exact
+        // precache hit) would render the main site instead. Those requests
+        // are handled by the network-first 'event-app-pages' route below.
         navigateFallbackDenylist: [/\/app(\/|$)/],
         runtimeCaching: [
+          {
+            urlPattern: ({ request, url }) =>
+              request.mode === 'navigate' && /\/app\/?$/.test(url.pathname),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'event-app-pages',
+              expiration: { maxEntries: 5 },
+              networkTimeoutSeconds: 5,
+            },
+          },
           {
             urlPattern: /\/intro\.mp4$/,
             handler: 'CacheFirst',

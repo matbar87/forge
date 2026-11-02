@@ -5,21 +5,28 @@ import { X, Download, Share } from 'lucide-react';
 
 interface InstallBannerProps {
   lang: Language;
+  // True only in the standalone event app (/app/): it isn't tied to the
+  // event dates, so it offers installation whenever it's open, and sits
+  // above the bottom tab bar.
   isEventLive: boolean;
-  // The standalone event app isn't tied to the event dates, so it offers
-  // installation whenever it's open.
-  ignoreDateWindow?: boolean;
 }
 
-// Visible only on mobile (sm:hidden), and only while the device clock falls
+// Visible only on mobile (sm:hidden). On the main site, only while the device clock falls
 // within this window — one day ahead of the event itself, so attendees see
 // it before they arrive too. Device-clock based like the rest of the
 // event-phase logic, so it's easy to test by changing the system clock.
 const BANNER_START = new Date(2026, 10, 11, 0, 0, 0);
 const BANNER_END = new Date(2026, 10, 15, 0, 0, 0);
 
-const DISMISS_KEY = 'kuznia_install_banner_dismissed';
-const INSTALLED_KEY = 'kuznia_pwa_installed';
+// The main site and the event app are separate installable PWAs on the same
+// origin, so each keeps its own "installed"/"dismissed" flags.
+const storageKeys = (isEventApp: boolean) => {
+  const suffix = isEventApp ? '_app' : '';
+  return {
+    dismiss: `kuznia_install_banner_dismissed${suffix}`,
+    installed: `kuznia_pwa_installed${suffix}`,
+  };
+};
 
 const isRunningStandalone = () =>
   window.matchMedia('(display-mode: standalone)').matches ||
@@ -33,8 +40,9 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive, ignoreDateWindow = false }) => {
+export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive }) => {
   const t = translations[lang].installBanner;
+  const { dismiss: DISMISS_KEY, installed: INSTALLED_KEY } = storageKeys(isEventLive);
 
   const [withinWindow, setWithinWindow] = useState(() => {
     const now = new Date();
@@ -97,7 +105,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive,
   };
 
   const canOffer = !!deferredPrompt || isIOS;
-  const shouldShow = (ignoreDateWindow || withinWindow) && !installed && !dismissed && canOffer;
+  const shouldShow = (isEventLive || withinWindow) && !installed && !dismissed && canOffer;
 
   if (!shouldShow) return null;
 
