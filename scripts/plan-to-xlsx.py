@@ -71,7 +71,9 @@ lines = [
     ('• Opis: opcjonalny (np. Grupa A, Dla chętnych).', False),
     ('• Wypełnij obie kolumny: PL i EN.', False),
     ('', False),
-    ('Gotowy arkusz prześlij Claude’owi — zamieni go na src/data/plan.json na stronie.', False),
+    ('Aktualizacja strony: wgraj ten plik na GitHubie do repo forge jako plan/plan-wydarzenia.xlsx', False),
+    ('(Add file → Upload files, ta sama nazwa i folder). Strona przebuduje się sama w kilka minut.', False),
+    ('Jeśli w planie jest błąd, w zakładce Actions pojawi się czerwony krzyżyk z opisem, a strona zostanie bez zmian.', False),
 ]
 ws.column_dimensions['A'].width = 110
 for i, (t, b) in enumerate(lines, 1):
