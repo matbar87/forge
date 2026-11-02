@@ -128,6 +128,14 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: [ASSET_GLOB],
+        // A new deploy must take over already-open tabs and installed apps
+        // right away (src/pwaUpdate.ts then reloads them once). The plugin
+        // only adds these itself when it injects its own registration
+        // script, which is turned off above — without them a new worker
+        // sits in "waiting" while any old tab is open, and the old worker
+        // keeps serving stale pages.
+        skipWaiting: true,
+        clientsClaim: true,
         // The event app has its own worker; keep its files out of this one.
         globIgnores: EVENT_APP_FILES,
         // The main site is a single page, precached as index.html (which
