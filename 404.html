@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>404</title>
+    <!--
+      GitHub Pages serves this file (from the repository root) for every
+      missing path. Pages that are plain .html files (e.g. foo.html, served
+      at /foo) answer 404 when opened with a trailing slash (/foo/), so the
+      script retries such URLs once without the slash. It's an external file
+      rather than inline, so a Content-Security-Policy with script-src 'self'
+      doesn't block it; '../' resolves next to the page from /foo/.
+    -->
+    <script src="../trailing-slash.js"></script>
+    <style>
+      html, body { margin: 0; height: 100%; background: #121820; color: #E3E6DB; font-family: system-ui, sans-serif; }
+      body { display: flex; align-items: center; justify-content: center; text-align: center; }
+      h1 { font-size: 4rem; margin: 0 0 .5rem; letter-spacing: .1em; }
+      p { opacity: .7; margin: 0; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>404</h1>
+      <p>Nie znaleziono strony / Page not found</p>
+    </div>
+  </body>
+</html>
