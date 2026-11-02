@@ -8,6 +8,6 @@ setupPwaAutoReload();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <App alwaysLive={document.documentElement.dataset.page === 'app'} />
   </React.StrictMode>
 );

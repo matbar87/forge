@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { publicUrl } from '../publicUrl';
 import { Language, translations } from '../translations';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
@@ -48,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
             aria-label="Kuźnia / Forge Home"
           >
             <img
-              src="./sygnet.svg"
+              src={publicUrl('sygnet.svg')}
               alt="Kuźnia Sygnet"
               className="h-11 sm:h-13 w-auto object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
             />

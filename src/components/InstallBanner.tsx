@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { publicUrl } from '../publicUrl';
 import { Language, translations } from '../translations';
 import { X, Download, Share } from 'lucide-react';
 
 interface InstallBannerProps {
   lang: Language;
   isEventLive: boolean;
+  // The standalone event app isn't tied to the event dates, so it offers
+  // installation whenever it's open.
+  ignoreDateWindow?: boolean;
 }
 
 // Visible only on mobile (sm:hidden), and only while the device clock falls
@@ -29,7 +33,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive }) => {
+export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive, ignoreDateWindow = false }) => {
   const t = translations[lang].installBanner;
 
   const [withinWindow, setWithinWindow] = useState(() => {
@@ -93,7 +97,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
   };
 
   const canOffer = !!deferredPrompt || isIOS;
-  const shouldShow = withinWindow && !installed && !dismissed && canOffer;
+  const shouldShow = (ignoreDateWindow || withinWindow) && !installed && !dismissed && canOffer;
 
   if (!shouldShow) return null;
 
@@ -116,7 +120,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
 
         <div className="flex items-center gap-3 pr-7">
           <img
-            src="./pwa-192x192.png"
+            src={publicUrl('pwa-192x192.png')}
             alt=""
             className="w-11 h-11 rounded-xl shrink-0"
           />

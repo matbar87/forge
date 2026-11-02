@@ -23,7 +23,15 @@ type View = 'site' | 'group-time' | 'info' | 'translation';
 const EVENT_START = new Date(2026, 10, 12, 0, 0, 0);
 const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
 
-export function App() {
+interface AppProps {
+  // The standalone event app (served at /app/) is the in-event view of this
+  // same site, permanently: Hero + live Schedule + the bottom tab bar, no
+  // matter what the device clock says. The schedule itself comes from the
+  // same ScheduleSection/translations as the main site, so both stay in sync.
+  alwaysLive?: boolean;
+}
+
+export function App({ alwaysLive = false }: AppProps) {
   // Initialize language preference from localStorage, or detect it from the browser/device language
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('kuznia_lang');
@@ -36,7 +44,7 @@ export function App() {
     return isPolish ? 'pl' : 'en';
   });
 
-  const isWithinEvent = (d: Date) => d >= EVENT_START && d < EVENT_END;
+  const isWithinEvent = (d: Date) => alwaysLive || (d >= EVENT_START && d < EVENT_END);
 
   const [isEventLive, setIsEventLive] = useState(() => isWithinEvent(new Date()));
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(() => new Date() >= EVENT_END);
@@ -214,8 +222,8 @@ export function App() {
         />
       )}
 
-      {/* Mobile PWA install nudge - Nov 11-14, sits above the tab bar once it appears */}
-      <InstallBanner lang={lang} isEventLive={isEventLive} />
+      {/* Mobile PWA install nudge - Nov 11-14 (always in the event app), sits above the tab bar once it appears */}
+      <InstallBanner lang={lang} isEventLive={isEventLive} ignoreDateWindow={alwaysLive} />
     </div>
   );
 }
