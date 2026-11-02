@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 3000",
-    "build": "vite build && rm -rf public_html && mkdir -p public_html && cp -r dist/* public_html/",
-    "lint": "tsc --noEmit",
+    "build": "node scripts/check-plan.mjs && vite build && rm -rf public_html && mkdir -p public_html && cp -r dist/* public_html/",
+    "lint": "node scripts/check-plan.mjs && tsc --noEmit",
     "preview": "vite preview --host 0.0.0.0 --port 3000"
   },
   "dependencies": {
