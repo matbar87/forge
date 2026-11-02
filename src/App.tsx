@@ -15,12 +15,10 @@ import { InstallBanner } from './components/InstallBanner';
 
 type View = 'site' | 'group-time' | 'info' | 'translation';
 
-// While the camp itself is running, the marketing/registration content stops
-// being relevant — only Hero and the live Schedule stay up. Once it's over,
-// the full site returns, but registration is closed (see isRegistrationClosed
-// below). Both are based on the viewer's own device clock (not a server
-// date), so it's also easy to test: just change the system clock.
-const EVENT_START = new Date(2026, 10, 12, 0, 0, 0);
+// The main site always shows its full content — it doesn't switch to the
+// in-event view during the camp (that lives at /app/, see alwaysLive below).
+// Only registration closes once the camp is over, based on the viewer's own
+// device clock (not a server date), so it's easy to test by changing it.
 const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
 
 interface AppProps {
@@ -44,15 +42,14 @@ export function App({ alwaysLive = false }: AppProps) {
     return isPolish ? 'pl' : 'en';
   });
 
-  const isWithinEvent = (d: Date) => alwaysLive || (d >= EVENT_START && d < EVENT_END);
-
-  const [isEventLive, setIsEventLive] = useState(() => isWithinEvent(new Date()));
+  // The in-event view (Hero + live Schedule + bottom tab bar) is a fixed
+  // property of the page, never derived from the date.
+  const isEventLive = alwaysLive;
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(() => new Date() >= EVENT_END);
 
   useEffect(() => {
     const check = () => {
       const now = new Date();
-      setIsEventLive(isWithinEvent(now));
       setIsRegistrationClosed(now >= EVENT_END);
     };
     const id = setInterval(check, 60000);
@@ -102,14 +99,6 @@ export function App({ alwaysLive = false }: AppProps) {
       window.scrollTo({ top: 0, behavior: 'auto' });
     }
   }, [view]);
-
-  // The tab bar only exists during the event; if the event window ends
-  // while someone is sitting on a tab-bar-only view, bring them back.
-  useEffect(() => {
-    if (!isEventLive && view !== 'site') {
-      setView('site');
-    }
-  }, [isEventLive, view]);
 
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
