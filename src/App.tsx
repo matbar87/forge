@@ -13,7 +13,7 @@ import { TranslationView } from './components/TranslationView';
 import { EventTabBar } from './components/EventTabBar';
 import { InstallBanner } from './components/InstallBanner';
 
-type View = 'site' | 'group-time' | 'info' | 'translation';
+type View = 'site' | 'group-time' | 'translation';
 
 // The main site always shows its full content — it doesn't switch to the
 // in-event view during the camp (that lives at /app, see alwaysLive below).
@@ -159,8 +159,9 @@ export function App({ alwaysLive = false }: AppProps) {
       <main className={`flex-1 w-full ${isEventLive ? 'pb-20' : ''}`}>
         {view === 'site' ? (
           <>
-            {/* 2. Hero with background YouTube video, logo, date & registration CTA */}
-            <Hero lang={lang} isEventLive={isEventLive} onNavigate={navigateToSection} />
+            {/* 2. Hero with background YouTube video, logo, date & registration CTA.
+                Not in the event app, which opens straight on the plan. */}
+            {!isEventLive && <Hero lang={lang} isEventLive={isEventLive} onNavigate={navigateToSection} />}
 
             {!isEventLive && (
               <>
@@ -184,9 +185,6 @@ export function App({ alwaysLive = false }: AppProps) {
         ) : view === 'group-time' ? (
           /* Czas w grupach - PIN-gated discussion questions, one per session */
           <GroupTimeView lang={lang} />
-        ) : view === 'info' ? (
-          /* Informacje - what to bring, what's provided, as its own tab during the event */
-          <PracticalInfoSection lang={lang} standalone />
         ) : (
           /* Tłumaczenie - PIN-gated link to the live PL->EN translation stream */
           <TranslationView lang={lang} />
@@ -203,7 +201,6 @@ export function App({ alwaysLive = false }: AppProps) {
           activeView={view}
           onSelectPlan={() => navigateToSection('plan')}
           onSelectGroupTime={() => setView('group-time')}
-          onSelectInfo={() => setView('info')}
           onSelectTranslation={() => setView('translation')}
         />
       )}
