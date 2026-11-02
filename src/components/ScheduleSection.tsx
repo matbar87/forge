@@ -154,16 +154,19 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Tag - No borders */}
+        {/* Section Tag - No borders. Main site only: the event app opens
+            straight on the plan, without the numbered section divider. */}
+        {!isEventLive && (
         <div className="flex items-center gap-3 mb-4">
           <span className="text-[#E3E6DB] font-mono-code text-xs font-bold tracking-widest uppercase bg-[#3E4C5E]/50 px-3 py-1 rounded-full">
             [ 03 // {t.badge} ]
           </span>
           <div className="h-0.5 bg-[#3E4C5E]/30 flex-1 rounded-full" />
         </div>
+        )}
 
         {/* Section Headline */}
-        <div className="text-center max-w-3xl mx-auto pt-16 mb-16">
+        <div className={`text-center max-w-3xl mx-auto mb-16 ${isEventLive ? '' : 'pt-16'}`}>
           <h2 className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-[#E3E6DB] uppercase leading-[0.9] mb-4">
             {t.title}
           </h2>

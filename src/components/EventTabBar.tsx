@@ -1,13 +1,12 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { CalendarDays, Users, Info, Languages } from 'lucide-react';
+import { CalendarDays, Users, Languages } from 'lucide-react';
 
 interface EventTabBarProps {
   lang: Language;
-  activeView: 'site' | 'group-time' | 'info' | 'translation';
+  activeView: 'site' | 'group-time' | 'translation';
   onSelectPlan: () => void;
   onSelectGroupTime: () => void;
-  onSelectInfo: () => void;
   onSelectTranslation: () => void;
 }
 
@@ -16,7 +15,6 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
   activeView,
   onSelectPlan,
   onSelectGroupTime,
-  onSelectInfo,
   onSelectTranslation,
 }) => {
   const t = translations[lang].nav;
@@ -36,12 +34,6 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
           <CalendarDays className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
             {t.schedule}
-          </span>
-        </button>
-        <button onClick={onSelectInfo} className={tabClass(activeView === 'info')}>
-          <Info className="w-5 h-5" />
-          <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
-            {t.tabInfo}
           </span>
         </button>
         <button onClick={onSelectGroupTime} className={tabClass(activeView === 'group-time')}>
