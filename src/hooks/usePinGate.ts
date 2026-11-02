@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 // code once unlocks all of them, since they use the same storage keys —
 // including the attempt counter and lockout, so a lockout on one view also
 // blocks the other.
-export const PIN_CODE = '2611';
+export const PIN_CODE = '2717';
 export const PIN_STORAGE_KEY = 'kuznia_pin_ok';
 
 const ATTEMPTS_KEY = 'kuznia_pin_attempts';
