@@ -42,7 +42,7 @@ const parseItemRange = (dayIndex: number, time: string): { start: Date; end: Dat
 
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventLive }) => {
   const t = translations[lang].schedule;
-  // The main site shows the simplified schedule; the event app (/app/,
+  // The main site shows the simplified schedule; the event app (/app,
   // isEventLive) shows the detailed timeline, with the "happening now"
   // highlight driven by the device clock. Both read the same translations,
   // so the plan stays in sync between the two pages.

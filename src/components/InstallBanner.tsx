@@ -5,7 +5,7 @@ import { X, Download, Share } from 'lucide-react';
 
 interface InstallBannerProps {
   lang: Language;
-  // True only in the standalone event app (/app/): it isn't tied to the
+  // True only in the standalone event app (/app): it isn't tied to the
   // event dates, so it offers installation whenever it's open, and sits
   // above the bottom tab bar.
   isEventLive: boolean;
