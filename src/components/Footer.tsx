@@ -77,7 +77,9 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
             </div>
           </div>
 
-          {/* Quick Navigation Links - Borderless */}
+          {/* Quick Navigation Links - Borderless. Main site only: in the
+              event app the bottom tab bar is the navigation. */}
+          {!isEventLive && (
           <div className="md:col-span-3 space-y-4">
             <span className="font-mono-code text-xs font-bold uppercase tracking-widest text-[#E3E6DB]/50 block">
               // {t.nav}
@@ -141,9 +143,12 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
               )}
             </ul>
           </div>
+          )}
 
           {/* Registration Quick Action & Back to Top - Borderless */}
-          <div className="md:col-span-3 space-y-4 flex flex-col items-start md:items-end">
+          <div
+            className={`${isEventLive ? 'md:col-span-6' : 'md:col-span-3'} space-y-4 flex flex-col items-start md:items-end`}
+          >
             <button
               onClick={scrollToTop}
               className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#18212C] hover:bg-[#253242] text-xs font-mono-code font-bold uppercase tracking-wider text-[#E3E6DB] shadow-lg transition-all"
