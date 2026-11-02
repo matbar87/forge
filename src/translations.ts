@@ -1,24 +1,8 @@
+import { plan } from './data/plan';
+
 export type Language = 'pl' | 'en';
 
-export interface ScheduleItem {
-  time: string;
-  title: string;
-  description?: string;
-  type?: 'session' | 'meal' | 'break' | 'activity';
-  badge?: string;
-}
-
-export interface DaySchedule {
-  date: string;
-  dayName: string;
-  theme: string;
-  items: ScheduleItem[];
-}
-
-export interface SimpleDaySchedule {
-  date: string;
-  items: ScheduleItem[];
-}
+export type { ScheduleItem, DaySchedule, SimpleDaySchedule } from './data/plan';
 
 export interface GroupSession {
   title: string;
@@ -103,113 +87,15 @@ export const translations = {
         copyLabel: 'Skopiuj adres e-mail',
       },
     },
+    // The plan itself lives in src/data/plan.json (shared by both pages).
     schedule: {
       badge: 'HARMONOGRAM',
-      title: 'Plan Wydarzenia',
-      subtitle: 'Trzy dni wyzwań, budowania relacji i dobrej zabawy.',
-      days: [
-        {
-          date: '12 Listopada (Czwartek)',
-          dayName: 'DZIEŃ 1 — ROZGRZEWANIE',
-          theme: 'Zatrzymaj się. Wejdź w ogień.',
-          items: [
-            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
-            { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
-            { time: '19:30 – 21:00', title: 'Sesja 1', type: 'session' },
-            { time: '21:00 – 21:30', title: 'Ogłoszenia', description: 'Podział na grupy', type: 'activity' },
-            { time: '21:30 – 00:00', title: 'Gra nocna', type: 'activity' },
-          ],
-        },
-        {
-          date: '13 Listopada (Piątek)',
-          dayName: 'DZIEŃ 2 — KUCIE',
-          theme: 'Pozwól się kształtować.',
-          items: [
-            { time: '8:00 – 8:45', title: 'Śniadanie', description: 'Grupa A', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Śniadanie', description: 'Grupa B', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Spotkanie dla liderów', type: 'session', badge: 'GRUPY' },
-            { time: '9:30 – 10:30', title: 'Sesja 2', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '11:30 – 12:30', title: 'Sesja 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Osobisty czas z Bogiem', type: 'break', badge: 'MODLITWA' },
-            { time: '13:00 – 13:30', title: 'Obiad', description: 'Grupa A', type: 'meal' },
-            { time: '13:30 – 14:00', title: 'Obiad', description: 'Grupa B', type: 'meal' },
-            { time: '14:00 – 17:00', title: 'Czas wolny', type: 'break' },
-            { time: '15:00 – 16:00', title: 'Warsztaty', description: 'Dla chętnych', type: 'session' },
-            { time: '17:00 – 17:45', title: 'Kolacja', description: 'Grupa A', type: 'meal' },
-            { time: '17:45 – 18:30', title: 'Kolacja', description: 'Grupa B', type: 'meal' },
-            { time: '18:30 – 20:00', title: 'Sesja 4', type: 'session' },
-            { time: '20:00 – 20:30', title: 'Czas modlitwy i usługiwania', type: 'session' },
-            { time: '20:30 – 21:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '21:30 – 00:00', title: 'Ognisko', description: 'Kiełbaski oraz grill', type: 'activity' },
-          ],
-        },
-        {
-          date: '14 Listopada (Sobota)',
-          dayName: 'DZIEŃ 3 — HARTOWANIE',
-          theme: 'Wyjedź mocniejszy.',
-          items: [
-            { time: '8:00 – 8:45', title: 'Śniadanie', description: 'Grupa A', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Śniadanie', description: 'Grupa B', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Spotkanie dla liderów', type: 'session', badge: 'GRUPY' },
-            { time: '9:30 – 10:30', title: 'Sesja 5', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '11:30 – 12:30', title: 'Sesja 6', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Czas modlitwy i usługiwania', type: 'session' },
-            { time: '12:30 – 13:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '13:30 – 14:00', title: 'Obiad', description: 'Grupa A', type: 'meal' },
-            { time: '14:00 – 14:30', title: 'Obiad', description: 'Grupa B', type: 'meal' },
-            { time: '14:30 – 16:00', title: 'Sesja 7', type: 'session' },
-            { time: '16:00', title: 'Zakończenie', type: 'session', badge: 'WYJAZD' },
-          ],
-        },
-      ],
+      title: plan.pl.title,
+      subtitle: plan.pl.subtitle,
+      days: plan.pl.szczegolowy.days,
     },
     simplifiedSchedule: {
-      days: [
-        {
-          date: '12 Listopada (Czwartek)',
-          items: [
-            { time: '16:00 – 18:00', title: 'Przyjazd / Rejestracja', description: 'Zakwaterowanie w pokojach', type: 'break', badge: 'PRZYJAZD' },
-            { time: '18:00 – 19:30', title: 'Kolacja', type: 'meal' },
-            { time: '19:30 – 21:00', title: 'Sesja 1', type: 'session' },
-            { time: '21:00 – 21:30', title: 'Ogłoszenia', description: 'Podział na grupy', type: 'activity' },
-            { time: '21:30 – 00:00', title: 'Gra nocna', type: 'activity' },
-          ],
-        },
-        {
-          date: '13 Listopada (Piątek)',
-          items: [
-            { time: '8:00 – 9:30', title: 'Śniadanie', type: 'meal' },
-            { time: '9:30 – 10:30', title: 'Sesja 2', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '11:30 – 12:30', title: 'Sesja 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Osobisty czas z Bogiem', type: 'break', badge: 'MODLITWA' },
-            { time: '13:00 – 14:00', title: 'Obiad', type: 'meal' },
-            { time: '14:00 – 17:00', title: 'Czas wolny', type: 'break' },
-            { time: '15:00 – 16:00', title: 'Warsztaty', description: 'Dla chętnych', type: 'session' },
-            { time: '17:00 – 18:30', title: 'Kolacja', type: 'meal' },
-            { time: '18:30 – 20:00', title: 'Sesja 4', type: 'session' },
-            { time: '20:00 – 20:30', title: 'Czas modlitwy i usługiwania', type: 'session' },
-            { time: '20:30 – 21:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '21:30 – 00:00', title: 'Ognisko', description: 'Kiełbaski oraz grill', type: 'activity' },
-          ],
-        },
-        {
-          date: '14 Listopada (Sobota)',
-          items: [
-            { time: '8:00 – 9:30', title: 'Śniadanie', type: 'meal' },
-            { time: '9:30 – 10:30', title: 'Sesja 5', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '11:30 – 12:30', title: 'Sesja 6', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Czas modlitwy i usługiwania', type: 'session' },
-            { time: '12:30 – 13:30', title: 'Czas w grupach', type: 'session', badge: 'GRUPY' },
-            { time: '13:30 – 14:30', title: 'Obiad', type: 'meal' },
-            { time: '14:30 – 16:00', title: 'Sesja 7', type: 'session' },
-            { time: '16:00', title: 'Zakończenie', type: 'session', badge: 'WYJAZD' },
-          ],
-        },
-      ],
+      days: plan.pl.podstawowy.days,
     },
     location: {
       badge: 'MIEJSCE',
@@ -374,113 +260,15 @@ export const translations = {
         copyLabel: 'Copy email address',
       },
     },
+    // The plan itself lives in src/data/plan.json (shared by both pages).
     schedule: {
       badge: 'AGENDA',
-      title: 'Camp Schedule',
-      subtitle: 'Three days of challenges, building relationships, and good fun.',
-      days: [
-        {
-          date: 'November 12 (Thursday)',
-          dayName: 'DAY 1 — WARMING UP',
-          theme: 'Stop. Step into the fire.',
-          items: [
-            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
-            { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
-            { time: '19:30 – 21:00', title: 'Session 1', type: 'session' },
-            { time: '21:00 – 21:30', title: 'Announcements', description: 'Group Assignments', type: 'activity' },
-            { time: '21:30 – 00:00', title: 'Night Game', type: 'activity' },
-          ],
-        },
-        {
-          date: 'November 13 (Friday)',
-          dayName: 'DAY 2 — FORGING',
-          theme: 'Let yourself be shaped.',
-          items: [
-            { time: '8:00 – 8:45', title: 'Breakfast', description: 'Group A', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Breakfast', description: 'Group B', type: 'meal' },
-            { time: '8:45 – 9:30', title: "Leaders' Meeting", type: 'session', badge: 'GROUPS' },
-            { time: '9:30 – 10:30', title: 'Session 2', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '11:30 – 12:30', title: 'Session 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Alone Time with God', type: 'break', badge: 'PRAYER' },
-            { time: '13:00 – 13:30', title: 'Lunch', description: 'Group A', type: 'meal' },
-            { time: '13:30 – 14:00', title: 'Lunch', description: 'Group B', type: 'meal' },
-            { time: '14:00 – 17:00', title: 'Free Time', type: 'break' },
-            { time: '15:00 – 16:00', title: 'Workshops', description: 'Optional', type: 'session' },
-            { time: '17:00 – 17:45', title: 'Dinner', description: 'Group A', type: 'meal' },
-            { time: '17:45 – 18:30', title: 'Dinner', description: 'Group B', type: 'meal' },
-            { time: '18:30 – 20:00', title: 'Session 4', type: 'session' },
-            { time: '20:00 – 20:30', title: 'Prayer & Ministry Time', type: 'session' },
-            { time: '20:30 – 21:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '21:30 – 00:00', title: 'Fire Pit', description: 'Sausages & grill', type: 'activity' },
-          ],
-        },
-        {
-          date: 'November 14 (Saturday)',
-          dayName: 'DAY 3 — TEMPERING',
-          theme: 'Leave stronger.',
-          items: [
-            { time: '8:00 – 8:45', title: 'Breakfast', description: 'Group A', type: 'meal' },
-            { time: '8:45 – 9:30', title: 'Breakfast', description: 'Group B', type: 'meal' },
-            { time: '8:45 – 9:30', title: "Leaders' Meeting", type: 'session', badge: 'GROUPS' },
-            { time: '9:30 – 10:30', title: 'Session 5', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '11:30 – 12:30', title: 'Session 6', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Prayer & Ministry Time', type: 'session' },
-            { time: '12:30 – 13:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '13:30 – 14:00', title: 'Lunch', description: 'Group A', type: 'meal' },
-            { time: '14:00 – 14:30', title: 'Lunch', description: 'Group B', type: 'meal' },
-            { time: '14:30 – 16:00', title: 'Session 7', type: 'session' },
-            { time: '16:00', title: 'Ending', type: 'session', badge: 'DEPARTURE' },
-          ],
-        },
-      ],
+      title: plan.en.title,
+      subtitle: plan.en.subtitle,
+      days: plan.en.szczegolowy.days,
     },
     simplifiedSchedule: {
-      days: [
-        {
-          date: 'November 12 (Thursday)',
-          items: [
-            { time: '16:00 – 18:00', title: 'Arrival / Check-in', description: 'Room check-in', type: 'break', badge: 'ARRIVAL' },
-            { time: '18:00 – 19:30', title: 'Dinner', type: 'meal' },
-            { time: '19:30 – 21:00', title: 'Session 1', type: 'session' },
-            { time: '21:00 – 21:30', title: 'Announcements', description: 'Group Assignments', type: 'activity' },
-            { time: '21:30 – 00:00', title: 'Night Game', type: 'activity' },
-          ],
-        },
-        {
-          date: 'November 13 (Friday)',
-          items: [
-            { time: '8:00 – 9:30', title: 'Breakfast', type: 'meal' },
-            { time: '9:30 – 10:30', title: 'Session 2', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '11:30 – 12:30', title: 'Session 3', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Alone Time with God', type: 'break', badge: 'PRAYER' },
-            { time: '13:00 – 14:00', title: 'Lunch', type: 'meal' },
-            { time: '14:00 – 17:00', title: 'Free Time', type: 'break' },
-            { time: '15:00 – 16:00', title: 'Workshops', description: 'Optional', type: 'session' },
-            { time: '17:00 – 18:30', title: 'Dinner', type: 'meal' },
-            { time: '18:30 – 20:00', title: 'Session 4', type: 'session' },
-            { time: '20:00 – 20:30', title: 'Prayer & Ministry Time', type: 'session' },
-            { time: '20:30 – 21:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '21:30 – 00:00', title: 'Fire Pit', description: 'Sausages & grill', type: 'activity' },
-          ],
-        },
-        {
-          date: 'November 14 (Saturday)',
-          items: [
-            { time: '8:00 – 9:30', title: 'Breakfast', type: 'meal' },
-            { time: '9:30 – 10:30', title: 'Session 5', type: 'session' },
-            { time: '10:30 – 11:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '11:30 – 12:30', title: 'Session 6', type: 'session' },
-            { time: '12:30 – 13:00', title: 'Prayer & Ministry Time', type: 'session' },
-            { time: '12:30 – 13:30', title: 'Small Group Time', type: 'session', badge: 'GROUPS' },
-            { time: '13:30 – 14:30', title: 'Lunch', type: 'meal' },
-            { time: '14:30 – 16:00', title: 'Session 7', type: 'session' },
-            { time: '16:00', title: 'Ending', type: 'session', badge: 'DEPARTURE' },
-          ],
-        },
-      ],
+      days: plan.en.podstawowy.days,
     },
     location: {
       badge: 'VENUE',
