@@ -1,4 +1,5 @@
 import React from 'react';
+import { publicUrl } from '../publicUrl';
 import { Language, translations } from '../translations';
 import { ArrowUp } from 'lucide-react';
 
@@ -32,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
           <div className="md:col-span-6 space-y-6">
             <div className="flex items-center gap-3">
               <img
-                src="./sygnet.svg"
+                src={publicUrl('sygnet.svg')}
                 alt="Kuźnia Sygnet"
                 className="h-10 w-auto object-contain"
               />
@@ -59,7 +60,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, isEventLive, onNavigate })
                 className="opacity-80 hover:opacity-100 transition-opacity"
               >
                 <img
-                  src="./kdm-logo.png"
+                  src={publicUrl('kdm-logo.png')}
                   alt="Kościół Dla Miasta Krakowa"
                   className="h-16 w-auto object-contain"
                 />

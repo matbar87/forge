@@ -1,3 +1,5 @@
+import { publicUrl } from '../publicUrl';
+
 export interface GalleryImage {
   id: number;
   url: string;
@@ -15,7 +17,7 @@ export interface GalleryImage {
 export const RETREAT_GALLERY: GalleryImage[] = [
   {
     id: 1,
-    url: './1.webp',
+    url: publicUrl('1.webp'),
     titlePl: 'Kadr 01',
     titleEn: 'Photo 01',
     categoryPl: 'Wyjazd',
@@ -24,7 +26,7 @@ export const RETREAT_GALLERY: GalleryImage[] = [
   },
   {
     id: 2,
-    url: './2.webp',
+    url: publicUrl('2.webp'),
     titlePl: 'Kadr 02',
     titleEn: 'Photo 02',
     categoryPl: 'Wyjazd',
@@ -33,7 +35,7 @@ export const RETREAT_GALLERY: GalleryImage[] = [
   },
   {
     id: 3,
-    url: './3.webp',
+    url: publicUrl('3.webp'),
     titlePl: 'Kadr 03',
     titleEn: 'Photo 03',
     categoryPl: 'Wyjazd',
@@ -42,7 +44,7 @@ export const RETREAT_GALLERY: GalleryImage[] = [
   },
   {
     id: 4,
-    url: './4.webp',
+    url: publicUrl('4.webp'),
     titlePl: 'Kadr 04',
     titleEn: 'Photo 04',
     categoryPl: 'Wyjazd',
@@ -51,7 +53,7 @@ export const RETREAT_GALLERY: GalleryImage[] = [
   },
   {
     id: 5,
-    url: './5.webp',
+    url: publicUrl('5.webp'),
     titlePl: 'Kadr 05',
     titleEn: 'Photo 05',
     categoryPl: 'Wyjazd',
@@ -60,7 +62,7 @@ export const RETREAT_GALLERY: GalleryImage[] = [
   },
   {
     id: 6,
-    url: './6.webp',
+    url: publicUrl('6.webp'),
     titlePl: 'Kadr 06',
     titleEn: 'Photo 06',
     categoryPl: 'Wyjazd',

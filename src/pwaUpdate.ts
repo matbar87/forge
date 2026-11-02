@@ -5,8 +5,20 @@
 // once when a new worker takes over, and proactively check for updates
 // (navigation-triggered checks alone can leave a long-lived open tab, or a
 // backgrounded installed PWA, stuck on an old build for a while).
+import { publicUrl } from './publicUrl';
+
 export function setupPwaAutoReload() {
-  if (!('serviceWorker' in navigator)) return;
+  // No service worker is generated in dev (`npm run dev`).
+  if (import.meta.env.DEV || !('serviceWorker' in navigator)) return;
+
+  // One service worker at the site root serves both pages (main site and
+  // the event app at /app/), so always register it there — not relative to
+  // whichever page happens to be open.
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register(publicUrl('sw.js'), { scope: publicUrl('') })
+      .catch((err) => console.error('Service worker registration failed', err));
+  });
 
   // clientsClaim() makes the very first service worker install also fire
   // 'controllerchange' — not just later updates — so reloading unconditionally

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { publicUrl } from '../publicUrl';
 import { Language, translations } from '../translations';
 import { CtaButton } from './CtaButton';
 
@@ -15,7 +16,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
   const [showVideoCover, setShowVideoCover] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const logoSrc = lang === 'pl' ? './kuznia-logo.svg' : './forge-logo.svg';
+  const logoSrc = publicUrl(lang === 'pl' ? 'kuznia-logo.svg' : 'forge-logo.svg');
   const logoAlt = lang === 'pl' ? 'Kuźnia Męski Wyjazd' : "Forge Men's Camp";
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
           onPlaying={() => setShowVideoCover(false)}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-90"
         >
-          <source src="./intro.mp4" type="video/mp4" />
+          <source src={publicUrl('intro.mp4')} type="video/mp4" />
         </video>
 
         {/* Startup Cover - A static frame shown instead of a blank background while
@@ -53,7 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
             Sits in the same layer as the video, below the darkening overlays
             below, so it gets identical treatment, and fades once video plays. */}
         <img
-          src="./2.webp"
+          src={publicUrl('2.webp')}
           alt=""
           aria-hidden="true"
           className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-700 ${
@@ -93,7 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, isEventLive, onNavigate }) => 
 
         {/* Action Buttons - No borders, refined elevation */}
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-          {/* Main Registration Button - hidden once the camp itself has started */}
+          {/* Main Registration Button - hidden in the event app (/app/) */}
           {!isEventLive && (
             <CtaButton onClick={() => onNavigate('rejestracja')}>{t.registerCta}</CtaButton>
           )}

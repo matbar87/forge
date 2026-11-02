@@ -15,15 +15,21 @@ import { InstallBanner } from './components/InstallBanner';
 
 type View = 'site' | 'group-time' | 'info' | 'translation';
 
-// While the camp itself is running, the marketing/registration content stops
-// being relevant — only Hero and the live Schedule stay up. Once it's over,
-// the full site returns, but registration is closed (see isRegistrationClosed
-// below). Both are based on the viewer's own device clock (not a server
-// date), so it's also easy to test: just change the system clock.
-const EVENT_START = new Date(2026, 10, 12, 0, 0, 0);
+// The main site always shows its full content — it doesn't switch to the
+// in-event view during the camp (that lives at /app/, see alwaysLive below).
+// Only registration closes once the camp is over, based on the viewer's own
+// device clock (not a server date), so it's easy to test by changing it.
 const EVENT_END = new Date(2026, 10, 15, 0, 0, 0);
 
-export function App() {
+interface AppProps {
+  // The standalone event app (served at /app/) is the in-event view of this
+  // same site, permanently: Hero + live Schedule + the bottom tab bar, no
+  // matter what the device clock says. The schedule itself comes from the
+  // same ScheduleSection/translations as the main site, so both stay in sync.
+  alwaysLive?: boolean;
+}
+
+export function App({ alwaysLive = false }: AppProps) {
   // Initialize language preference from localStorage, or detect it from the browser/device language
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('kuznia_lang');
@@ -36,15 +42,14 @@ export function App() {
     return isPolish ? 'pl' : 'en';
   });
 
-  const isWithinEvent = (d: Date) => d >= EVENT_START && d < EVENT_END;
-
-  const [isEventLive, setIsEventLive] = useState(() => isWithinEvent(new Date()));
+  // The in-event view (Hero + live Schedule + bottom tab bar) is a fixed
+  // property of the page, never derived from the date.
+  const isEventLive = alwaysLive;
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(() => new Date() >= EVENT_END);
 
   useEffect(() => {
     const check = () => {
       const now = new Date();
-      setIsEventLive(isWithinEvent(now));
       setIsRegistrationClosed(now >= EVENT_END);
     };
     const id = setInterval(check, 60000);
@@ -95,31 +100,20 @@ export function App() {
     }
   }, [view]);
 
-  // The tab bar only exists during the event; if the event window ends
-  // while someone is sitting on a tab-bar-only view, bring them back.
-  useEffect(() => {
-    if (!isEventLive && view !== 'site') {
-      setView('site');
-    }
-  }, [isEventLive, view]);
-
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
     localStorage.setItem('kuznia_lang', newLang);
-    // Update document title dynamically
-    document.title =
-      newLang === 'pl'
-        ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
-        : "Forge — Men's Camp | November 12 - 14";
   };
 
   useEffect(() => {
-    // Initial sync
-    document.title =
-      lang === 'pl'
-        ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
-        : "Forge — Men's Camp | November 12 - 14";
-  }, [lang]);
+    document.title = alwaysLive
+      ? lang === 'pl'
+        ? 'Kuźnia — App | 12 - 14 Listopada'
+        : 'Forge — App | November 12 - 14'
+      : lang === 'pl'
+      ? 'Kuźnia — Męski Wyjazd | 12 - 14 Listopada'
+      : "Forge — Men's Camp | November 12 - 14";
+  }, [lang, alwaysLive]);
 
   return (
     <div className="min-h-screen bg-[#121820] text-[#E3E6DB] flex flex-col relative selection:bg-[#E3E6DB] selection:text-[#121820] font-['Plus_Jakarta_Sans']">
@@ -214,7 +208,7 @@ export function App() {
         />
       )}
 
-      {/* Mobile PWA install nudge - Nov 11-14, sits above the tab bar once it appears */}
+      {/* Mobile PWA install nudge - Nov 11-14 (always in the event app), sits above the tab bar once it appears */}
       <InstallBanner lang={lang} isEventLive={isEventLive} />
     </div>
   );
