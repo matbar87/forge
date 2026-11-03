@@ -2,42 +2,25 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { Clock, Flame, Utensils, Award, Coffee } from 'lucide-react';
 import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
+import { parseLocalDateTime, visibleDays } from '../data/plan';
 
 interface ScheduleSectionProps {
   lang: Language;
   isEventLive: boolean;
 }
 
-// Fixed calendar dates behind t.days[0..2], used to default to "today's" tab
-// and to highlight whichever item is happening right now, based on the
-// viewer's own device clock.
-const EVENT_DAYS = [
-  { year: 2026, month: 11, day: 12 },
-  { year: 2026, month: 11, day: 13 },
-  { year: 2026, month: 11, day: 14 },
-];
-
 const toLocalISODate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-const getTodayEventDayIndex = (): number => {
-  const today = toLocalISODate(new Date());
-  return EVENT_DAYS.findIndex(
-    ({ year, month, day }) => `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}` === today
-  );
-};
-
-const parseItemRange = (dayIndex: number, time: string): { start: Date; end: Date } | null => {
-  const eventDay = EVENT_DAYS[dayIndex];
+// Each day carries its own calendar date (isoDate in plan.json), used to
+// default to "today's" tab and to highlight whichever item is happening
+// right now, based on the viewer's own device clock.
+const parseItemRange = (isoDate: string, time: string): { start: Date; end: Date } | null => {
   const [startStr, endStr] = time.split('–').map((s) => s.trim());
-  if (!eventDay || !startStr || !endStr) return null;
-  const [sh, sm] = startStr.split(':').map(Number);
-  const [eh, em] = endStr.split(':').map(Number);
-  if ([sh, sm, eh, em].some((n) => Number.isNaN(n))) return null;
-  return {
-    start: new Date(eventDay.year, eventDay.month - 1, eventDay.day, sh, sm),
-    end: new Date(eventDay.year, eventDay.month - 1, eventDay.day, eh, em),
-  };
+  if (!startStr || !endStr) return null;
+  const start = parseLocalDateTime(isoDate, startStr);
+  const end = parseLocalDateTime(isoDate, endStr);
+  return start && end ? { start, end } : null;
 };
 
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventLive }) => {
@@ -47,42 +30,44 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
   // highlight driven by the device clock. Both read the same translations,
   // so the plan stays in sync between the two pages.
   const detailedDays = t.days;
-  const simpleDays = translations[lang].simplifiedSchedule.days;
-  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(() => {
-    const todayIdx = getTodayEventDayIndex();
-    return todayIdx >= 0 ? todayIdx : 0;
-  });
   const [now, setNow] = useState<Date>(() => new Date());
+  // Days (and items) shown right now: the leaders' event — a "Day 0" and
+  // any leaders-only items — drops out once it's over (plan.leadersUntil).
+  const days = visibleDays(isEventLive ? detailedDays : translations[lang].simplifiedSchedule.days, now);
+  // The selection is a date, not a position, so it survives days dropping
+  // out of the list. Defaults to today (if it's one of the days), else the
+  // first day; a manual choice that's no longer listed falls back the same way.
+  const [pickedDate, setPickedDate] = useState<string | null>(null);
+  const todayDate = toLocalISODate(now);
+  const defaultDate = days.some((d) => d.isoDate === todayDate) ? todayDate : days[0]?.isoDate;
+  const selectedDate = pickedDate && days.some((d) => d.isoDate === pickedDate) ? pickedDate : defaultDate;
+  const selectedDay = days.find((d) => d.isoDate === selectedDate) ?? days[0];
+  // Day name and theme come from the detailed day with the same date (the
+  // basic plan doesn't carry its own).
+  const selectedDetail = detailedDays.find((d) => d.isoDate === selectedDay?.isoDate) ?? detailedDays[0];
   const switcherRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const headerHidden = useHeaderVisibility();
-  // Once the reader taps a day tab themselves, stop overriding their choice
-  // — only the still-on-"today" default should keep tracking the calendar.
-  const hasManuallySelectedDay = useRef(false);
 
-  // Keeps the "happening now" border current, and lets a tester watch it
-  // update live after nudging their device clock forward. Also keeps the
-  // default day tab in sync if the calendar day rolls over while the page
-  // is left open (e.g. across midnight) instead of only computing it once
-  // at mount.
+  // Keeps the "happening now" border, the default day tab (across midnight)
+  // and the leaders' cut-off current while the page is left open, and lets
+  // a tester watch it update live after nudging their device clock forward.
   useEffect(() => {
-    const id = setInterval(() => {
-      setNow(new Date());
-      if (!hasManuallySelectedDay.current) {
-        const todayIdx = getTodayEventDayIndex();
-        if (todayIdx >= 0) setSelectedDayIndex(todayIdx);
-      }
-    }, 30000);
-    return () => clearInterval(id);
+    const tick = () => setNow(new Date());
+    const id = setInterval(tick, 30000);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', tick);
+    };
   }, []);
 
   // Switching days keeps the tab bar sticky under the header, but a reader
   // who scrolled deep into a long day's items would otherwise land mid-way
   // through the newly selected day. Snap back to the top of the timeline
   // only when the click happened while already scrolled past it.
-  const handleSelectDay = (idx: number) => {
-    hasManuallySelectedDay.current = true;
-    setSelectedDayIndex(idx);
+  const handleSelectDay = (isoDate: string) => {
+    setPickedDate(isoDate);
     requestAnimationFrame(() => {
       const switcherEl = switcherRef.current;
       const timelineEl = timelineRef.current;
@@ -104,6 +89,10 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
       }
     });
   };
+
+  // check-plan.mjs requires items outside the leaders' event, so this only
+  // guards against a hand-made plan.json that skipped validation.
+  if (!selectedDay) return null;
 
   const getBadgeForType = (type?: string) => {
     switch (type) {
@@ -199,20 +188,23 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
             headerHidden ? 'top-0' : 'top-[72px] sm:top-[80px]'
           }`}
         >
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-5xl mx-auto">
-          {(isEventLive ? detailedDays : simpleDays).map((day, idx) => {
-            const isSelected = selectedDayIndex === idx;
+        <div
+          className="grid gap-2 sm:gap-4 max-w-5xl mx-auto"
+          style={{ gridTemplateColumns: `repeat(${days.length}, minmax(0, 1fr))` }}
+        >
+          {days.map((day) => {
+            const isSelected = selectedDay?.isoDate === day.isoDate;
             const weekdayLabel = day.date.includes('(') ? day.date.split('(')[1].replace(')', '') : '';
-            const dayLabel = lang === 'pl' ? `Dzień ${idx + 1}` : `Day ${idx + 1}`;
+            const dayLabel = lang === 'pl' ? `Dzień ${day.number}` : `Day ${day.number}`;
             const dateWithoutWeekday = day.date.includes('(') ? day.date.split('(')[0].trim() : day.date;
             const dayNumber = day.date.match(/\d+/)?.[0] ?? '';
             const monthWord = dateWithoutWeekday.split(' ').find((w) => !/\d/.test(w)) ?? '';
             const shortDate = `${dayNumber} ${monthWord.slice(0, 3)}`;
-            const theme = detailedDays[idx].theme;
+            const theme = detailedDays.find((d) => d.isoDate === day.isoDate)?.theme;
             return (
               <button
-                key={idx}
-                onClick={() => handleSelectDay(idx)}
+                key={day.isoDate}
+                onClick={() => handleSelectDay(day.isoDate)}
                 className={`text-center sm:text-left p-3 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 relative overflow-hidden shadow-xl ${
                   isSelected
                     ? 'bg-[#1E2937] shadow-2xl scale-[1.02]'
@@ -228,7 +220,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
                       isSelected ? 'text-[#E3E6DB]' : 'text-[#E3E6DB]/50'
                     }`}
                   >
-                    // {lang === 'pl' ? `DZIEŃ 0${idx + 1}` : `DAY 0${idx + 1}`}
+                    // {lang === 'pl' ? 'DZIEŃ' : 'DAY'} {String(day.number).padStart(2, '0')}
                   </span>
                   <span
                     className={`text-[11px] font-mono-code px-2.5 py-0.5 rounded-full ${
@@ -268,20 +260,20 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
               <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
                 <div className="flex flex-col mb-1">
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {detailedDays[selectedDayIndex].dayName}
+                    {selectedDetail.dayName}
                   </span>
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {detailedDays[selectedDayIndex].date}
+                    {selectedDay.date}
                   </span>
                 </div>
                 <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
-                  {detailedDays[selectedDayIndex].theme}
+                  {selectedDetail.theme}
                 </h3>
               </div>
 
               {/* Timeline Items - Borderless */}
               <div className="space-y-4">
-                {detailedDays[selectedDayIndex].items.map((item, itemIdx) => {
+                {selectedDay.items.map((item, itemIdx) => {
                   const typeBadge = getBadgeForType(item.type);
                   const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
 
@@ -302,7 +294,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
                     ? 'bg-[#253243] hover:bg-[#2B394C]'
                     : 'bg-[#1E2937]/70 hover:bg-[#232F3F]';
 
-                  const itemRange = parseItemRange(selectedDayIndex, item.time);
+                  const itemRange = parseItemRange(selectedDay.isoDate, item.time);
                   const isLiveNow = !!itemRange && now >= itemRange.start && now < itemRange.end;
 
                   return (
@@ -354,19 +346,19 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventL
               <div className="pb-8 mb-8 border-b border-[#3E4C5E]/30">
                 <div className="flex flex-col mb-1">
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {detailedDays[selectedDayIndex].dayName}
+                    {selectedDetail.dayName}
                   </span>
                   <span className="font-mono-code text-xs text-[#E3E6DB] uppercase font-bold tracking-widest">
-                    {simpleDays[selectedDayIndex].date}
+                    {selectedDay.date}
                   </span>
                 </div>
                 <h3 className="font-bebas text-3xl sm:text-4xl text-[#E3E6DB] tracking-wide uppercase">
-                  {detailedDays[selectedDayIndex].theme}
+                  {selectedDetail.theme}
                 </h3>
               </div>
 
               <div className="space-y-4">
-                {simpleDays[selectedDayIndex].items.map((item, itemIdx) => {
+                {selectedDay.items.map((item, itemIdx) => {
                   const typeBadge = getBadgeForType(item.type);
                   const badgeLabel = item.badge ?? (lang === 'pl' ? typeBadge.labelPl : typeBadge.labelEn);
 
