@@ -11,10 +11,6 @@ concurrency:
   group: build-public-html
   cancel-in-progress: true
 
-env:
-  PLAN_XLSX: plan/plan-wydarzenia.xlsx
-  PLAN_JSON: src/data/plan.json
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,41 +29,46 @@ jobs:
 
       - run: pip install openpyxl==3.1.5
 
-      # The plan can be edited either as the spreadsheet (plan/plan-wydarzenia.xlsx,
-      # e.g. uploaded through GitHub's "Add file > Upload files") or as
-      # src/data/plan.json. Whichever one this push changed is converted into
-      # the other, so both stay in sync. If both changed, the spreadsheet wins.
-      - name: Sync plan spreadsheet and plan.json
+      # The event plan and the Group Time questions can each be edited either
+      # as a spreadsheet in plan/ (e.g. uploaded through GitHub's "Add file >
+      # Upload files") or as the JSON in src/data/. Whichever of the two this
+      # push changed is converted into the other, so they stay in sync. If
+      # both changed, the spreadsheet wins.
+      - name: Sync spreadsheets and JSON data
         run: |
           before="${{ github.event.before }}"
           if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
-            echo "No previous commit to compare with; leaving the plan as it is."
+            echo "No previous commit to compare with; leaving the data as it is."
             exit 0
           fi
           git fetch --no-tags --depth=1 origin "$before"
           changed=$(git diff --name-only "$before" "$GITHUB_SHA")
-          if echo "$changed" | grep -qxF "$PLAN_XLSX"; then
-            echo "Spreadsheet changed: regenerating $PLAN_JSON"
-            python scripts/xlsx-to-plan.py "$PLAN_XLSX" "$PLAN_JSON"
-          elif echo "$changed" | grep -qxF "$PLAN_JSON"; then
-            echo "plan.json changed: regenerating $PLAN_XLSX"
-            python scripts/plan-to-xlsx.py "$PLAN_JSON" "$PLAN_XLSX"
-          else
-            echo "Plan unchanged."
-          fi
+          sync() { # sync <xlsx> <json> <xlsx-to-json script> <json-to-xlsx script>
+            if echo "$changed" | grep -qxF "$1"; then
+              echo "$1 changed: regenerating $2"
+              python "$3" "$1" "$2"
+            elif echo "$changed" | grep -qxF "$2"; then
+              echo "$2 changed: regenerating $1"
+              python "$4" "$2" "$1"
+            else
+              echo "$1 / $2 unchanged."
+            fi
+          }
+          sync plan/plan-wydarzenia.xlsx src/data/plan.json scripts/xlsx-to-plan.py scripts/plan-to-xlsx.py
+          sync plan/pytania-grupy.xlsx src/data/questions.json scripts/xlsx-to-questions.py scripts/questions-to-xlsx.py
 
       - run: npm ci
 
-      # Also validates plan.json (scripts/check-plan.mjs): a broken plan stops
+      # Also validates plan.json and questions.json (scripts/check-*.mjs): broken data stops
       # here, so nothing is committed and the live site keeps the last good
       # version.
       - run: npm run build
 
-      - name: Commit rebuilt public_html (and synced plan)
+      - name: Commit rebuilt public_html (and synced data)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public_html "$PLAN_JSON" "$PLAN_XLSX"
+          git add public_html src/data plan
           if git diff --cached --quiet; then
             echo "public_html is already up to date"
             exit 0

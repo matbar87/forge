@@ -1,0 +1,98 @@
+{
+  "_info": [
+    "Pytania do zakładki 'Czas w grupach' w /app (za kodem PIN).",
+    "Każdy język (pl, en) ma listę sesji: title (np. 'Sesja 1'), topic (temat), questions (lista pytań, wyświetlana jako lista numerowana).",
+    "Pusta lista pytań pokazuje komunikat 'Pytania do tej sesji pojawią się wkrótce'.",
+    "Edytować można też arkusz plan/pytania-grupy.xlsx — workflow zamieni go na ten plik."
+  ],
+  "pl": {
+    "sessions": [
+      {
+        "title": "Sesja 1",
+        "topic": "Ogień, który oczyszcza",
+        "questions": [
+          "Co dziś najbardziej cię poruszyło?",
+          "Gdzie potrzebujesz zmiany?",
+          "Dopisane na końcu"
+        ]
+      },
+      {
+        "title": "Sesja 2",
+        "topic": "Brak tematu",
+        "questions": [
+          "Pytanie do sesji 2"
+        ]
+      },
+      {
+        "title": "Sesja 3",
+        "topic": "Brak tematu",
+        "questions": []
+      },
+      {
+        "title": "Sesja 4",
+        "topic": "Brak tematu",
+        "questions": []
+      },
+      {
+        "title": "Sesja 5",
+        "topic": "Brak tematu",
+        "questions": []
+      },
+      {
+        "title": "Sesja 6",
+        "topic": "Brak tematu",
+        "questions": []
+      },
+      {
+        "title": "Sesja 7",
+        "topic": "Brak tematu",
+        "questions": []
+      }
+    ]
+  },
+  "en": {
+    "sessions": [
+      {
+        "title": "Session 1",
+        "topic": "The fire that refines",
+        "questions": [
+          "What struck you most today?",
+          "Gdzie potrzebujesz zmiany?",
+          "Added at the end"
+        ]
+      },
+      {
+        "title": "Session 2",
+        "topic": "No topic",
+        "questions": [
+          "Question for session 2"
+        ]
+      },
+      {
+        "title": "Session 3",
+        "topic": "No topic",
+        "questions": []
+      },
+      {
+        "title": "Session 4",
+        "topic": "No topic",
+        "questions": []
+      },
+      {
+        "title": "Session 5",
+        "topic": "No topic",
+        "questions": []
+      },
+      {
+        "title": "Session 6",
+        "topic": "No topic",
+        "questions": []
+      },
+      {
+        "title": "Session 7",
+        "topic": "No topic",
+        "questions": []
+      }
+    ]
+  }
+}

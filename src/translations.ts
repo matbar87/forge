@@ -1,14 +1,11 @@
 import { plan } from './data/plan';
+import { questions } from './data/questions';
 
 export type Language = 'pl' | 'en';
 
 export type { ScheduleItem, DaySchedule, SimpleDaySchedule } from './data/plan';
 
-export interface GroupSession {
-  title: string;
-  topic: string;
-  questions: string[];
-}
+export type { GroupSession } from './data/questions';
 
 export const translations = {
   pl: {
@@ -149,15 +146,8 @@ export const translations = {
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
-      sessions: [
-        { title: 'Sesja 1', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 2', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 3', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 4', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 5', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 6', topic: 'Brak tematu', questions: [] },
-        { title: 'Sesja 7', topic: 'Brak tematu', questions: [] },
-      ],
+      // The sessions and their questions live in src/data/questions.json.
+      sessions: questions.pl.sessions,
     },
     translationView: {
       title: 'Tłumaczenie',
@@ -322,15 +312,8 @@ export const translations = {
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',
       questionsComingSoon: 'Questions for this session are coming soon.',
-      sessions: [
-        { title: 'Session 1', topic: 'No topic', questions: [] },
-        { title: 'Session 2', topic: 'No topic', questions: [] },
-        { title: 'Session 3', topic: 'No topic', questions: [] },
-        { title: 'Session 4', topic: 'No topic', questions: [] },
-        { title: 'Session 5', topic: 'No topic', questions: [] },
-        { title: 'Session 6', topic: 'No topic', questions: [] },
-        { title: 'Session 7', topic: 'No topic', questions: [] },
-      ],
+      // The sessions and their questions live in src/data/questions.json.
+      sessions: questions.en.sessions,
     },
     translationView: {
       title: 'Translation',
