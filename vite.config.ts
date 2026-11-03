@@ -57,6 +57,11 @@ const ASSET_GLOB = '**/*.{js,css,html,svg,png,webp,ico,woff2}';
 // vite-plugin-pwa injects the main manifest into every page.
 const EVENT_APP_FILES = ['app.html', 'app.webmanifest', 'app-sw.js'];
 
+// The admin panel (admin.html, served at /admin) is a separate page for
+// editing the plan and questions; neither service worker caches it, and the
+// main site's files never mention it.
+const ADMIN_FILES = ['admin.html', 'assets/admin-*'];
+
 const eventAppServiceWorker = (): Plugin => {
   let outDir = 'dist';
   return {
@@ -75,10 +80,15 @@ const eventAppServiceWorker = (): Plugin => {
       if (fixed === html) throw new Error('app.html: manifest link not found');
       await writeFile(htmlPath, fixed);
 
+      // The admin panel isn't an installable app: drop the injected manifest.
+      const adminPath = resolve(outDir, 'admin.html');
+      const adminHtml = await readFile(adminPath, 'utf8');
+      await writeFile(adminPath, adminHtml.replace(/<link rel="manifest" href="[^"]*">/, ''));
+
       const { count, warnings } = await generateSW({
         globDirectory: outDir,
         globPatterns: [ASSET_GLOB, 'app.webmanifest'],
-        globIgnores: ['index.html', 'sw.js', 'workbox-*.js', 'app-sw.js', 'manifest.webmanifest'],
+        globIgnores: ['index.html', 'sw.js', 'workbox-*.js', 'app-sw.js', 'manifest.webmanifest', ...ADMIN_FILES],
         swDest: resolve(outDir, 'app-sw.js'),
         inlineWorkboxRuntime: true,
         sourcemap: false,
@@ -137,7 +147,7 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true,
         // The event app has its own worker; keep its files out of this one.
-        globIgnores: EVENT_APP_FILES,
+        globIgnores: [...EVENT_APP_FILES, ...ADMIN_FILES],
         // The main site is a single page, precached as index.html (which
         // also serves '/'). No catch-all fallback: it would otherwise hand
         // the main page to navigations elsewhere on the origin.
@@ -155,6 +165,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         app: resolve(__dirname, 'app.html'),
+        admin: resolve(__dirname, 'admin.html'),
       },
     },
   },
