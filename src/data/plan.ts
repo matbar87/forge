@@ -44,6 +44,10 @@ export const plan = planJson as unknown as {
   en: LanguagePlan;
 };
 
+/** A Date as 'YYYY-MM-DD' in the viewer's local time (the plan's isoDate format). */
+export const toLocalISODate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 // 'YYYY-MM-DD HH:MM' in the viewer's local time, like the plan's own times.
 export const parseLocalDateTime = (s: string, hhmm = '00:00'): Date | null => {
   const m = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?$/.exec(s.trim());

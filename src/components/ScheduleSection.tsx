@@ -2,15 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../translations';
 import { Clock, Flame, Utensils, Award, Coffee } from 'lucide-react';
 import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
-import { parseLocalDateTime, visibleDays } from '../data/plan';
+import { parseLocalDateTime, toLocalISODate, visibleDays } from '../data/plan';
 
 interface ScheduleSectionProps {
   lang: Language;
   isEventLive: boolean;
 }
-
-const toLocalISODate = (d: Date) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 // Each day carries its own calendar date (isoDate in plan.json), used to
 // default to "today's" tab and to highlight whichever item is happening
@@ -20,7 +17,11 @@ const parseItemRange = (isoDate: string, time: string): { start: Date; end: Date
   if (!startStr || !endStr) return null;
   const start = parseLocalDateTime(isoDate, startStr);
   const end = parseLocalDateTime(isoDate, endStr);
-  return start && end ? { start, end } : null;
+  if (!start || !end) return null;
+  // An item ending at or before its start runs past midnight (e.g.
+  // "21:30 – 00:00"): it ends on the next day.
+  if (end <= start) end.setDate(end.getDate() + 1);
+  return { start, end };
 };
 
 export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ lang, isEventLive }) => {

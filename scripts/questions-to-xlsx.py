@@ -4,30 +4,15 @@
 # The reverse is scripts/xlsx-to-questions.py.
 import json, sys
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
-from openpyxl.utils import get_column_letter
+from xlsx_style import FILLS, data_cell, header, instructions, write_source
 
-d = json.load(open(sys.argv[1], encoding='utf-8')); out = sys.argv[2]
-F = 'Arial'
-hdr_font = Font(name=F, bold=True, color='FFFFFF'); hdr_fill = PatternFill('solid', fgColor='18212C')
-body = Font(name=F)
-fills = ['F2F4EE', 'FFFFFF']
-thin = Side(style='thin', color='D0D4C8')
-
-def header(ws, cols):
-    for c, (name, width) in enumerate(cols, 1):
-        cell = ws.cell(1, c, name); cell.font = hdr_font; cell.fill = hdr_fill
-        cell.alignment = Alignment(vertical='center', wrap_text=True)
-        ws.column_dimensions[get_column_letter(c)].width = width
-    ws.row_dimensions[1].height = 30
-    ws.freeze_panes = 'A2'
+json_text = open(sys.argv[1], encoding='utf-8').read()
+d = json.loads(json_text); out = sys.argv[2]
 
 def put(ws, r, values, fill, wrap_from=2):
     for c, v in enumerate(values, 1):
-        cell = ws.cell(r, c, v if v != '' else None); cell.font = body
-        cell.fill = PatternFill('solid', fgColor=fill); cell.border = Border(bottom=thin)
-        cell.alignment = Alignment(vertical='top', wrap_text=c >= wrap_from, horizontal='center' if c < wrap_from else None)
+        data_cell(ws, r, c, v, fill, wrap=c >= wrap_from, center=c < wrap_from)
 
 wb = Workbook()
 ws = wb.active; ws.title = 'Instrukcja'
@@ -47,15 +32,13 @@ lines = [
     ('(Add file → Upload files, ta sama nazwa i folder). Strona przebuduje się sama w kilka minut.', False),
     ('Jeśli w pliku jest błąd, w zakładce Actions pojawi się czerwony krzyżyk z opisem, a strona zostanie bez zmian.', False),
 ]
-ws.column_dimensions['A'].width = 110
-for i, (t, b) in enumerate(lines, 1):
-    ws.cell(i, 1, t).font = Font(name=F, bold=b, size=14 if i == 1 else 11)
+instructions(ws, lines)
 
 pl, en = d['pl']['sessions'], d['en']['sessions']
 ws = wb.create_sheet('Sesje')
 header(ws, [('Sesja', 8), ('Temat PL', 50), ('Temat EN', 50)])
 for i, (a, b) in enumerate(zip(pl, en)):
-    put(ws, i + 2, [i + 1, a['topic'], b['topic']], fills[i % 2])
+    put(ws, i + 2, [i + 1, a['topic'], b['topic']], FILLS[i % 2])
 
 ws = wb.create_sheet('Pytania')
 header(ws, [('Sesja', 8), ('Pytanie PL', 70), ('Pytanie EN', 70)])
@@ -63,10 +46,11 @@ r = 2
 for i, (a, b) in enumerate(zip(pl, en)):
     for j, qa in enumerate(a['questions']):
         qb = b['questions'][j] if j < len(b['questions']) else ''
-        put(ws, r, [i + 1, qa, '' if qb == qa else qb], fills[i % 2]); r += 1
+        put(ws, r, [i + 1, qa, '' if qb == qa else qb], FILLS[i % 2]); r += 1
 dv = DataValidation(type='whole', operator='between', formula1='1', formula2=str(len(pl)),
                     showErrorMessage=True, errorTitle='Sesja', error='Numer sesji z zakładki Sesje')
 ws.add_data_validation(dv); dv.add(f'A2:A{r + 300}')
 
+write_source(wb, json_text)
 wb.active = 1
 wb.save(out)

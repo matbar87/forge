@@ -65,7 +65,11 @@ leaders_until = text(settings['Koniec wydarzenia dla liderów']['Wartość']) if
 if leaders_until:
     plan['leadersUntil'] = leaders_until
 day_rows = sorted(((day_number(dr['Dzień'], 'Dni'), dr) for dr in days_ws), key=lambda x: text(x[1]['Data (RRRR-MM-DD)']))
-known = {n for n, _ in day_rows}
+numbers = [n for n, _ in day_rows]
+dupes = sorted({n for n in numbers if numbers.count(n) > 1})
+if dupes:
+    sys.exit(f'Dni: numer dnia {", ".join(map(str, dupes))} występuje więcej niż raz — każdy dzień musi mieć inny numer')
+known = set(numbers)
 for lang, L in (('pl', 'PL'), ('en', 'EN')):
     plan[lang] = {'title': text(head['Tytuł'][L]), 'subtitle': text(head['Podtytuł'][L])}
     for version, sheet in (('szczegolowy', 'Plan szczegółowy'), ('podstawowy', 'Plan podstawowy')):

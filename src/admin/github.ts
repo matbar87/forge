@@ -40,7 +40,7 @@ async function request(token: string, path: string, init: RequestInit = {}) {
     // doesn't allow connecting to api.github.com.
     throw new GitHubError(
       'Brak połączenia z GitHubem. Sprawdź internet. Jeśli to się powtarza, strona może blokować połączenia z api.github.com ' +
-        '(Content-Security-Policy) — otwórz panel pod adresem matbar87.github.io/forge/public_html/admin.',
+        `(Content-Security-Policy) — otwórz panel pod adresem ${GITHUB_PAGES_ADMIN_URL}.`,
       0
     );
   }
@@ -70,11 +70,27 @@ export interface RepoFile {
   text: string;
 }
 
-/** Checks the token can write to the repo; returns the GitHub login. */
+/**
+ * Checks the token itself can write to the repo; returns the GitHub login.
+ * repo.permissions reflects the user's role, not the token's scopes, so
+ * write access is probed by creating an (unreferenced, harmless) git blob —
+ * which needs exactly the Contents: write permission saving needs.
+ */
 export async function checkAccess(token: string): Promise<string> {
-  const [user, repo] = await Promise.all([request(token, '/user').catch(() => null), request(token, `/repos/${REPO}`)]);
-  if (repo.permissions && !repo.permissions.push) {
-    throw new GitHubError('Token ma tylko odczyt — potrzebne jest uprawnienie Contents: Read and write.', 403);
+  const [user] = await Promise.all([
+    request(token, '/user').catch(() => null),
+    request(token, `/repos/${REPO}`),
+  ]);
+  try {
+    await request(token, `/repos/${REPO}/git/blobs`, {
+      method: 'POST',
+      body: JSON.stringify({ content: '', encoding: 'utf-8' }),
+    });
+  } catch (err) {
+    if (err instanceof GitHubError && (err.status === 403 || err.status === 404)) {
+      throw new GitHubError('Token ma tylko odczyt — potrzebne jest uprawnienie Contents: Read and write w repo forge.', 403);
+    }
+    throw err;
   }
   return user?.login ?? '';
 }
@@ -92,6 +108,11 @@ export async function writeFile(token: string, file: RepoFile, text: string, mes
   });
   return { sha: data.content.sha as string, commitUrl: data.commit.html_url as string };
 }
+
+// The panel's own address on GitHub Pages: a separate origin from
+// koscioldlamiasta.pl, so a remembered token isn't readable by the rest of
+// that site, and no Content-Security-Policy there blocks api.github.com.
+export const GITHUB_PAGES_ADMIN_URL = 'https://matbar87.github.io/forge/public_html/admin';
 
 export const ACTIONS_URL = `https://github.com/${REPO}/actions`;
 export const NEW_TOKEN_URL = 'https://github.com/settings/personal-access-tokens/new';
