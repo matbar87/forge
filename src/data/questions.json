@@ -9,37 +9,37 @@
     "sessions": [
       {
         "title": "Sesja 1",
-        "topic": "Brak tematu",
+        "topic": "Serce Mężczyzny",
         "questions": []
       },
       {
         "title": "Sesja 2",
-        "topic": "Brak tematu",
+        "topic": "Mamy wroga",
         "questions": []
       },
       {
         "title": "Sesja 3",
-        "topic": "Brak tematu",
+        "topic": "Zwycięstwo",
         "questions": []
       },
       {
         "title": "Sesja 4",
-        "topic": "Brak tematu",
+        "topic": "Pozer",
         "questions": []
       },
       {
         "title": "Sesja 5",
-        "topic": "Brak tematu",
+        "topic": "Rany i Uzdrowienie",
         "questions": []
       },
       {
         "title": "Sesja 6",
-        "topic": "Brak tematu",
+        "topic": "Wolność",
         "questions": []
       },
       {
         "title": "Sesja 7",
-        "topic": "Brak tematu",
+        "topic": "Większa Historia",
         "questions": []
       }
     ]
@@ -48,37 +48,37 @@
     "sessions": [
       {
         "title": "Session 1",
-        "topic": "No topic",
+        "topic": "Hearth of a Man",
         "questions": []
       },
       {
         "title": "Session 2",
-        "topic": "No topic",
+        "topic": "We have an Enemy",
         "questions": []
       },
       {
         "title": "Session 3",
-        "topic": "No topic",
+        "topic": "Victory",
         "questions": []
       },
       {
         "title": "Session 4",
-        "topic": "No topic",
+        "topic": "The Poser",
         "questions": []
       },
       {
         "title": "Session 5",
-        "topic": "No topic",
+        "topic": "Wounds and Healing",
         "questions": []
       },
       {
         "title": "Session 6",
-        "topic": "No topic",
+        "topic": "Freedom",
         "questions": []
       },
       {
         "title": "Session 7",
-        "topic": "No topic",
+        "topic": "The Larger Story",
         "questions": []
       }
     ]

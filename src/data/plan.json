@@ -6,12 +6,54 @@
     "Punkt planu: time ('9:30 – 10:30' z półpauzą albo samo '16:00'), title, opcjonalnie description, type: session | meal | break | activity, opcjonalnie badge (własna etykieta zamiast domyślnej dla typu), opcjonalnie leaders: true.",
     "leadersUntil ('RRRR-MM-DD GG:MM'): od tej chwili punkty z leaders: true znikają z planu, a dzień, w którym nie zostanie żaden punkt (np. Dzień 0), znika z przełącznika dni."
   ],
-  "leadersUntil": "2026-11-12 16:00",
+  "leadersUntil": "2026-11-12 15:30",
   "pl": {
     "title": "Plan Wydarzenia",
     "subtitle": "Trzy dni wyzwań, budowania relacji i dobrej zabawy.",
     "szczegolowy": {
       "days": [
+        {
+          "number": 0,
+          "isoDate": "2026-11-11",
+          "date": "11 Listopada (Środa)",
+          "dayName": "DZIEŃ 0 — PRZYGOTOWANIE",
+          "theme": "Dla liderów.",
+          "items": [
+            {
+              "time": "13:00 – 13:30",
+              "title": "Przyjazd / Rejestracja",
+              "description": "Zakwaterowanie w pokojach",
+              "type": "break",
+              "badge": "PRZYJAZD",
+              "leaders": true
+            },
+            {
+              "time": "13:30 – 18:00",
+              "title": "Czas wspólny",
+              "description": "Wyjazd do Ustronia, Równica",
+              "type": "activity",
+              "leaders": true
+            },
+            {
+              "time": "18:00 – 19:00",
+              "title": "Kolacja",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "19:00 – 20:00",
+              "title": "Sesja dla liderów 1",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "20:00 – 22:00",
+              "title": "Ognisko",
+              "type": "activity",
+              "leaders": true
+            }
+          ]
+        },
         {
           "number": 1,
           "isoDate": "2026-11-12",
@@ -19,6 +61,42 @@
           "dayName": "DZIEŃ 1 — ROZGRZEWANIE",
           "theme": "Zatrzymaj się. Wejdź w ogień.",
           "items": [
+            {
+              "time": "8:00 – 9:00",
+              "title": "Śniadanie",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "9:00 – 10:00",
+              "title": "Sesja dla liderów 2",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "10:00 – 10:30",
+              "title": "Sesja techniczna",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "10:30 – 13:00",
+              "title": "Czas wolny",
+              "type": "break",
+              "leaders": true
+            },
+            {
+              "time": "13:00 – 14:00",
+              "title": "Obiad",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "14:00 – 16:00",
+              "title": "Przygotowanie do Kuźni",
+              "type": "activity",
+              "leaders": true
+            },
             {
               "time": "16:00 – 18:00",
               "title": "Przyjazd / Rejestracja",
@@ -57,22 +135,22 @@
           "theme": "Pozwól się kształtować.",
           "items": [
             {
+              "time": "7:30 – 8:15",
+              "title": "Spotkanie dla liderów",
+              "type": "session",
+              "badge": "GRUPY"
+            },
+            {
               "time": "8:00 – 8:45",
-              "title": "Śniadanie",
+              "title": "Śniadanie (A)",
               "description": "Grupa A",
               "type": "meal"
             },
             {
               "time": "8:45 – 9:30",
-              "title": "Śniadanie",
+              "title": "Śniadanie (B)",
               "description": "Grupa B",
               "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Spotkanie dla liderów",
-              "type": "session",
-              "badge": "GRUPY"
             },
             {
               "time": "9:30 – 10:30",
@@ -98,13 +176,13 @@
             },
             {
               "time": "13:00 – 13:30",
-              "title": "Obiad",
+              "title": "Obiad (A)",
               "description": "Grupa A",
               "type": "meal"
             },
             {
               "time": "13:30 – 14:00",
-              "title": "Obiad",
+              "title": "Obiad (B)",
               "description": "Grupa B",
               "type": "meal"
             },
@@ -121,13 +199,13 @@
             },
             {
               "time": "17:00 – 17:45",
-              "title": "Kolacja",
+              "title": "Kolacja (A)",
               "description": "Grupa A",
               "type": "meal"
             },
             {
               "time": "17:45 – 18:30",
-              "title": "Kolacja",
+              "title": "Kolacja (B)",
               "description": "Grupa B",
               "type": "meal"
             },
@@ -163,22 +241,22 @@
           "theme": "Wyjedź mocniejszy.",
           "items": [
             {
+              "time": "7:30 – 8:15",
+              "title": "Spotkanie dla liderów",
+              "type": "session",
+              "badge": "GRUPY"
+            },
+            {
               "time": "8:00 – 8:45",
-              "title": "Śniadanie",
+              "title": "Śniadanie (A)",
               "description": "Grupa A",
               "type": "meal"
             },
             {
               "time": "8:45 – 9:30",
-              "title": "Śniadanie",
+              "title": "Śniadanie (B)",
               "description": "Grupa B",
               "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Spotkanie dla liderów",
-              "type": "session",
-              "badge": "GRUPY"
             },
             {
               "time": "9:30 – 10:30",
@@ -202,20 +280,21 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:30",
+              "time": "13:00 – 14:30",
               "title": "Czas w grupach",
+              "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
             {
               "time": "13:30 – 14:00",
-              "title": "Obiad",
+              "title": "Obiad (A)",
               "description": "Grupa A",
               "type": "meal"
             },
             {
               "time": "14:00 – 14:30",
-              "title": "Obiad",
+              "title": "Obiad (B)",
               "description": "Grupa B",
               "type": "meal"
             },
@@ -380,8 +459,9 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:30",
+              "time": "13:00 – 14:30",
               "title": "Czas w grupach",
+              "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
@@ -412,12 +492,90 @@
     "szczegolowy": {
       "days": [
         {
+          "number": 0,
+          "isoDate": "2026-11-11",
+          "date": "November 11 (Wednesday)",
+          "dayName": "DAY 0 - PREPARATION",
+          "theme": "For leaders.",
+          "items": [
+            {
+              "time": "13:00 – 13:30",
+              "title": "Arrival / Check-in",
+              "description": "Room check-in",
+              "type": "break",
+              "badge": "ARRIVAL",
+              "leaders": true
+            },
+            {
+              "time": "13:30 – 18:00",
+              "title": "Time Together",
+              "description": "Trip to Ustroń, Równica",
+              "type": "activity",
+              "leaders": true
+            },
+            {
+              "time": "18:00 – 19:00",
+              "title": "Dinner",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "19:00 – 20:00",
+              "title": "Session for Leaders 1",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "20:00 – 22:00",
+              "title": "Fire Pit",
+              "type": "activity",
+              "leaders": true
+            }
+          ]
+        },
+        {
           "number": 1,
           "isoDate": "2026-11-12",
           "date": "November 12 (Thursday)",
           "dayName": "DAY 1 — WARMING UP",
           "theme": "Stop. Step into the fire.",
           "items": [
+            {
+              "time": "8:00 – 9:00",
+              "title": "Breakfast",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "9:00 – 10:00",
+              "title": "Session for Leaders 2",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "10:00 – 10:30",
+              "title": "Technical Session",
+              "type": "session",
+              "leaders": true
+            },
+            {
+              "time": "10:30 – 13:00",
+              "title": "Free Time",
+              "type": "break",
+              "leaders": true
+            },
+            {
+              "time": "13:00 – 14:00",
+              "title": "Lunch",
+              "type": "meal",
+              "leaders": true
+            },
+            {
+              "time": "14:00 – 16:00",
+              "title": "Preparation for Camp",
+              "type": "activity",
+              "leaders": true
+            },
             {
               "time": "16:00 – 18:00",
               "title": "Arrival / Check-in",
@@ -456,6 +614,12 @@
           "theme": "Let yourself be shaped.",
           "items": [
             {
+              "time": "7:30 – 8:15",
+              "title": "Leaders' Meeting",
+              "type": "session",
+              "badge": "GROUPS"
+            },
+            {
               "time": "8:00 – 8:45",
               "title": "Breakfast",
               "description": "Group A",
@@ -466,12 +630,6 @@
               "title": "Breakfast",
               "description": "Group B",
               "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Leaders' Meeting",
-              "type": "session",
-              "badge": "GROUPS"
             },
             {
               "time": "9:30 – 10:30",
@@ -562,6 +720,12 @@
           "theme": "Leave stronger.",
           "items": [
             {
+              "time": "7:30 – 8:15",
+              "title": "Leaders' Meeting",
+              "type": "session",
+              "badge": "GROUPS"
+            },
+            {
               "time": "8:00 – 8:45",
               "title": "Breakfast",
               "description": "Group A",
@@ -572,12 +736,6 @@
               "title": "Breakfast",
               "description": "Group B",
               "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Leaders' Meeting",
-              "type": "session",
-              "badge": "GROUPS"
             },
             {
               "time": "9:30 – 10:30",
@@ -601,8 +759,9 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:30",
+              "time": "13:00 – 14:30",
               "title": "Small Group Time",
+              "description": "With a break for lunch",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -779,8 +938,9 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:30",
+              "time": "13:00 – 14:30",
               "title": "Small Group Time",
+              "description": "With a break for lunch",
               "type": "session",
               "badge": "GROUPS"
             },
