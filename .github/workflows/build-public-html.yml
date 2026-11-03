@@ -17,6 +17,9 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v4
+        with:
+          # sync-data.py compares when each spreadsheet / JSON was last changed.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -31,31 +34,12 @@ jobs:
 
       # The event plan and the Group Time questions can each be edited either
       # as a spreadsheet in plan/ (e.g. uploaded through GitHub's "Add file >
-      # Upload files") or as the JSON in src/data/. Whichever of the two this
-      # push changed is converted into the other, so they stay in sync. If
-      # both changed, the spreadsheet wins.
+      # Upload files") or as the JSON in src/data/ (e.g. in the admin panel).
+      # sync-data.py brings the two into line from the current files (not just
+      # this push, so a run cancelled by a newer push loses nothing), and stops
+      # with an error if an outdated spreadsheet would overwrite newer changes.
       - name: Sync spreadsheets and JSON data
-        run: |
-          before="${{ github.event.before }}"
-          if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
-            echo "No previous commit to compare with; leaving the data as it is."
-            exit 0
-          fi
-          git fetch --no-tags --depth=1 origin "$before"
-          changed=$(git diff --name-only "$before" "$GITHUB_SHA")
-          sync() { # sync <xlsx> <json> <xlsx-to-json script> <json-to-xlsx script>
-            if echo "$changed" | grep -qxF "$1"; then
-              echo "$1 changed: regenerating $2"
-              python "$3" "$1" "$2"
-            elif echo "$changed" | grep -qxF "$2"; then
-              echo "$2 changed: regenerating $1"
-              python "$4" "$2" "$1"
-            else
-              echo "$1 / $2 unchanged."
-            fi
-          }
-          sync plan/plan-wydarzenia.xlsx src/data/plan.json scripts/xlsx-to-plan.py scripts/plan-to-xlsx.py
-          sync plan/pytania-grupy.xlsx src/data/questions.json scripts/xlsx-to-questions.py scripts/questions-to-xlsx.py
+        run: python scripts/sync-data.py
 
       - run: npm ci
 

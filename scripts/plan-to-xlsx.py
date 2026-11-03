@@ -3,27 +3,16 @@
 # The reverse is scripts/xlsx-to-plan.py.
 import json, sys
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.styles import Alignment
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter
+from xlsx_style import BODY as body, BOLD as bold, FILLS, data_cell, header, instructions, write_source
 
-d = json.load(open(sys.argv[1], encoding='utf-8')); out = sys.argv[2]
-F = 'Arial'
-hdr_font = Font(name=F, bold=True, color='FFFFFF'); hdr_fill = PatternFill('solid', fgColor='18212C')
-body = Font(name=F); bold = Font(name=F, bold=True)
-day_fills = ['F2F4EE', 'FFFFFF', 'F2F4EE']
-thin = Side(style='thin', color='D0D4C8')
+json_text = open(sys.argv[1], encoding='utf-8').read()
+d = json.loads(json_text); out = sys.argv[2]
 TYPES = {'session': 'sesja', 'meal': 'posiłek', 'break': 'przerwa', 'activity': 'aktywność'}
 
 wb = Workbook()
-
-def header(ws, cols):
-    for c, (name, width) in enumerate(cols, 1):
-        cell = ws.cell(1, c, name); cell.font = hdr_font; cell.fill = hdr_fill
-        cell.alignment = Alignment(vertical='center', wrap_text=True)
-        ws.column_dimensions[get_column_letter(c)].width = width
-    ws.row_dimensions[1].height = 30
-    ws.freeze_panes = 'A2'
 
 def plan_sheet(ws, version):
     leaders = version == 'szczegolowy'
@@ -38,11 +27,7 @@ def plan_sheet(ws, version):
                    a.get('description', ''), b.get('description', ''), TYPES[a['type']], a.get('badge', ''), b.get('badge', '')]
             if leaders: row.append('tak' if a.get('leaders') else '')
             for c, v in enumerate(row, 1):
-                cell = ws.cell(r, c, v if v != '' else None); cell.font = body
-                cell.fill = PatternFill('solid', fgColor=day_fills[di % 3])
-                cell.border = Border(bottom=thin)
-                if c in (2, 3): cell.number_format = '@'
-                cell.alignment = Alignment(vertical='top', wrap_text=c >= 4, horizontal='center' if c <= 3 else None)
+                data_cell(ws, r, c, v, FILLS[di % 2], wrap=c >= 4, center=c <= 3, text_format=c in (2, 3))
             r += 1
     dv = DataValidation(type='list', formula1='"' + ','.join(TYPES.values()) + '"', allow_blank=False,
                         showErrorMessage=True, errorTitle='Typ', error='Wybierz: ' + ', '.join(TYPES.values()))
@@ -87,9 +72,7 @@ lines = [
     ('(Add file → Upload files, ta sama nazwa i folder). Strona przebuduje się sama w kilka minut.', False),
     ('Jeśli w planie jest błąd, w zakładce Actions pojawi się czerwony krzyżyk z opisem, a strona zostanie bez zmian.', False),
 ]
-ws.column_dimensions['A'].width = 110
-for i, (t, b) in enumerate(lines, 1):
-    c = ws.cell(i, 1, t); c.font = Font(name=F, bold=b, size=14 if i == 1 else 11)
+instructions(ws, lines)
 plan_sheet(wb.create_sheet('Plan szczegółowy'), 'szczegolowy')
 plan_sheet(wb.create_sheet('Plan podstawowy'), 'podstawowy')
 
@@ -115,5 +98,6 @@ for c, v in enumerate(['Koniec wydarzenia dla liderów', d.get('leadersUntil', '
     cell = ws.cell(2, c, v or None); cell.font = body; cell.alignment = Alignment(wrap_text=True, vertical='top')
 ws.cell(2, 2).number_format = '@'
 
+write_source(wb, json_text)
 wb.active = 1
 wb.save(out)

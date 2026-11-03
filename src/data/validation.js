@@ -35,12 +35,15 @@ export function validatePlan(plan) {
 
   const checkDays = (days, at, detailed) => {
     const seen = new Set();
+    const seenNumbers = new Set();
     days.forEach((d, i) => {
       const w = `${at}.days[${i}]`;
       if (!Number.isInteger(d.number) || d.number < 0) errors.push(`${w}.number: "${d.number}" — numer dnia (0, 1, 2, …)`);
       if (!validDate(d.isoDate)) errors.push(`${w}.isoDate: "${d.isoDate}" — oczekiwane RRRR-MM-DD`);
       if (seen.has(d.isoDate)) errors.push(`${w}.isoDate: ${d.isoDate} występuje dwa razy`);
       seen.add(d.isoDate);
+      if (seenNumbers.has(d.number)) errors.push(`${w}.number: numer dnia ${d.number} występuje dwa razy`);
+      seenNumbers.add(d.number);
       if (!isText(d.date)) errors.push(`${w}.date: brak`);
       if (detailed) for (const k of ['dayName', 'theme']) if (!isText(d[k])) errors.push(`${w}.${k}: brak`);
       checkItems(d.items, w);
@@ -64,7 +67,11 @@ export function validatePlan(plan) {
     // The basic plan takes its day name and theme from the detailed day with
     // the same date.
     const detDates = new Set(det.map((d) => d.isoDate));
-    sim.forEach((d, i) => { if (!detDates.has(d.isoDate)) errors.push(`${lang}.podstawowy.days[${i}]: brak dnia ${d.isoDate} w planie szczegółowym`); });
+    const detNumber = new Map(det.map((d) => [d.isoDate, d.number]));
+    sim.forEach((d, i) => {
+      if (!detNumber.has(d.isoDate)) errors.push(`${lang}.podstawowy.days[${i}]: brak dnia ${d.isoDate} w planie szczegółowym`);
+      else if (detNumber.get(d.isoDate) !== d.number) errors.push(`${lang}.podstawowy.days[${i}].number: ${d.number} — w planie szczegółowym ten dzień (${d.isoDate}) ma numer ${detNumber.get(d.isoDate)}`);
+    });
     for (const [v, days] of [['szczegolowy', det], ['podstawowy', sim]]) {
       if (!days.some((d) => d.items?.some((it) => !it.leaders))) errors.push(`${lang}.${v}: po zakończeniu wydarzenia liderów nie zostanie żaden punkt planu`);
     }

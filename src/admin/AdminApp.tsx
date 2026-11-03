@@ -1,7 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CalendarDays, ExternalLink, LogOut, MessageCircleQuestion, RefreshCw, Save } from 'lucide-react';
 import { validatePlan, validateQuestions } from '../data/validation.js';
-import { ACTIONS_URL, GitHubError, NEW_TOKEN_URL, REPO, checkAccess, readFile, writeFile, type RepoFile } from './github';
+import {
+  ACTIONS_URL,
+  GITHUB_PAGES_ADMIN_URL,
+  GitHubError,
+  NEW_TOKEN_URL,
+  REPO,
+  checkAccess,
+  readFile,
+  writeFile,
+  type RepoFile,
+} from './github';
 import {
   editToPlan,
   editToQuestions,
@@ -77,7 +87,11 @@ const friendlyQuestionsError = (msg: string) =>
 
 const Login: React.FC<{ onLogin: (token: string, remember: boolean) => Promise<void> }> = ({ onLogin }) => {
   const [token, setToken] = useState('');
-  const [remember, setRemember] = useState(true);
+  // Off by default: a remembered token stays in this browser until logout.
+  // On a shared origin (koscioldlamiasta.pl hosts the whole KDM site) any
+  // script on that site could read it, so suggest the github.io address.
+  const [remember, setRemember] = useState(false);
+  const sharedOrigin = !location.hostname.endsWith('github.io') && location.hostname !== 'localhost';
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const submit = async (e: React.FormEvent) => {
@@ -128,8 +142,17 @@ const Login: React.FC<{ onLogin: (token: string, remember: boolean) => Promise<v
       </label>
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-        Zapamiętaj na tym urządzeniu
+        Zapamiętaj na tym urządzeniu (tylko na własnym komputerze / telefonie)
       </label>
+      {sharedOrigin && (
+        <p className="text-xs text-[#E3E6DB]/60 bg-[#121820] rounded-xl p-3 leading-relaxed">
+          Bezpieczniej korzystać z panelu pod adresem{' '}
+          <a className="underline break-all" href={GITHUB_PAGES_ADMIN_URL}>
+            {GITHUB_PAGES_ADMIN_URL}
+          </a>
+          {' '}— token nie jest tam dostępny dla reszty strony koscioldlamiasta.pl.
+        </p>
+      )}
       {error && <p className="text-sm text-[#F2B8B5]">{error}</p>}
       <PrimaryButton type="submit" disabled={busy || !token.trim()}>
         {busy ? 'Sprawdzam…' : 'Zaloguj'}
@@ -232,19 +255,20 @@ export const AdminApp: React.FC = () => {
     setSaving(true);
     setSaveError('');
     try {
+      // Each file's new sha is stored as soon as its commit succeeds, so if
+      // the second write fails, a retry only re-sends that one (with the
+      // first file's up-to-date sha) instead of failing with a conflict.
       let url = '';
-      const next = { ...files };
       if (planDirty) {
         const r = await writeFile(token, files.plan, planText, 'Update event plan via admin panel');
-        next.plan = { ...files.plan, sha: r.sha, text: planText };
+        setFiles((f) => f && { ...f, plan: { ...f.plan, sha: r.sha, text: planText } });
         url = r.commitUrl;
       }
       if (questionsDirty) {
         const r = await writeFile(token, files.questions, questionsText, 'Update Group Time questions via admin panel');
-        next.questions = { ...files.questions, sha: r.sha, text: questionsText };
+        setFiles((f) => f && { ...f, questions: { ...f.questions, sha: r.sha, text: questionsText } });
         url = r.commitUrl;
       }
-      setFiles(next);
       setSaved({ url, at: new Date() });
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : String(err));

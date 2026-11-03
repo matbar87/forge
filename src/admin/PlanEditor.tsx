@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowDown, ArrowUp, Copy, Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
 import { BiField, Label, SmallButton, TextField, inputClass, move, toTimeInput, fromTimeInput } from './fields';
 import { ITEM_TYPES, emptyItem, newId, type EditDay, type EditItem, type EditPlan, type ItemType } from './model';
+import { toLocalISODate } from '../data/plan';
 
 type Version = 'detailed' | 'basic';
 
@@ -159,11 +160,12 @@ const DayEditor: React.FC<{
   );
 };
 
-const nextDate = (iso: string) => {
+/** The date `days` days after the given 'YYYY-MM-DD' (negative = before). */
+const shiftDate = (iso: string, days: number) => {
   const d = new Date(`${iso}T12:00`);
   if (Number.isNaN(d.getTime())) return '';
-  d.setDate(d.getDate() + 1);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  d.setDate(d.getDate() + days);
+  return toLocalISODate(d);
 };
 
 export const PlanEditor: React.FC<{ plan: EditPlan; onChange: (p: EditPlan) => void }> = ({ plan, onChange }) => {
@@ -175,12 +177,10 @@ export const PlanEditor: React.FC<{ plan: EditPlan; onChange: (p: EditPlan) => v
     const first = sortedDays[0];
     const last = sortedDays[sortedDays.length - 1];
     let number = last ? last.number + 1 : 1;
-    let isoDate = last ? nextDate(last.isoDate) : '';
+    let isoDate = last ? shiftDate(last.isoDate, 1) : '';
     if (where === 'before' && first) {
       number = Math.max(0, first.number - 1);
-      const d = new Date(`${first.isoDate}T12:00`);
-      d.setDate(d.getDate() - 1);
-      isoDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      isoDate = shiftDate(first.isoDate, -1);
     }
     const empty = { pl: '', en: '' };
     onChange({
