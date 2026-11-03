@@ -1,6 +1,5 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { MessageCircleQuestion } from 'lucide-react';
 import { usePinGate } from '../hooks/usePinGate';
 import { PinEntryCard } from './PinEntryCard';
 
@@ -44,14 +43,16 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
                 </div>
 
                 {session.questions.length > 0 ? (
-                  <ul className="space-y-3">
+                  <ol className="space-y-3">
                     {session.questions.map((q, qIdx) => (
                       <li key={qIdx} className="flex items-start gap-3">
-                        <MessageCircleQuestion className="w-4 h-4 text-[#E3E6DB]/50 shrink-0 mt-1" />
+                        <span className="shrink-0 w-6 h-6 mt-0.5 rounded-full bg-[#253242] text-[#E3E6DB]/80 font-mono-code text-[11px] font-bold flex items-center justify-center">
+                          {qIdx + 1}
+                        </span>
                         <span className="text-sm text-[#E3E6DB]/85 leading-relaxed">{q}</span>
                       </li>
                     ))}
-                  </ul>
+                  </ol>
                 ) : (
                   <p className="text-sm text-[#E3E6DB]/50 italic">{t.questionsComingSoon}</p>
                 )}
