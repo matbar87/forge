@@ -2,16 +2,19 @@
   "_info": [
     "Plan wydarzenia Kuźnia / Forge — jedyne źródło planu dla strony głównej i /app.",
     "Każdy język (pl, en) ma: title/subtitle (nagłówek sekcji), 'szczegolowy' (plan w /app) i 'podstawowy' (plan na stronie głównej).",
-    "Dni w obu wersjach idą w tej samej kolejności (dzień 1, 2, 3). Nazwa dnia (dayName) i motyw (theme) są tylko w wersji szczegółowej i są używane w obu.",
-    "Punkt planu: time ('9:30 – 10:30' z półpauzą albo samo '16:00'), title, opcjonalnie description, type: session | meal | break | activity, opcjonalnie badge (własna etykieta zamiast domyślnej dla typu).",
-    "W /app punkt jest podświetlany jako 'trwa teraz' na podstawie godzin z 'time' i daty dnia (12-14 listopada 2026)."
+    "Dzień: number (numer na przełączniku, np. 0, 1, 2, 3), isoDate (data RRRR-MM-DD, wg niej działa domyślny wybór dnia i podświetlenie 'trwa teraz'), date (data do wyświetlenia), w wersji szczegółowej też dayName i theme (używane też przez wersję podstawową dla dnia o tej samej dacie).",
+    "Punkt planu: time ('9:30 – 10:30' z półpauzą albo samo '16:00'), title, opcjonalnie description, type: session | meal | break | activity, opcjonalnie badge (własna etykieta zamiast domyślnej dla typu), opcjonalnie leaders: true.",
+    "leadersUntil ('RRRR-MM-DD GG:MM'): od tej chwili punkty z leaders: true znikają z planu, a dzień, w którym nie zostanie żaden punkt (np. Dzień 0), znika z przełącznika dni."
   ],
+  "leadersUntil": "2026-11-12 16:00",
   "pl": {
     "title": "Plan Wydarzenia",
     "subtitle": "Trzy dni wyzwań, budowania relacji i dobrej zabawy.",
     "szczegolowy": {
       "days": [
         {
+          "number": 1,
+          "isoDate": "2026-11-12",
           "date": "12 Listopada (Czwartek)",
           "dayName": "DZIEŃ 1 — ROZGRZEWANIE",
           "theme": "Zatrzymaj się. Wejdź w ogień.",
@@ -47,6 +50,8 @@
           ]
         },
         {
+          "number": 2,
+          "isoDate": "2026-11-13",
           "date": "13 Listopada (Piątek)",
           "dayName": "DZIEŃ 2 — KUCIE",
           "theme": "Pozwól się kształtować.",
@@ -151,6 +156,8 @@
           ]
         },
         {
+          "number": 3,
+          "isoDate": "2026-11-14",
           "date": "14 Listopada (Sobota)",
           "dayName": "DZIEŃ 3 — HARTOWANIE",
           "theme": "Wyjedź mocniejszy.",
@@ -230,6 +237,8 @@
     "podstawowy": {
       "days": [
         {
+          "number": 1,
+          "isoDate": "2026-11-12",
           "date": "12 Listopada (Czwartek)",
           "items": [
             {
@@ -263,6 +272,8 @@
           ]
         },
         {
+          "number": 2,
+          "isoDate": "2026-11-13",
           "date": "13 Listopada (Piątek)",
           "items": [
             {
@@ -338,6 +349,8 @@
           ]
         },
         {
+          "number": 3,
+          "isoDate": "2026-11-14",
           "date": "14 Listopada (Sobota)",
           "items": [
             {
@@ -399,6 +412,8 @@
     "szczegolowy": {
       "days": [
         {
+          "number": 1,
+          "isoDate": "2026-11-12",
           "date": "November 12 (Thursday)",
           "dayName": "DAY 1 — WARMING UP",
           "theme": "Stop. Step into the fire.",
@@ -434,6 +449,8 @@
           ]
         },
         {
+          "number": 2,
+          "isoDate": "2026-11-13",
           "date": "November 13 (Friday)",
           "dayName": "DAY 2 — FORGING",
           "theme": "Let yourself be shaped.",
@@ -538,6 +555,8 @@
           ]
         },
         {
+          "number": 3,
+          "isoDate": "2026-11-14",
           "date": "November 14 (Saturday)",
           "dayName": "DAY 3 — TEMPERING",
           "theme": "Leave stronger.",
@@ -617,6 +636,8 @@
     "podstawowy": {
       "days": [
         {
+          "number": 1,
+          "isoDate": "2026-11-12",
           "date": "November 12 (Thursday)",
           "items": [
             {
@@ -650,6 +671,8 @@
           ]
         },
         {
+          "number": 2,
+          "isoDate": "2026-11-13",
           "date": "November 13 (Friday)",
           "items": [
             {
@@ -725,6 +748,8 @@
           ]
         },
         {
+          "number": 3,
+          "isoDate": "2026-11-14",
           "date": "November 14 (Saturday)",
           "items": [
             {
