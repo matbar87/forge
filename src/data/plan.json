@@ -20,7 +20,7 @@
           "theme": "Dla liderów.",
           "items": [
             {
-              "time": "13:00 – 13:30",
+              "time": "12:30 – 13:00",
               "title": "Przyjazd / Rejestracja",
               "description": "Zakwaterowanie w pokojach",
               "type": "break",
@@ -28,14 +28,14 @@
               "leaders": true
             },
             {
-              "time": "13:30 – 18:00",
+              "time": "13:00 – 18:15",
               "title": "Czas wspólny",
               "description": "Wyjazd do Ustronia, Równica",
               "type": "activity",
               "leaders": true
             },
             {
-              "time": "18:00 – 19:00",
+              "time": "18:15 – 19:00",
               "title": "Kolacja",
               "type": "meal",
               "leaders": true
@@ -62,31 +62,31 @@
           "theme": "Zatrzymaj się. Wejdź w ogień.",
           "items": [
             {
-              "time": "8:00 – 9:00",
+              "time": "8:30 – 9:15",
               "title": "Śniadanie",
               "type": "meal",
               "leaders": true
             },
             {
-              "time": "9:00 – 10:00",
+              "time": "9:30 – 10:30",
               "title": "Sesja dla liderów 2",
               "type": "session",
               "leaders": true
             },
             {
-              "time": "10:00 – 10:30",
+              "time": "10:30 – 11:00",
               "title": "Sesja techniczna",
               "type": "session",
               "leaders": true
             },
             {
-              "time": "10:30 – 13:00",
-              "title": "Czas wolny",
+              "time": "11:00 – 13:15",
+              "title": "Czas wolny / Przygotowania",
               "type": "break",
               "leaders": true
             },
             {
-              "time": "13:00 – 14:00",
+              "time": "13:15 – 14:00",
               "title": "Obiad",
               "type": "meal",
               "leaders": true
@@ -98,30 +98,30 @@
               "leaders": true
             },
             {
-              "time": "16:00 – 18:00",
+              "time": "16:00 – 18:15",
               "title": "Przyjazd / Rejestracja",
               "description": "Zakwaterowanie w pokojach",
               "type": "break",
               "badge": "PRZYJAZD"
             },
             {
-              "time": "18:00 – 19:30",
+              "time": "18:15 – 19:00",
               "title": "Kolacja",
               "type": "meal"
             },
             {
-              "time": "19:30 – 21:00",
+              "time": "19:00 – 20:30",
               "title": "Sesja 1",
               "type": "session"
             },
             {
-              "time": "21:00 – 21:30",
+              "time": "20:30 – 20:45",
               "title": "Ogłoszenia",
               "description": "Podział na grupy",
               "type": "activity"
             },
             {
-              "time": "21:30 – 00:00",
+              "time": "20:45 – 23:30",
               "title": "Gra nocna",
               "type": "activity"
             }
@@ -135,21 +135,14 @@
           "theme": "Pozwól się kształtować.",
           "items": [
             {
-              "time": "7:30 – 8:15",
+              "time": "7:45 – 8:30",
               "title": "Spotkanie dla liderów",
               "type": "session",
               "badge": "GRUPY"
             },
             {
-              "time": "8:00 – 8:45",
-              "title": "Śniadanie (A)",
-              "description": "Grupa A",
-              "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Śniadanie (B)",
-              "description": "Grupa B",
+              "time": "8:30 – 9:15",
+              "title": "Śniadanie",
               "type": "meal"
             },
             {
@@ -169,21 +162,14 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:00",
+              "time": "12:30 – 13:15",
               "title": "Osobisty czas z Bogiem",
               "type": "break",
               "badge": "MODLITWA"
             },
             {
-              "time": "13:00 – 13:30",
-              "title": "Obiad (A)",
-              "description": "Grupa A",
-              "type": "meal"
-            },
-            {
-              "time": "13:30 – 14:00",
-              "title": "Obiad (B)",
-              "description": "Grupa B",
+              "time": "13:15 – 14:00",
+              "title": "Obiad",
               "type": "meal"
             },
             {
@@ -198,15 +184,8 @@
               "type": "session"
             },
             {
-              "time": "17:00 – 17:45",
-              "title": "Kolacja (A)",
-              "description": "Grupa A",
-              "type": "meal"
-            },
-            {
-              "time": "17:45 – 18:30",
-              "title": "Kolacja (B)",
-              "description": "Grupa B",
+              "time": "17:30 – 18:15",
+              "title": "Kolacja",
               "type": "meal"
             },
             {
@@ -241,21 +220,14 @@
           "theme": "Wyjedź mocniejszy.",
           "items": [
             {
-              "time": "7:30 – 8:15",
+              "time": "7:45 – 8:30",
               "title": "Spotkanie dla liderów",
               "type": "session",
               "badge": "GRUPY"
             },
             {
-              "time": "8:00 – 8:45",
-              "title": "Śniadanie (A)",
-              "description": "Grupa A",
-              "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Śniadanie (B)",
-              "description": "Grupa B",
+              "time": "8:30 – 9:15",
+              "title": "Śniadanie",
               "type": "meal"
             },
             {
@@ -280,31 +252,24 @@
               "type": "session"
             },
             {
-              "time": "13:00 – 14:30",
+              "time": "13:00 – 14:00",
               "title": "Czas w grupach",
               "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
             {
-              "time": "13:30 – 14:00",
-              "title": "Obiad (A)",
-              "description": "Grupa A",
+              "time": "14:00 – 14:45",
+              "title": "Obiad",
               "type": "meal"
             },
             {
-              "time": "14:00 – 14:30",
-              "title": "Obiad (B)",
-              "description": "Grupa B",
-              "type": "meal"
-            },
-            {
-              "time": "14:30 – 16:00",
+              "time": "15:00 – 16:30",
               "title": "Sesja 7",
               "type": "session"
             },
             {
-              "time": "16:00",
+              "time": "16:30",
               "title": "Zakończenie",
               "type": "session",
               "badge": "WYJAZD"
@@ -321,30 +286,30 @@
           "date": "12 Listopada (Czwartek)",
           "items": [
             {
-              "time": "16:00 – 18:00",
+              "time": "16:00 – 18:15",
               "title": "Przyjazd / Rejestracja",
               "description": "Zakwaterowanie w pokojach",
               "type": "break",
               "badge": "PRZYJAZD"
             },
             {
-              "time": "18:00 – 19:30",
+              "time": "18:15 – 19:00",
               "title": "Kolacja",
               "type": "meal"
             },
             {
-              "time": "19:30 – 21:00",
+              "time": "19:00 – 20:30",
               "title": "Sesja 1",
               "type": "session"
             },
             {
-              "time": "21:00 – 21:30",
+              "time": "20:30 – 20:45",
               "title": "Ogłoszenia",
               "description": "Podział na grupy",
               "type": "activity"
             },
             {
-              "time": "21:30 – 00:00",
+              "time": "20:45 – 23:30",
               "title": "Gra nocna",
               "type": "activity"
             }
@@ -356,7 +321,7 @@
           "date": "13 Listopada (Piątek)",
           "items": [
             {
-              "time": "8:00 – 9:30",
+              "time": "8:30 – 9:15",
               "title": "Śniadanie",
               "type": "meal"
             },
@@ -377,13 +342,13 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:00",
+              "time": "12:30 – 13:15",
               "title": "Osobisty czas z Bogiem",
               "type": "break",
               "badge": "MODLITWA"
             },
             {
-              "time": "13:00 – 14:00",
+              "time": "13:15 – 14:00",
               "title": "Obiad",
               "type": "meal"
             },
@@ -399,7 +364,7 @@
               "type": "session"
             },
             {
-              "time": "17:00 – 18:30",
+              "time": "17:30 – 18:15",
               "title": "Kolacja",
               "type": "meal"
             },
@@ -433,7 +398,7 @@
           "date": "14 Listopada (Sobota)",
           "items": [
             {
-              "time": "8:00 – 9:30",
+              "time": "8:30 – 9:15",
               "title": "Śniadanie",
               "type": "meal"
             },
@@ -459,24 +424,24 @@
               "type": "session"
             },
             {
-              "time": "13:00 – 14:30",
+              "time": "13:00 – 14:00",
               "title": "Czas w grupach",
               "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
             {
-              "time": "13:30 – 14:30",
+              "time": "14:00 – 14:45",
               "title": "Obiad",
               "type": "meal"
             },
             {
-              "time": "14:30 – 16:00",
+              "time": "15:00 – 16:30",
               "title": "Sesja 7",
               "type": "session"
             },
             {
-              "time": "16:00",
+              "time": "16:30",
               "title": "Zakończenie",
               "type": "session",
               "badge": "WYJAZD"
@@ -499,7 +464,7 @@
           "theme": "For leaders.",
           "items": [
             {
-              "time": "13:00 – 13:30",
+              "time": "12:30 – 13:00",
               "title": "Arrival / Check-in",
               "description": "Room check-in",
               "type": "break",
@@ -507,14 +472,14 @@
               "leaders": true
             },
             {
-              "time": "13:30 – 18:00",
+              "time": "13:00 – 18:15",
               "title": "Time Together",
               "description": "Trip to Ustroń, Równica",
               "type": "activity",
               "leaders": true
             },
             {
-              "time": "18:00 – 19:00",
+              "time": "18:15 – 19:00",
               "title": "Dinner",
               "type": "meal",
               "leaders": true
@@ -541,31 +506,31 @@
           "theme": "Stop. Step into the fire.",
           "items": [
             {
-              "time": "8:00 – 9:00",
+              "time": "8:30 – 9:15",
               "title": "Breakfast",
               "type": "meal",
               "leaders": true
             },
             {
-              "time": "9:00 – 10:00",
+              "time": "9:30 – 10:30",
               "title": "Session for Leaders 2",
               "type": "session",
               "leaders": true
             },
             {
-              "time": "10:00 – 10:30",
+              "time": "10:30 – 11:00",
               "title": "Technical Session",
               "type": "session",
               "leaders": true
             },
             {
-              "time": "10:30 – 13:00",
-              "title": "Free Time",
+              "time": "11:00 – 13:15",
+              "title": "Free Time / Preparation",
               "type": "break",
               "leaders": true
             },
             {
-              "time": "13:00 – 14:00",
+              "time": "13:15 – 14:00",
               "title": "Lunch",
               "type": "meal",
               "leaders": true
@@ -577,30 +542,30 @@
               "leaders": true
             },
             {
-              "time": "16:00 – 18:00",
+              "time": "16:00 – 18:15",
               "title": "Arrival / Check-in",
               "description": "Room check-in",
               "type": "break",
               "badge": "ARRIVAL"
             },
             {
-              "time": "18:00 – 19:30",
+              "time": "18:15 – 19:00",
               "title": "Dinner",
               "type": "meal"
             },
             {
-              "time": "19:30 – 21:00",
+              "time": "19:00 – 20:30",
               "title": "Session 1",
               "type": "session"
             },
             {
-              "time": "21:00 – 21:30",
+              "time": "20:30 – 20:45",
               "title": "Announcements",
               "description": "Group Assignments",
               "type": "activity"
             },
             {
-              "time": "21:30 – 00:00",
+              "time": "20:45 – 23:30",
               "title": "Night Game",
               "type": "activity"
             }
@@ -614,21 +579,14 @@
           "theme": "Let yourself be shaped.",
           "items": [
             {
-              "time": "7:30 – 8:15",
+              "time": "7:45 – 8:30",
               "title": "Leaders' Meeting",
               "type": "session",
               "badge": "GROUPS"
             },
             {
-              "time": "8:00 – 8:45",
+              "time": "8:30 – 9:15",
               "title": "Breakfast",
-              "description": "Group A",
-              "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Breakfast",
-              "description": "Group B",
               "type": "meal"
             },
             {
@@ -648,21 +606,14 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:00",
+              "time": "12:30 – 13:15",
               "title": "Alone Time with God",
               "type": "break",
               "badge": "PRAYER"
             },
             {
-              "time": "13:00 – 13:30",
+              "time": "13:15 – 14:00",
               "title": "Lunch",
-              "description": "Group A",
-              "type": "meal"
-            },
-            {
-              "time": "13:30 – 14:00",
-              "title": "Lunch",
-              "description": "Group B",
               "type": "meal"
             },
             {
@@ -677,15 +628,8 @@
               "type": "session"
             },
             {
-              "time": "17:00 – 17:45",
+              "time": "17:30 – 18:15",
               "title": "Dinner",
-              "description": "Group A",
-              "type": "meal"
-            },
-            {
-              "time": "17:45 – 18:30",
-              "title": "Dinner",
-              "description": "Group B",
               "type": "meal"
             },
             {
@@ -720,21 +664,14 @@
           "theme": "Leave stronger.",
           "items": [
             {
-              "time": "7:30 – 8:15",
+              "time": "7:45 – 8:30",
               "title": "Leaders' Meeting",
               "type": "session",
               "badge": "GROUPS"
             },
             {
-              "time": "8:00 – 8:45",
+              "time": "8:30 – 9:15",
               "title": "Breakfast",
-              "description": "Group A",
-              "type": "meal"
-            },
-            {
-              "time": "8:45 – 9:30",
-              "title": "Breakfast",
-              "description": "Group B",
               "type": "meal"
             },
             {
@@ -759,31 +696,24 @@
               "type": "session"
             },
             {
-              "time": "13:00 – 14:30",
+              "time": "13:00 – 14:00",
               "title": "Small Group Time",
               "description": "With a break for lunch",
               "type": "session",
               "badge": "GROUPS"
             },
             {
-              "time": "13:30 – 14:00",
+              "time": "14:00 – 14:45",
               "title": "Lunch",
-              "description": "Group A",
               "type": "meal"
             },
             {
-              "time": "14:00 – 14:30",
-              "title": "Lunch",
-              "description": "Group B",
-              "type": "meal"
-            },
-            {
-              "time": "14:30 – 16:00",
+              "time": "15:00 – 16:30",
               "title": "Session 7",
               "type": "session"
             },
             {
-              "time": "16:00",
+              "time": "16:30",
               "title": "Ending",
               "type": "session",
               "badge": "DEPARTURE"
@@ -800,30 +730,30 @@
           "date": "November 12 (Thursday)",
           "items": [
             {
-              "time": "16:00 – 18:00",
+              "time": "16:00 – 18:15",
               "title": "Arrival / Check-in",
               "description": "Room check-in",
               "type": "break",
               "badge": "ARRIVAL"
             },
             {
-              "time": "18:00 – 19:30",
+              "time": "18:15 – 19:00",
               "title": "Dinner",
               "type": "meal"
             },
             {
-              "time": "19:30 – 21:00",
+              "time": "19:00 – 20:30",
               "title": "Session 1",
               "type": "session"
             },
             {
-              "time": "21:00 – 21:30",
+              "time": "20:30 – 20:45",
               "title": "Announcements",
               "description": "Group Assignments",
               "type": "activity"
             },
             {
-              "time": "21:30 – 00:00",
+              "time": "20:45 – 23:30",
               "title": "Night Game",
               "type": "activity"
             }
@@ -835,7 +765,7 @@
           "date": "November 13 (Friday)",
           "items": [
             {
-              "time": "8:00 – 9:30",
+              "time": "8:30 – 9:15",
               "title": "Breakfast",
               "type": "meal"
             },
@@ -856,13 +786,13 @@
               "type": "session"
             },
             {
-              "time": "12:30 – 13:00",
+              "time": "12:30 – 13:15",
               "title": "Alone Time with God",
               "type": "break",
               "badge": "PRAYER"
             },
             {
-              "time": "13:00 – 14:00",
+              "time": "13:15 – 14:00",
               "title": "Lunch",
               "type": "meal"
             },
@@ -878,7 +808,7 @@
               "type": "session"
             },
             {
-              "time": "17:00 – 18:30",
+              "time": "17:30 – 18:15",
               "title": "Dinner",
               "type": "meal"
             },
@@ -912,7 +842,7 @@
           "date": "November 14 (Saturday)",
           "items": [
             {
-              "time": "8:00 – 9:30",
+              "time": "8:30 – 9:15",
               "title": "Breakfast",
               "type": "meal"
             },
@@ -938,24 +868,24 @@
               "type": "session"
             },
             {
-              "time": "13:00 – 14:30",
+              "time": "13:00 – 14:00",
               "title": "Small Group Time",
               "description": "With a break for lunch",
               "type": "session",
               "badge": "GROUPS"
             },
             {
-              "time": "13:30 – 14:30",
+              "time": "14:00 – 14:45",
               "title": "Lunch",
               "type": "meal"
             },
             {
-              "time": "14:30 – 16:00",
+              "time": "15:00 – 16:30",
               "title": "Session 7",
               "type": "session"
             },
             {
-              "time": "16:00",
+              "time": "16:30",
               "title": "Ending",
               "type": "session",
               "badge": "DEPARTURE"
