@@ -254,7 +254,6 @@
             {
               "time": "13:00 – 14:00",
               "title": "Czas w grupach",
-              "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
@@ -426,7 +425,6 @@
             {
               "time": "13:00 – 14:00",
               "title": "Czas w grupach",
-              "description": "Z przerwą na obiad",
               "type": "session",
               "badge": "GRUPY"
             },
@@ -596,7 +594,7 @@
             },
             {
               "time": "10:30 – 11:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -644,7 +642,7 @@
             },
             {
               "time": "20:30 – 21:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -681,7 +679,7 @@
             },
             {
               "time": "10:30 – 11:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -697,8 +695,7 @@
             },
             {
               "time": "13:00 – 14:00",
-              "title": "Small Group Time",
-              "description": "With a break for lunch",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -776,7 +773,7 @@
             },
             {
               "time": "10:30 – 11:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -824,7 +821,7 @@
             },
             {
               "time": "20:30 – 21:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -853,7 +850,7 @@
             },
             {
               "time": "10:30 – 11:30",
-              "title": "Small Group Time",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
@@ -869,8 +866,7 @@
             },
             {
               "time": "13:00 – 14:00",
-              "title": "Small Group Time",
-              "description": "With a break for lunch",
+              "title": "Group Time",
               "type": "session",
               "badge": "GROUPS"
             },
