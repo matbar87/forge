@@ -99,7 +99,12 @@ const GroupEditor: React.FC<{
               <SmallButton title="Osoba w dół" onClick={() => setMs(move(ms, i, 1))} disabled={i === ms.length - 1}>
                 <ArrowDown className="w-3.5 h-3.5" />
               </SmallButton>
-              <SmallButton title="Usuń osobę" danger onClick={() => setMs(ms.filter((x) => x.id !== m.id))}>
+              <SmallButton title="Usuń osobę" danger onClick={() => {
+                  const who = `${m.first} ${m.last}`.trim();
+                  if (window.confirm(`Usunąć osobę${who ? ` ${who}` : ''} z grupy „${group.name || index + 1}”?`)) {
+                    setMs(ms.filter((x) => x.id !== m.id));
+                  }
+                }}>
                 <Trash2 className="w-3.5 h-3.5" />
               </SmallButton>
             </div>

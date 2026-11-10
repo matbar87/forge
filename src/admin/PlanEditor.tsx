@@ -135,7 +135,10 @@ const DayEditor: React.FC<{
                   const copy = { ...structuredClone(item), id: newId() };
                   setItems([...items.slice(0, i + 1), copy, ...items.slice(i + 1)]);
                 }}
-                onDelete={() => setItems(items.filter((x) => x.id !== item.id))}
+                onDelete={() => {
+                  const label = [item.start, item.title.pl].filter(Boolean).join(' ');
+                  if (window.confirm(`Usunąć punkt planu${label ? ` „${label}”` : ''}?`)) setItems(items.filter((x) => x.id !== item.id));
+                }}
               />
             ))}
             <div className="flex flex-wrap gap-2">
