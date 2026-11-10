@@ -64,7 +64,7 @@ const GroupEditor: React.FC<{
         {ms.map((m, i) => (
           <li
             key={m.id}
-            className={`rounded-xl p-2.5 grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[auto_1fr_1fr_130px_auto] gap-2 items-end ${
+            className={`rounded-xl p-2.5 grid grid-cols-[auto_minmax(0,1fr)_4.5rem] sm:grid-cols-[auto_minmax(0,1fr)_5rem_130px_auto] gap-2 items-end ${
               selected.has(m.id) ? 'bg-[#2A3A50] ring-1 ring-[#E3E6DB]/40' : 'bg-[#1E2937]'
             }`}
           >
@@ -77,12 +77,14 @@ const GroupEditor: React.FC<{
             />
             <TextField label="Imię" value={m.first} onChange={(first) => patch(m.id, { first })} />
             <TextField
-              label="Inicjał nazwiska"
+              label="Inicjał"
               value={m.last}
               placeholder="K."
               onChange={(v) => patch(m.id, { last: initial(v.replace(/\./g, '')) })}
             />
-            <label className="block min-w-0 col-span-2 sm:col-span-1">
+            {/* Role + buttons: their own row on a phone, plain grid cells from sm up */}
+            <div className="col-span-2 col-start-2 flex items-end gap-2 sm:contents">
+            <label className="block min-w-0 flex-1">
               <span className="block text-[10px] font-mono-code font-bold uppercase tracking-wider text-[#E3E6DB]/50 mb-1">Rola</span>
               <select className={selectClass} value={m.role} onChange={(e) => patch(m.id, { role: e.target.value as MemberRole })}>
                 <option value="">uczestnik</option>
@@ -90,7 +92,7 @@ const GroupEditor: React.FC<{
                 <option value="assistant">asystent</option>
               </select>
             </label>
-            <div className="flex gap-1 justify-end col-span-3 sm:col-span-1">
+            <div className="flex gap-1 justify-end shrink-0">
               <SmallButton title="Osoba w górę" onClick={() => setMs(move(ms, i, -1))} disabled={i === 0}>
                 <ArrowUp className="w-3.5 h-3.5" />
               </SmallButton>
@@ -100,6 +102,7 @@ const GroupEditor: React.FC<{
               <SmallButton title="Usuń osobę" danger onClick={() => setMs(ms.filter((x) => x.id !== m.id))}>
                 <Trash2 className="w-3.5 h-3.5" />
               </SmallButton>
+            </div>
             </div>
           </li>
         ))}
