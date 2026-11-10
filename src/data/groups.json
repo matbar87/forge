@@ -10,11 +10,11 @@
   "enabled": true,
   "pl": {
     "title": "Grupy",
-    "subtitle": "Podział na grupy — znajdź swoją grupę i osoby, z którymi spędzisz czas."
+    "subtitle": "Znajdź swoją grupę i sprawdź, kto jest w Twojej!"
   },
   "en": {
     "title": "Groups",
-    "subtitle": "Who is in which group — find your group and the men you will spend the time with."
+    "subtitle": "Find your group and see who's in yours!"
   },
   "groups": [
     {
