@@ -13,8 +13,10 @@ def text(v):
     if isinstance(v, float) and v.is_integer(): v = int(v)
     return ' '.join(str(v).split())
 
-def rows(ws):
+def rows(ws, need=()):
     hdr = [text(c.value) for c in ws[1]]
+    for col in need:
+        if col not in hdr: sys.exit(f'Zakładka „{ws.title}”: brak kolumny „{col}” w pierwszym wierszu (nie zmieniaj nagłówków)')
     for i, r in enumerate(ws.iter_rows(min_row=2, values_only=True), 2):
         if all(text(v) == '' for v in r): continue
         yield i, dict(zip(hdr, r))
@@ -30,18 +32,18 @@ def yes_no(v, what):
     if t in ('NIE', 'N', 'NO', 'FALSE', '0'): return False
     sys.exit(f'Ustawienia: „{what}” — wpisz TAK albo NIE (jest: "{text(v)}")')
 
-settings = {text(r['Ustawienie']): r['Wartość'] for _, r in rows(wb['Ustawienia'])}
+settings = {text(r['Ustawienie']): r['Wartość'] for _, r in rows(wb['Ustawienia'], ('Ustawienie', 'Wartość'))}
 for k in ('Strona Grupy włączona',):
     if k not in settings: sys.exit(f'Ustawienia: brak wiersza „{k}”')
 
 ROLES = {'lider': 'leader', 'leader': 'leader', 'asystent': 'assistant', 'assistant': 'assistant', '': ''}
 groups, by_key = [], {}
-for i, r in rows(wb['Grupy']):
+for i, r in rows(wb['Grupy'], ('Grupa',)):
     name = text(r['Grupa'])
     if name.lower() in by_key: sys.exit(f'Grupy, wiersz {i}: grupa „{name}” występuje dwa razy')
     by_key[name.lower()] = {'name': name, 'members': []}
     groups.append(by_key[name.lower()])
-for i, r in rows(wb['Osoby']):
+for i, r in rows(wb['Osoby'], ('Grupa', 'Inicjał nazwiska', 'Imię', 'Rola')):
     g = by_key.get(text(r['Grupa']).lower())
     if g is None: sys.exit(f'Osoby, wiersz {i}: grupa „{text(r["Grupa"])}” nie istnieje w zakładce Grupy')
     role = text(r['Rola']).lower()

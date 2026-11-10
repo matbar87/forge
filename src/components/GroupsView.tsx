@@ -9,7 +9,7 @@ interface GroupsViewProps {
   lang: Language;
 }
 
-const normalize = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').toLowerCase();
+const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l');
 
 export const GroupsView: React.FC<GroupsViewProps> = ({ lang }) => {
   const t = translations[lang].groupsView;

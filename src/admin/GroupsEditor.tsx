@@ -86,7 +86,11 @@ const GroupEditor: React.FC<{
               label="Inicjał"
               value={m.last}
               placeholder="K."
-              onChange={(v) => patch(m.id, { last: initial(v.replace(/\./g, '')) })}
+              onChange={(v) => {
+                // Deleting clears the field; typing (or overtyping a selection) keeps the last letter typed.
+                const letters = [...v.replace(/\./g, '').trim()];
+                patch(m.id, { last: (v.length < m.last.length && m.last.startsWith(v)) || !letters.length ? '' : initial(letters[letters.length - 1]) });
+              }}
             />
             {/* Role + buttons: their own row on a phone, plain grid cells from sm up */}
             <div className="col-span-2 col-start-2 flex items-end gap-2 sm:contents">
@@ -161,8 +165,13 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
   // Only people not already in the target group need room there.
   const incoming = targetGroup ? picked.filter((m) => !targetGroup.members.some((x) => x.id === m.id)) : [];
   const room = targetGroup ? MAX_GROUP_SIZE - targetGroup.members.length : 0;
+  const leadersAfter = targetGroup
+    ? targetGroup.members.filter((m) => m.role === 'leader').length + incoming.filter((m) => m.role === 'leader').length
+    : 0;
+  const tooManyLeaders = leadersAfter > MAX_GROUP_LEADERS;
+  const canMove = !!targetGroup && incoming.length > 0 && incoming.length <= room && !tooManyLeaders;
   const move_ = () => {
-    if (!targetGroup || incoming.length === 0 || incoming.length > room) return;
+    if (!canMove || !targetGroup) return;
     const ids = new Set(incoming.map((m) => m.id));
     set(
       list.map((g) =>
@@ -189,12 +198,15 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
               );
             })}
           </select>
-          <SmallButton title="Przenieś zaznaczone" onClick={move_} disabled={!targetGroup || incoming.length === 0 || incoming.length > room}>
+          <SmallButton title="Przenieś zaznaczone" onClick={move_} disabled={!canMove}>
             Przenieś
           </SmallButton>
           <SmallButton title="Odznacz wszystkich" onClick={() => setSelected(new Set())}>
             Odznacz
           </SmallButton>
+          {targetGroup && tooManyLeaders && (
+            <span className="text-xs text-[#F2B8B5]">W grupie „{targetGroup.name}” byłoby więcej niż {MAX_GROUP_LEADERS} liderów.</span>
+          )}
           {targetGroup && incoming.length > room && (
             <span className="text-xs text-[#F2B8B5]">W grupie „{targetGroup.name}” jest tylko {Math.max(room, 0)} wolnych miejsc.</span>
           )}
