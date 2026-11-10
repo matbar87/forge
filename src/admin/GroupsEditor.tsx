@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Plus, Trash2 } from 'lucide-react';
 import { MAX_GROUP_LEADERS, MAX_GROUP_SIZE } from '../data/validation.js';
 import { initial } from '../data/groups-public.js';
 import { SmallButton, TextField, move } from './fields';
@@ -32,22 +32,25 @@ const GroupEditor: React.FC<{
   onDelete: () => void;
   selected: Set<string>;
   onToggle: (id: string) => void;
-}> = ({ group, index, count, onChange, onMove, onDelete, selected, onToggle }) => {
+  open: boolean;
+  onToggleOpen: () => void;
+}> = ({ group, index, count, onChange, onMove, onDelete, selected, onToggle, open, onToggleOpen }) => {
   const ms = group.members;
   const setMs = (members: EditMember[]) => onChange({ ...group, members });
   const patch = (id: string, p: Partial<EditMember>) => setMs(ms.map((m) => (m.id === id ? { ...m, ...p } : m)));
   const full = ms.length >= MAX_GROUP_SIZE;
   const leaders = ms.filter((m) => m.role === 'leader').length;
   return (
-    <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
-      <div className="flex items-end gap-2">
-        <div className="flex-1 min-w-0">
-          <TextField label={`Grupa ${index + 1} — nazwa`} value={group.name} onChange={(name) => onChange({ ...group, name })} />
-        </div>
-        <span className={`text-xs font-mono-code pb-2 ${ms.length > MAX_GROUP_SIZE ? 'text-[#F2B8B5]' : 'text-[#E3E6DB]/50'}`}>
-          {ms.length}/{MAX_GROUP_SIZE}
-        </span>
-        <div className="flex gap-1 pb-0.5">
+    <section className="bg-[#18212C] rounded-2xl shadow-xl">
+      <div className="flex items-center gap-2 p-4 sm:p-5">
+        <button type="button" onClick={onToggleOpen} aria-expanded={open} className="flex-1 min-w-0 flex items-center gap-3 text-left">
+          {open ? <ChevronDown className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
+          <h2 className="font-bebas text-2xl tracking-wide uppercase truncate">{group.name || `Grupa ${index + 1}`}</h2>
+          <span className={`text-xs font-mono-code ml-auto shrink-0 ${ms.length > MAX_GROUP_SIZE ? 'text-[#F2B8B5]' : 'text-[#E3E6DB]/50'}`}>
+            {ms.length}/{MAX_GROUP_SIZE}
+          </span>
+        </button>
+        <div className="flex gap-1">
           <SmallButton title="Grupa w górę" onClick={() => onMove(-1)} disabled={index === 0}>
             <ArrowUp className="w-3.5 h-3.5" />
           </SmallButton>
@@ -59,6 +62,9 @@ const GroupEditor: React.FC<{
           </SmallButton>
         </div>
       </div>
+      {open && (
+        <div className="px-4 sm:px-5 pb-5 space-y-3">
+      <TextField label={`Grupa ${index + 1} — nazwa`} value={group.name} onChange={(name) => onChange({ ...group, name })} />
 
       <ol className="space-y-2">
         {ms.map((m, i) => (
@@ -122,6 +128,8 @@ const GroupEditor: React.FC<{
       >
         <Plus className="w-3.5 h-3.5" /> {full ? `Grupa pełna (${MAX_GROUP_SIZE})` : 'Dodaj osobę'}
       </SmallButton>
+        </div>
+      )}
     </section>
   );
 };
@@ -131,6 +139,15 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
   const set = (groups: EditGroup[]) => onChange({ ...data, groups });
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [target, setTarget] = useState('');
+  // Everything starts collapsed; a newly added group opens straight away.
+  const [open, setOpen] = useState<Set<string>>(new Set());
+  const allOpen = list.length > 0 && list.every((g) => open.has(g.id));
+  const toggleOpen = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
   // Drop selections of people who no longer exist (deleted / reloaded).
   const existing = new Set(list.flatMap((g) => g.members.map((m) => m.id)));
   const picked = list.flatMap((g) => g.members).filter((m) => selected.has(m.id) && existing.has(m.id));
@@ -195,6 +212,10 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
         Maksymalnie {MAX_GROUP_SIZE} osób w grupie i najwyżej {MAX_GROUP_LEADERS} liderów (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
         Zaznacz osoby polem po lewej i przenieś je do innej grupy paskiem u góry. Całość można też wgrać jako arkusz plan/grupy.xlsx na GitHubie.
       </p>
+      <SmallButton title={allOpen ? 'Zwiń wszystkie grupy' : 'Rozwiń wszystkie grupy'} onClick={() => setOpen(allOpen ? new Set() : new Set(list.map((g) => g.id)))}>
+        {allOpen ? <ChevronsDownUp className="w-3.5 h-3.5" /> : <ChevronsUpDown className="w-3.5 h-3.5" />}
+        {allOpen ? 'Zwiń wszystkie' : 'Rozwiń wszystkie'}
+      </SmallButton>
       {list.map((g, i) => (
         <GroupEditor
           key={g.id}
@@ -205,12 +226,21 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           onMove={(dir) => set(move(list, i, dir))}
           selected={selected}
           onToggle={toggle}
+          open={open.has(g.id)}
+          onToggleOpen={() => toggleOpen(g.id)}
           onDelete={() => {
             if (window.confirm(`Usunąć grupę „${g.name || i + 1}” razem z osobami?`)) set(list.filter((x) => x.id !== g.id));
           }}
         />
       ))}
-      <SmallButton title="Dodaj grupę" onClick={() => set([...list, { id: newId(), name: '', members: [] }])}>
+      <SmallButton
+        title="Dodaj grupę"
+        onClick={() => {
+          const id = newId();
+          set([...list, { id, name: '', members: [] }]);
+          setOpen((prev) => new Set(prev).add(id));
+        }}
+      >
         <Plus className="w-3.5 h-3.5" /> Dodaj grupę
       </SmallButton>
     </div>
