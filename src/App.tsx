@@ -9,11 +9,12 @@ import { LocationSection } from './components/LocationSection';
 import { PracticalInfoSection } from './components/PracticalInfoSection';
 import { Footer } from './components/Footer';
 import { GroupTimeView } from './components/GroupTimeView';
+import { GroupsView } from './components/GroupsView';
 import { TranslationView } from './components/TranslationView';
 import { EventTabBar } from './components/EventTabBar';
 import { InstallBanner } from './components/InstallBanner';
 
-type View = 'site' | 'group-time' | 'translation';
+type View = 'site' | 'group-time' | 'groups' | 'translation';
 
 // The main site always shows its full content — it doesn't switch to the
 // in-event view during the camp (that lives at /app, see alwaysLive below).
@@ -185,6 +186,9 @@ export function App({ alwaysLive = false }: AppProps) {
         ) : view === 'group-time' ? (
           /* Czas w grupach - PIN-gated discussion questions, one per session */
           <GroupTimeView lang={lang} />
+        ) : view === 'groups' ? (
+          /* Grupy - PIN-gated division into groups (people, leaders, assistants) */
+          <GroupsView lang={lang} />
         ) : (
           /* Tłumaczenie - PIN-gated link to the live PL->EN translation stream */
           <TranslationView lang={lang} />
@@ -201,6 +205,7 @@ export function App({ alwaysLive = false }: AppProps) {
           activeView={view}
           onSelectPlan={() => navigateToSection('plan')}
           onSelectGroupTime={() => setView('group-time')}
+          onSelectGroups={() => setView('groups')}
           onSelectTranslation={() => setView('translation')}
         />
       )}

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Language, translations } from '../translations';
-import { CalendarDays, Users, Languages } from 'lucide-react';
+import { CalendarDays, MessageCircleQuestion, Users, Languages } from 'lucide-react';
+import { groups } from '../data/groups';
 
 interface EventTabBarProps {
   lang: Language;
-  activeView: 'site' | 'group-time' | 'translation';
+  activeView: 'site' | 'group-time' | 'groups' | 'translation';
   onSelectPlan: () => void;
   onSelectGroupTime: () => void;
+  onSelectGroups: () => void;
   onSelectTranslation: () => void;
 }
 
@@ -15,6 +17,7 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
   activeView,
   onSelectPlan,
   onSelectGroupTime,
+  onSelectGroups,
   onSelectTranslation,
 }) => {
   const t = translations[lang].nav;
@@ -37,11 +40,20 @@ export const EventTabBar: React.FC<EventTabBarProps> = ({
           </span>
         </button>
         <button onClick={onSelectGroupTime} className={tabClass(activeView === 'group-time')}>
-          <Users className="w-5 h-5" />
+          <MessageCircleQuestion className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
             {t.groupTime}
           </span>
         </button>
+        {/* The Groups tab disappears entirely when it is switched off in the admin panel */}
+        {groups.enabled && (
+          <button onClick={onSelectGroups} className={tabClass(activeView === 'groups')}>
+            <Users className="w-5 h-5" />
+            <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">
+              {t.groups}
+            </span>
+          </button>
+        )}
         <button onClick={onSelectTranslation} className={tabClass(activeView === 'translation')}>
           <Languages className="w-5 h-5" />
           <span className="text-[11px] font-mono-code font-bold uppercase tracking-wider">

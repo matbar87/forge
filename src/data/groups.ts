@@ -1,0 +1,26 @@
+// Typed access to groups.json — the division into groups shown in the event
+// app's "Grupy" tab. Edit groups.json (or plan/grupy.xlsx, which CI converts
+// into it); scripts/check-groups.mjs validates it before every build.
+//
+// The repo is public, so surnames are never stored: `last` is an initial
+// ("B."). vite.config.ts passes the file through publicGroups()
+// (groups-public.js) first, so with "enabled": false no people at all end up
+// in the published code.
+import groupsJson from './groups.json';
+
+export interface GroupMember {
+  first: string;
+  /** Initial of the surname with a dot, e.g. "K." */
+  last: string;
+  role?: 'leader' | 'assistant';
+}
+
+export interface Group {
+  name: string;
+  members: GroupMember[];
+}
+
+export const groups = groupsJson as unknown as {
+  enabled: boolean;
+  groups: Group[];
+};

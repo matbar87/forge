@@ -103,3 +103,36 @@ export function validateQuestions(data) {
 
   return errors;
 }
+
+export const MAX_GROUP_SIZE = 12;
+
+/** @returns {string[]} error messages (Polish), empty when the data is valid */
+export function validateGroups(data) {
+  const errors = [];
+  const isText = (v) => typeof v === 'string' && v.trim() !== '';
+  if (data?.enabled !== undefined && typeof data.enabled !== 'boolean') errors.push('enabled: musi być true albo false');
+  const groups = data?.groups;
+  if (!Array.isArray(groups)) return [...errors, 'groups: musi być listą grup'];
+  const names = new Set();
+  groups.forEach((g, i) => {
+    const at = `groups[${i}]`;
+    if (!isText(g.name)) errors.push(`${at}.name: brak nazwy grupy`);
+    else if (names.has(g.name.trim().toLowerCase())) errors.push(`${at}.name: nazwa „${g.name}” występuje dwa razy`);
+    else names.add(g.name.trim().toLowerCase());
+    if (!Array.isArray(g.members)) return errors.push(`${at}.members: musi być listą`);
+    if (g.members.length > MAX_GROUP_SIZE) errors.push(`${at}.members: ${g.members.length} osób — maksymalnie ${MAX_GROUP_SIZE}`);
+    g.members.forEach((m, j) => {
+      const w = `${at}.members[${j}]`;
+      if (!isText(m.first)) errors.push(`${w}.first: brak imienia`);
+      if (!isText(m.last)) errors.push(`${w}.last: brak inicjału nazwiska`);
+      else if (!/^\p{L}\.$/u.test(m.last.trim())) {
+        errors.push(`${w}.last: „${m.last}” — repo jest publiczne, wpisz tylko inicjał nazwiska z kropką, np. „K.”`);
+      }
+      if (m.role !== undefined && m.role !== '' && !['leader', 'assistant'].includes(m.role)) {
+        errors.push(`${w}.role: „${m.role}” — dozwolone: leader, assistant albo brak`);
+      }
+    });
+    if (g.members.filter((m) => m.role === 'leader').length > 1) errors.push(`${at}.members: w grupie może być tylko jeden lider`);
+  });
+  return errors;
+}

@@ -18,7 +18,8 @@ export const translations = {
       practicalInfo: 'Informacje',
       translation: 'Tłumaczenie',
       registerBtn: 'Zarejestruj się',
-      groupTime: 'Grupy',
+      groupTime: 'Pytania',
+      groups: 'Grupy',
     },
     hero: {
       date: '12 – 14 LISTOPADA 2026',
@@ -149,6 +150,17 @@ export const translations = {
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.pl.sessions,
     },
+    groupsView: {
+      title: 'Grupy',
+      subtitle: 'Podział na grupy — znajdź swoją grupę i osoby, z którymi spędzisz czas.',
+      pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
+      pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
+      pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
+      search: 'Szukaj osoby lub grupy…',
+      noResults: 'Nikogo nie znaleziono.',
+      leader: 'Lider',
+      assistant: 'Asystent',
+    },
     translationView: {
       title: 'Tłumaczenie',
       subtitle: 'Tłumaczenie na żywo z polskiego na angielski.',
@@ -184,7 +196,8 @@ export const translations = {
       practicalInfo: 'Good to Know',
       translation: 'Translation',
       registerBtn: 'Register Now',
-      groupTime: 'Groups',
+      groupTime: 'Questions',
+      groups: 'Groups',
     },
     hero: {
       date: 'NOVEMBER 12 – 14, 2026',
@@ -314,6 +327,17 @@ export const translations = {
       questionsComingSoon: 'Questions for this session are coming soon.',
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.en.sessions,
+    },
+    groupsView: {
+      title: 'Groups',
+      subtitle: 'Who is in which group — find your group and the men you will spend the time with.',
+      pinPrompt: 'Enter the 4-digit access code',
+      pinError: 'Wrong code, try again.',
+      pinLocked: 'Too many attempts. Try again in {time}.',
+      search: 'Search for a person or group…',
+      noResults: 'No one found.',
+      leader: 'Leader',
+      assistant: 'Assistant',
     },
     translationView: {
       title: 'Translation',

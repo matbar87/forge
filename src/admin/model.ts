@@ -59,6 +59,27 @@ export interface EditQuestions {
   sessions: EditSession[];
 }
 
+export type MemberRole = '' | 'leader' | 'assistant';
+
+export interface EditMember {
+  id: string;
+  first: string;
+  last: string;
+  role: MemberRole;
+}
+
+export interface EditGroup {
+  id: string;
+  name: string;
+  members: EditMember[];
+}
+
+export interface EditGroups {
+  info: unknown;
+  enabled: boolean;
+  groups: EditGroup[];
+}
+
 let nextId = 0;
 export const newId = () => `e${Date.now().toString(36)}${(nextId++).toString(36)}`;
 
@@ -184,6 +205,30 @@ export function editToQuestions(e: EditQuestions): any {
     };
   }
   return res;
+}
+export function groupsToEdit(g: any): EditGroups {
+  return {
+    info: g._info,
+    enabled: g.enabled !== false,
+    groups: g.groups.map((x: any) => ({
+      id: newId(),
+      name: x.name,
+      members: x.members.map((m: any) => ({ id: newId(), first: m.first, last: m.last, role: m.role ?? '' })),
+    })),
+  };
+}
+
+export function editToGroups(e: EditGroups): any {
+  return {
+    _info: e.info,
+    enabled: e.enabled,
+    groups: e.groups.map((g) => ({
+      name: g.name.trim(),
+      members: g.members
+        .filter((m) => m.first.trim() || m.last.trim()) // fully empty rows are dropped
+        .map((m) => ({ first: m.first.trim(), last: m.last.trim(), ...(m.role ? { role: m.role } : {}) })),
+    })),
+  };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 

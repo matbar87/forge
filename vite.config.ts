@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { generateSW, type RuntimeCaching } from 'workbox-build';
 import { resolve } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
+import { publicGroups } from './src/data/groups-public.js';
 
 // Shared by both service workers. Each one gets its own cache names
 // (prefix), so the main site's and the event app's caches stay independent.
@@ -109,9 +110,22 @@ const eventAppServiceWorker = (): Plugin => {
   };
 };
 
+// The site must only ever get publicGroups() of groups.json (no people at all
+// when the page is switched off), so that happens here, before the file
+// reaches any bundle.
+const redactGroups = (): Plugin => ({
+  name: 'redact-groups',
+  enforce: 'pre',
+  transform(code, id) {
+    if (!id.split('?')[0].endsWith('/src/data/groups.json')) return null;
+    return { code: JSON.stringify(publicGroups(JSON.parse(code))), map: null };
+  },
+});
+
 export default defineConfig({
   base: './',
   plugins: [
+    redactGroups(),
     react(),
     tailwindcss(),
     VitePWA({
