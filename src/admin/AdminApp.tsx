@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ExternalLink, LogOut, MessageCircleQuestion, RefreshCw, Save } from 'lucide-react';
-import { validatePlan, validateQuestions } from '../data/validation.js';
+import { CalendarDays, ExternalLink, LogOut, MessageCircleQuestion, RefreshCw, Save, Users } from 'lucide-react';
+import { validateGroups, validatePlan, validateQuestions } from '../data/validation.js';
 import {
   ACTIONS_URL,
   GITHUB_PAGES_ADMIN_URL,
@@ -13,20 +13,25 @@ import {
   type RepoFile,
 } from './github';
 import {
+  editToGroups,
   editToPlan,
   editToQuestions,
+  groupsToEdit,
   planToEdit,
   questionsToEdit,
   toFileText,
+  type EditGroups,
   type EditPlan,
   type EditQuestions,
 } from './model';
 import { PlanEditor } from './PlanEditor';
 import { QuestionsEditor } from './QuestionsEditor';
+import { GroupsEditor } from './GroupsEditor';
 import { PrimaryButton, inputClass } from './fields';
 
 const PLAN_PATH = 'src/data/plan.json';
 const QUESTIONS_PATH = 'src/data/questions.json';
+const GROUPS_PATH = 'src/data/groups.json';
 const TOKEN_KEY = 'kuznia_admin_token';
 
 const storage = {
@@ -83,6 +88,13 @@ const friendlyQuestionsError = (msg: string) =>
       lang === 'en' ? ' (EN)' : ''
     }:`
   );
+const friendlyGroupsError = (data: any, msg: string) =>
+  msg.replace(/^groups\[(\d+)\](?:\.members(?:\[(\d+)\])?)?\.?(\w*):/, (_, gi, mi, f) => {
+    const g = data?.groups?.[Number(gi)];
+    const m = mi !== undefined ? g?.members?.[Number(mi)] : undefined;
+    const field = { first: ' — imię', last: ' — nazwisko', role: ' — rola', name: ' — nazwa' }[f as string] ?? '';
+    return `Grupa „${g?.name || Number(gi) + 1}”${m ? `, osoba ${Number(mi) + 1}${m.first || m.last ? ` (${m.first} ${m.last})` : ''}` : ''}${field}:`;
+  });
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 const Login: React.FC<{ onLogin: (token: string, remember: boolean) => Promise<void> }> = ({ onLogin }) => {
@@ -161,15 +173,16 @@ const Login: React.FC<{ onLogin: (token: string, remember: boolean) => Promise<v
   );
 };
 
-type Tab = 'plan' | 'questions';
+type Tab = 'plan' | 'questions' | 'groups';
 
 export const AdminApp: React.FC = () => {
   const [token, setToken] = useState(storage.get);
   const [login, setLogin] = useState('');
   const [tab, setTab] = useState<Tab>('plan');
-  const [files, setFiles] = useState<{ plan: RepoFile; questions: RepoFile } | null>(null);
+  const [files, setFiles] = useState<{ plan: RepoFile; questions: RepoFile; groups: RepoFile } | null>(null);
   const [plan, setPlan] = useState<EditPlan | null>(null);
   const [questions, setQuestions] = useState<EditQuestions | null>(null);
+  const [groups, setGroups] = useState<EditGroups | null>(null);
   const [loadError, setLoadError] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -180,10 +193,11 @@ export const AdminApp: React.FC = () => {
     setLoading(true);
     setLoadError('');
     try {
-      const [p, q] = await Promise.all([readFile(t, PLAN_PATH), readFile(t, QUESTIONS_PATH)]);
-      setFiles({ plan: p, questions: q });
+      const [p, q, g] = await Promise.all([readFile(t, PLAN_PATH), readFile(t, QUESTIONS_PATH), readFile(t, GROUPS_PATH)]);
+      setFiles({ plan: p, questions: q, groups: g });
       setPlan(planToEdit(JSON.parse(p.text)));
       setQuestions(questionsToEdit(JSON.parse(q.text)));
+      setGroups(groupsToEdit(JSON.parse(g.text)));
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : String(err));
       if (err instanceof GitHubError && err.status === 401) {
@@ -204,18 +218,22 @@ export const AdminApp: React.FC = () => {
 
   const planJson = useMemo(() => (plan ? editToPlan(plan) : null), [plan]);
   const questionsJson = useMemo(() => (questions ? editToQuestions(questions) : null), [questions]);
+  const groupsJson = useMemo(() => (groups ? editToGroups(groups) : null), [groups]);
   const planText = planJson ? toFileText(planJson) : '';
   const questionsText = questionsJson ? toFileText(questionsJson) : '';
   const planDirty = !!files && planText !== files.plan.text;
   const questionsDirty = !!files && questionsText !== files.questions.text;
-  const dirty = planDirty || questionsDirty;
+  const groupsText = groupsJson ? toFileText(groupsJson) : '';
+  const groupsDirty = !!files && groupsText !== files.groups.text;
+  const dirty = planDirty || questionsDirty || groupsDirty;
 
   const errors = useMemo(() => {
     const list: string[] = [];
     if (planJson && planDirty) list.push(...validatePlan(planJson).map((e) => friendlyPlanError(planJson, e)));
     if (questionsJson && questionsDirty) list.push(...validateQuestions(questionsJson).map(friendlyQuestionsError));
+    if (groupsJson && groupsDirty) list.push(...validateGroups(groupsJson).map((e) => friendlyGroupsError(groupsJson, e)));
     return list;
-  }, [planJson, questionsJson, planDirty, questionsDirty]);
+  }, [planJson, questionsJson, groupsJson, planDirty, questionsDirty, groupsDirty]);
 
   useEffect(() => {
     if (!dirty) return;
@@ -241,6 +259,7 @@ export const AdminApp: React.FC = () => {
     setFiles(null);
     setPlan(null);
     setQuestions(null);
+    setGroups(null);
   };
 
   const reload = () => {
@@ -269,6 +288,11 @@ export const AdminApp: React.FC = () => {
         setFiles((f) => f && { ...f, questions: { ...f.questions, sha: r.sha, text: questionsText } });
         url = r.commitUrl;
       }
+      if (groupsDirty) {
+        const r = await writeFile(token, files.groups, groupsText, 'Update groups via admin panel');
+        setFiles((f) => f && { ...f, groups: { ...f.groups, sha: r.sha, text: groupsText } });
+        url = r.commitUrl;
+      }
       setSaved({ url, at: new Date() });
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : String(err));
@@ -294,7 +318,8 @@ export const AdminApp: React.FC = () => {
           {(
             [
               ['plan', 'Plan', <CalendarDays key="i" className="w-4 h-4" />, planDirty],
-              ['questions', 'Czas w grupach', <MessageCircleQuestion key="i" className="w-4 h-4" />, questionsDirty],
+              ['questions', 'Pytania', <MessageCircleQuestion key="i" className="w-4 h-4" />, questionsDirty],
+              ['groups', 'Grupy', <Users key="i" className="w-4 h-4" />, groupsDirty],
             ] as const
           ).map(([id, label, icon, isDirty]) => (
             <button
@@ -325,10 +350,12 @@ export const AdminApp: React.FC = () => {
       <main className="max-w-5xl mx-auto px-4 pt-6">
         {loading && <p className="text-sm text-[#E3E6DB]/60">Wczytuję dane z GitHuba…</p>}
         {loadError && <p className="text-sm text-[#F2B8B5]">{loadError}</p>}
-        {!loading && plan && questions && (tab === 'plan' ? (
+        {!loading && plan && questions && groups && (tab === 'plan' ? (
           <PlanEditor plan={plan} onChange={(p) => { setPlan(p); setSaved(null); }} />
-        ) : (
+        ) : tab === 'questions' ? (
           <QuestionsEditor data={questions} onChange={(q) => { setQuestions(q); setSaved(null); }} />
+        ) : (
+          <GroupsEditor data={groups} onChange={(g) => { setGroups(g); setSaved(null); }} />
         ))}
       </main>
 

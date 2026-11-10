@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PAIRS = [
     ('plan/plan-wydarzenia.xlsx', 'src/data/plan.json', 'xlsx-to-plan.py', 'plan-to-xlsx.py'),
     ('plan/pytania-grupy.xlsx', 'src/data/questions.json', 'xlsx-to-questions.py', 'questions-to-xlsx.py'),
+    ('plan/grupy.xlsx', 'src/data/groups.json', 'xlsx-to-groups.py', 'groups-to-xlsx.py'),
 ]
 
 

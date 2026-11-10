@@ -1,0 +1,466 @@
+{
+  "_info": [
+    "Podział na grupy do zakładki 'Grupy' w /app (za kodem PIN).",
+    "enabled: false wyłącza całą zakładkę (dane grup nie trafiają wtedy na stronę).",
+    "Repo jest publiczne, więc nazwisk tu NIE przechowujemy: last to tylko inicjał z kropką (np. 'B.').",
+    "Każda grupa ma name i members (first = imię, last = inicjał nazwiska, role = 'leader' | 'assistant' | ''), max 12 osób.",
+    "Edytować można też arkusz plan/grupy.xlsx — workflow zamieni go na ten plik."
+  ],
+  "enabled": true,
+  "groups": [
+    {
+      "name": "Wieliczka 1",
+      "members": [
+        {
+          "first": "Łukasz",
+          "last": "B.",
+          "role": "leader"
+        },
+        {
+          "first": "Vsevolod",
+          "last": "K.",
+          "role": "assistant"
+        },
+        {
+          "first": "Vladyslav",
+          "last": "K."
+        },
+        {
+          "first": "Eugeniusz",
+          "last": "Ś."
+        },
+        {
+          "first": "Yurii",
+          "last": "Z."
+        }
+      ]
+    },
+    {
+      "name": "Wieliczka 2",
+      "members": [
+        {
+          "first": "Paweł",
+          "last": "Z.",
+          "role": "leader"
+        },
+        {
+          "first": "Mateusz",
+          "last": "S.",
+          "role": "assistant"
+        },
+        {
+          "first": "Damian",
+          "last": "K."
+        },
+        {
+          "first": "Maciej",
+          "last": "M."
+        },
+        {
+          "first": "Damian",
+          "last": "L."
+        },
+        {
+          "first": "Daniel",
+          "last": "K."
+        }
+      ]
+    },
+    {
+      "name": "Warszawa 1",
+      "members": [
+        {
+          "first": "Anatolii",
+          "last": "M.",
+          "role": "leader"
+        },
+        {
+          "first": "Sergii",
+          "last": "P."
+        },
+        {
+          "first": "Artur",
+          "last": "G."
+        },
+        {
+          "first": "Roman",
+          "last": "T."
+        },
+        {
+          "first": "Ilia",
+          "last": "P."
+        },
+        {
+          "first": "Vitaliy",
+          "last": "G."
+        },
+        {
+          "first": "Davyd",
+          "last": "D."
+        },
+        {
+          "first": "Artem",
+          "last": "H."
+        }
+      ]
+    },
+    {
+      "name": "Warszawa 2",
+      "members": [
+        {
+          "first": "Serhiy",
+          "last": "Y."
+        },
+        {
+          "first": "Danylo",
+          "last": "S."
+        },
+        {
+          "first": "Valentyn",
+          "last": "B."
+        },
+        {
+          "first": "Pavel",
+          "last": "B."
+        },
+        {
+          "first": "Anton",
+          "last": "Y."
+        },
+        {
+          "first": "Vadzim",
+          "last": "K."
+        },
+        {
+          "first": "Mykhailo",
+          "last": "V."
+        },
+        {
+          "first": "Artur",
+          "last": "P."
+        }
+      ]
+    },
+    {
+      "name": "Gdynia",
+      "members": [
+        {
+          "first": "Maciej",
+          "last": "M.",
+          "role": "leader"
+        },
+        {
+          "first": "Arkadiusz",
+          "last": "R.",
+          "role": "assistant"
+        },
+        {
+          "first": "Bartosz",
+          "last": "G."
+        },
+        {
+          "first": "Rafał",
+          "last": "D."
+        },
+        {
+          "first": "Jan",
+          "last": "G."
+        },
+        {
+          "first": "Igor",
+          "last": "K."
+        }
+      ]
+    },
+    {
+      "name": "Katowice 1",
+      "members": [
+        {
+          "first": "Dominik",
+          "last": "T.",
+          "role": "leader"
+        },
+        {
+          "first": "Jarek",
+          "last": "K.",
+          "role": "assistant"
+        },
+        {
+          "first": "Andrzej",
+          "last": "B."
+        },
+        {
+          "first": "Jarosław",
+          "last": "D."
+        },
+        {
+          "first": "Sławomir",
+          "last": "G."
+        },
+        {
+          "first": "Maksym",
+          "last": "K."
+        },
+        {
+          "first": "Kamil",
+          "last": "K."
+        },
+        {
+          "first": "Marek",
+          "last": "S."
+        },
+        {
+          "first": "Andrzej",
+          "last": "S."
+        }
+      ]
+    },
+    {
+      "name": "Katowice 2",
+      "members": [
+        {
+          "first": "Sergei",
+          "last": "K.",
+          "role": "assistant"
+        },
+        {
+          "first": "Krzysztof",
+          "last": "S."
+        },
+        {
+          "first": "Grzegorz",
+          "last": "S."
+        },
+        {
+          "first": "Bogdan",
+          "last": "T."
+        },
+        {
+          "first": "Denis",
+          "last": "Y."
+        },
+        {
+          "first": "Sławomir",
+          "last": "M."
+        },
+        {
+          "first": "Edward",
+          "last": "M."
+        }
+      ]
+    },
+    {
+      "name": "Kielce",
+      "members": [
+        {
+          "first": "Bartłomiej",
+          "last": "C."
+        },
+        {
+          "first": "Marian",
+          "last": "K."
+        },
+        {
+          "first": "Jacek",
+          "last": "P."
+        },
+        {
+          "first": "Dominik",
+          "last": "G."
+        },
+        {
+          "first": "Bartosz",
+          "last": "P."
+        },
+        {
+          "first": "Aleksander",
+          "last": "C."
+        },
+        {
+          "first": "Łukasz",
+          "last": "M."
+        },
+        {
+          "first": "Wojciech",
+          "last": "M."
+        },
+        {
+          "first": "Grzegorz",
+          "last": "W."
+        }
+      ]
+    },
+    {
+      "name": "KDM 1",
+      "members": [
+        {
+          "first": "Mykyta",
+          "last": "V.",
+          "role": "leader"
+        },
+        {
+          "first": "Eduard",
+          "last": "R.",
+          "role": "assistant"
+        },
+        {
+          "first": "Oleg",
+          "last": "K."
+        },
+        {
+          "first": "Volodymyr",
+          "last": "H."
+        },
+        {
+          "first": "Michaylo",
+          "last": "M."
+        },
+        {
+          "first": "Wasyl",
+          "last": "K."
+        },
+        {
+          "first": "Vlad",
+          "last": "V."
+        }
+      ]
+    },
+    {
+      "name": "KDM 2",
+      "members": [
+        {
+          "first": "Maciej",
+          "last": "K.",
+          "role": "leader"
+        },
+        {
+          "first": "Herman",
+          "last": "G.",
+          "role": "assistant"
+        },
+        {
+          "first": "Kacper",
+          "last": "Z."
+        },
+        {
+          "first": "Mateusz",
+          "last": "B."
+        },
+        {
+          "first": "Franek",
+          "last": "C."
+        },
+        {
+          "first": "Filip",
+          "last": "M."
+        },
+        {
+          "first": "Zakhar",
+          "last": "B."
+        },
+        {
+          "first": "Stas",
+          "last": "K."
+        },
+        {
+          "first": "Davyd",
+          "last": "G."
+        }
+      ]
+    },
+    {
+      "name": "KDM International",
+      "members": [
+        {
+          "first": "Joel",
+          "last": "P.",
+          "role": "leader"
+        },
+        {
+          "first": "Mike",
+          "last": "H.",
+          "role": "assistant"
+        },
+        {
+          "first": "Daniel",
+          "last": "S.",
+          "role": "assistant"
+        },
+        {
+          "first": "Rodrigo",
+          "last": "P."
+        },
+        {
+          "first": "Richard",
+          "last": "F."
+        },
+        {
+          "first": "Matt",
+          "last": "R."
+        }
+      ]
+    },
+    {
+      "name": "KDM MIX 1",
+      "members": [
+        {
+          "first": "Piotr",
+          "last": "W.",
+          "role": "leader"
+        },
+        {
+          "first": "Jan",
+          "last": "N.",
+          "role": "assistant"
+        },
+        {
+          "first": "Lucjan",
+          "last": "B."
+        },
+        {
+          "first": "Cezary",
+          "last": "K."
+        },
+        {
+          "first": "Edward",
+          "last": "K."
+        },
+        {
+          "first": "Paweł",
+          "last": "P."
+        }
+      ]
+    },
+    {
+      "name": "KDM MIX 2",
+      "members": [
+        {
+          "first": "Bartłomiej",
+          "last": "M.",
+          "role": "leader"
+        },
+        {
+          "first": "Paweł",
+          "last": "K.",
+          "role": "assistant"
+        },
+        {
+          "first": "Maksymilian",
+          "last": "J."
+        },
+        {
+          "first": "Szaabas",
+          "last": "M."
+        },
+        {
+          "first": "Błażej",
+          "last": "M."
+        },
+        {
+          "first": "Samuel",
+          "last": "N."
+        }
+      ]
+    }
+  ]
+}
