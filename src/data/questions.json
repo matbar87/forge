@@ -34,7 +34,11 @@
       {
         "title": "Sesja 4",
         "topic": "Pozer",
-        "questions": []
+        "questions": [
+          "W jakiej sferze swojego życia jesteś pozerem?",
+          "Przed kim udajesz i dlaczego?",
+          "Czy jesteś gotów przestać grać chrześcijanina i naprawdę się nim stać?"
+        ]
       },
       {
         "title": "Sesja 5",
@@ -87,7 +91,11 @@
       {
         "title": "Session 4",
         "topic": "The Poser",
-        "questions": []
+        "questions": [
+          "In what area of your life are you a poser?",
+          "Who are you pretending to be, and why?",
+          "Are you ready to stop pretending to be a Christian and start truly living as one?"
+        ]
       },
       {
         "title": "Session 5",
