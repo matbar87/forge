@@ -210,8 +210,8 @@ export function App({ alwaysLive = false }: AppProps) {
         />
       )}
 
-      {/* Mobile PWA install nudge - Nov 11-14 (always in the event app), sits above the tab bar once it appears */}
-      <InstallBanner lang={lang} isEventLive={isEventLive} />
+      {/* Mobile PWA install nudge - the event app (/app) only, never on the main site; no date window */}
+      {isEventLive && <InstallBanner lang={lang} />}
     </div>
   );
 }

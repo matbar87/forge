@@ -5,28 +5,16 @@ import { X, Download, Share } from 'lucide-react';
 
 interface InstallBannerProps {
   lang: Language;
-  // True only in the standalone event app (/app): it isn't tied to the
-  // event dates, so it offers installation whenever it's open, and sits
-  // above the bottom tab bar.
-  isEventLive: boolean;
 }
 
-// Visible only on mobile (sm:hidden). On the main site, only while the device clock falls
-// within this window — one day ahead of the event itself, so attendees see
-// it before they arrive too. Device-clock based like the rest of the
-// event-phase logic, so it's easy to test by changing the system clock.
-const BANNER_START = new Date(2026, 10, 11, 0, 0, 0);
-const BANNER_END = new Date(2026, 10, 15, 0, 0, 0);
+// Shown only in the standalone event app (/app), on mobile (sm:hidden), above
+// the bottom tab bar, whenever the browser can offer installation. It is
+// deliberately not tied to any dates and never rendered on the main site.
 
-// The main site and the event app are separate installable PWAs on the same
-// origin, so each keeps its own "installed"/"dismissed" flags.
-const storageKeys = (isEventApp: boolean) => {
-  const suffix = isEventApp ? '_app' : '';
-  return {
-    dismiss: `kuznia_install_banner_dismissed${suffix}`,
-    installed: `kuznia_pwa_installed${suffix}`,
-  };
-};
+// Keys carry the "_app" suffix: the event app is a separate installable PWA
+// from the main site on the same origin, with its own flags.
+const DISMISS_KEY = 'kuznia_install_banner_dismissed_app';
+const INSTALLED_KEY = 'kuznia_pwa_installed_app';
 
 const isRunningStandalone = () =>
   window.matchMedia('(display-mode: standalone)').matches ||
@@ -40,14 +28,9 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive }) => {
+export const InstallBanner: React.FC<InstallBannerProps> = ({ lang }) => {
   const t = translations[lang].installBanner;
-  const { dismiss: DISMISS_KEY, installed: INSTALLED_KEY } = storageKeys(isEventLive);
 
-  const [withinWindow, setWithinWindow] = useState(() => {
-    const now = new Date();
-    return now >= BANNER_START && now < BANNER_END;
-  });
   const [installed, setInstalled] = useState(
     () => isRunningStandalone() || localStorage.getItem(INSTALLED_KEY) === '1'
   );
@@ -56,19 +39,6 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
   );
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isIOS] = useState(isIOSDevice);
-
-  useEffect(() => {
-    const check = () => {
-      const now = new Date();
-      setWithinWindow(now >= BANNER_START && now < BANNER_END);
-    };
-    const id = setInterval(check, 60000);
-    document.addEventListener('visibilitychange', check);
-    return () => {
-      clearInterval(id);
-      document.removeEventListener('visibilitychange', check);
-    };
-  }, []);
 
   useEffect(() => {
     const handlePrompt = (e: Event) => {
@@ -105,19 +75,13 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ lang, isEventLive 
   };
 
   const canOffer = !!deferredPrompt || isIOS;
-  const shouldShow = (isEventLive || withinWindow) && !installed && !dismissed && canOffer;
+  const shouldShow = !installed && !dismissed && canOffer;
 
   if (!shouldShow) return null;
 
   return (
-    <div
-      className={`sm:hidden fixed left-0 right-0 z-40 px-4 ${
-        isEventLive ? 'bottom-[76px]' : 'bottom-0 pb-[calc(env(safe-area-inset-bottom)+16px)] pt-0'
-      }`}
-    >
-      <div className={`relative max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4 ${
-        isEventLive ? 'mb-0' : 'mb-4'
-      }`}>
+    <div className="sm:hidden fixed left-0 right-0 z-40 px-4 bottom-[76px]">
+      <div className="relative max-w-md mx-auto bg-[#18212C] border border-[#3E4C5E]/40 rounded-2xl shadow-2xl p-4">
         <button
           onClick={handleDismiss}
           aria-label={t.dismiss}
