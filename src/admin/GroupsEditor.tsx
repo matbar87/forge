@@ -212,12 +212,12 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           )}
         </div>
       )}
+      <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+        <h2 className="font-bebas text-2xl tracking-wide uppercase">Nagłówek strony</h2>
+        <BiField label="Tytuł" value={data.title} onChange={(title) => onChange({ ...data, title })} />
+        <BiField label="Podtytuł" value={data.subtitle} multiline onChange={(subtitle) => onChange({ ...data, subtitle })} />
+      </section>
       <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
-        <div className="space-y-3">
-          <h2 className="font-bebas text-2xl tracking-wide uppercase">Nagłówek strony</h2>
-          <BiField label="Tytuł" value={data.title} onChange={(title) => onChange({ ...data, title })} />
-          <BiField label="Podtytuł" value={data.subtitle} multiline onChange={(subtitle) => onChange({ ...data, subtitle })} />
-        </div>
         <Switch
           checked={data.enabled}
           onChange={(enabled) => onChange({ ...data, enabled })}

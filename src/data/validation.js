@@ -114,9 +114,12 @@ export function validateGroups(data) {
   const errors = [];
   const isText = (v) => typeof v === 'string' && v.trim() !== '';
   if (data?.enabled !== undefined && typeof data.enabled !== 'boolean') errors.push('enabled: musi być true albo false');
-  for (const lang of ['pl', 'en']) {
-    if (!isText(data?.[lang]?.title)) errors.push(`${lang}.title: brak tytułu strony`);
-    if (!isText(data?.[lang]?.subtitle)) errors.push(`${lang}.subtitle: brak podtytułu strony`);
+  // The heading is never shown while the page is switched off.
+  if (data?.enabled !== false) {
+    for (const lang of ['pl', 'en']) {
+      if (!isText(data?.[lang]?.title)) errors.push(`${lang}.title: brak tytułu strony`);
+      if (!isText(data?.[lang]?.subtitle)) errors.push(`${lang}.subtitle: brak podtytułu strony`);
+    }
   }
   const groups = data?.groups;
   if (!Array.isArray(groups)) return [...errors, 'groups: musi być listą grup'];

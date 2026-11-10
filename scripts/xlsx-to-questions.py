@@ -39,8 +39,10 @@ out = {'_info': old.get('_info', [])}
 # Page heading from the Ustawienia tab; sheets made before it existed keep the current one.
 settings = {text(r['Ustawienie']): text(r['Wartość']) for r in rows(wb['Ustawienia'])} if 'Ustawienia' in wb.sheetnames else {}
 def heading(label, L, lang, key):
-    if not settings: return old.get(lang, {}).get(key, '')
-    return settings.get(f'{label} PL', '') if L == 'PL' else settings.get(f'{label} EN', '') or settings.get(f'{label} PL', '')
+    # PL blank (or no Ustawienia tab) -> keep the current text; EN blank -> same as PL.
+    pl = settings.get(f'{label} PL', '') or old.get('pl', {}).get(key, '')
+    if lang == 'pl': return pl
+    return settings.get(f'{label} EN', '') or pl
 
 for lang, L, word in (('pl', 'PL', 'Sesja'), ('en', 'EN', 'Session')):
     out[lang] = {

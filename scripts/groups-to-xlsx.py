@@ -40,8 +40,8 @@ ws = wb.create_sheet('Ustawienia')
 header(ws, [('Ustawienie', 40), ('Wartość', 90)])
 data_cell(ws, 2, 1, 'Strona Grupy włączona', FILLS[0]); data_cell(ws, 2, 2, yn(d.get('enabled', True)), FILLS[0])
 for i, (k, v) in enumerate([
-    ('Tytuł strony PL', d['pl']['title']), ('Tytuł strony EN', d['en']['title']),
-    ('Podtytuł strony PL', d['pl']['subtitle']), ('Podtytuł strony EN', d['en']['subtitle']),
+    ('Tytuł strony PL', d.get('pl', {}).get('title', '')), ('Tytuł strony EN', d.get('en', {}).get('title', '')),
+    ('Podtytuł strony PL', d.get('pl', {}).get('subtitle', '')), ('Podtytuł strony EN', d.get('en', {}).get('subtitle', '')),
 ], 1):
     data_cell(ws, i + 2, 1, k, FILLS[i % 2]); data_cell(ws, i + 2, 2, v, FILLS[i % 2])
 dv = DataValidation(type='list', formula1='"TAK,NIE"', allow_blank=False, showErrorMessage=True, errorTitle='Ustawienie', error='TAK albo NIE')

@@ -57,9 +57,10 @@ try:
 except FileNotFoundError:
     old = {}
 def heading(lang, label, key):
-    pl = text(settings.get(f'{label} PL'))
-    val = pl if lang == 'pl' else text(settings.get(f'{label} EN')) or pl
-    return val or old.get(lang, {}).get(key, '')
+    # PL blank -> keep the current text; EN blank -> same as PL.
+    pl = text(settings.get(f'{label} PL')) or old.get('pl', {}).get(key, '')
+    if lang == 'pl': return pl
+    return text(settings.get(f'{label} EN')) or pl
 
 out = {'_info': old.get('_info', []),
        'enabled': yes_no(settings['Strona Grupy włączona'], 'Strona Grupy włączona'),

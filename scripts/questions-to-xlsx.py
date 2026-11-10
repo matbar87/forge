@@ -55,8 +55,8 @@ ws.add_data_validation(dv); dv.add(f'A2:A{r + 300}')
 ws = wb.create_sheet('Ustawienia')
 header(ws, [('Ustawienie', 30), ('Wartość', 90)])
 for i, (k, v) in enumerate([
-    ('Tytuł strony PL', d['pl']['title']), ('Tytuł strony EN', d['en']['title']),
-    ('Podtytuł strony PL', d['pl']['subtitle']), ('Podtytuł strony EN', d['en']['subtitle']),
+    ('Tytuł strony PL', d['pl'].get('title', '')), ('Tytuł strony EN', d['en'].get('title', '')),
+    ('Podtytuł strony PL', d['pl'].get('subtitle', '')), ('Podtytuł strony EN', d['en'].get('subtitle', '')),
 ]):
     data_cell(ws, i + 2, 1, k, FILLS[i % 2], wrap=False); data_cell(ws, i + 2, 2, v, FILLS[i % 2])
 
