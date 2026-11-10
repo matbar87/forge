@@ -117,6 +117,7 @@ export function validateGroups(data) {
   const names = new Set();
   groups.forEach((g, i) => {
     const at = `groups[${i}]`;
+    if (!g || typeof g !== 'object') return errors.push(`${at}: musi być grupą (nazwa i osoby)`);
     if (!isText(g.name)) errors.push(`${at}.name: brak nazwy grupy`);
     else if (names.has(g.name.trim().toLowerCase())) errors.push(`${at}.name: nazwa „${g.name}” występuje dwa razy`);
     else names.add(g.name.trim().toLowerCase());
@@ -124,6 +125,7 @@ export function validateGroups(data) {
     if (g.members.length > MAX_GROUP_SIZE) errors.push(`${at}.members: ${g.members.length} osób — maksymalnie ${MAX_GROUP_SIZE}`);
     g.members.forEach((m, j) => {
       const w = `${at}.members[${j}]`;
+      if (!m || typeof m !== 'object') return errors.push(`${w}: musi być osobą (imię, inicjał, rola)`);
       if (!isText(m.first)) errors.push(`${w}.first: brak imienia`);
       if (!isText(m.last)) errors.push(`${w}.last: brak inicjału nazwiska`);
       else if (!/^\p{L}\.$/u.test(m.last.trim())) {

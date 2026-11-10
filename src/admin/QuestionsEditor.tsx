@@ -1,5 +1,5 @@
-import React from 'react';
-import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Plus, Trash2 } from 'lucide-react';
 import { BiField, SmallButton, move } from './fields';
 import { newId, type EditQuestions, type EditSession } from './model';
 
@@ -10,15 +10,21 @@ const SessionEditor: React.FC<{
   onChange: (s: EditSession) => void;
   onMove: (dir: -1 | 1) => void;
   onDelete: () => void;
-}> = ({ session, index, count, onChange, onMove, onDelete }) => {
+  open: boolean;
+  onToggle: () => void;
+}> = ({ session, index, count, onChange, onMove, onDelete, open, onToggle }) => {
   const qs = session.questions;
   const setQs = (questions: EditSession['questions']) => onChange({ ...session, questions });
   return (
-    <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
-      <div className="flex items-center gap-2">
-        <h2 className="font-bebas text-2xl tracking-wide uppercase">Sesja {index + 1}</h2>
-        <span className="text-xs font-mono-code text-[#E3E6DB]/50">{qs.length} pyt.</span>
-        <div className="flex gap-1 ml-auto">
+    <section className="bg-[#18212C] rounded-2xl shadow-xl">
+      <div className="flex items-center gap-2 p-4 sm:p-5">
+        <button type="button" onClick={onToggle} aria-expanded={open} className="flex-1 min-w-0 flex items-center gap-3 text-left">
+          {open ? <ChevronDown className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
+          <h2 className="font-bebas text-2xl tracking-wide uppercase shrink-0">Sesja {index + 1}</h2>
+          <span className="hidden sm:block text-sm text-[#E3E6DB]/60 truncate">{session.topic.pl}</span>
+          <span className="text-xs font-mono-code text-[#E3E6DB]/50 ml-auto shrink-0">{qs.length} pyt.</span>
+        </button>
+        <div className="flex gap-1">
           <SmallButton title="Sesja w górę" onClick={() => onMove(-1)} disabled={index === 0}>
             <ArrowUp className="w-3.5 h-3.5" />
           </SmallButton>
@@ -30,6 +36,8 @@ const SessionEditor: React.FC<{
           </SmallButton>
         </div>
       </div>
+      {open && (
+        <div className="px-4 sm:px-5 pb-5 space-y-3">
       <BiField label="Temat" value={session.topic} onChange={(topic) => onChange({ ...session, topic })} />
 
       <ol className="space-y-2">
@@ -71,6 +79,8 @@ const SessionEditor: React.FC<{
       <SmallButton title="Dodaj pytanie" onClick={() => setQs([...qs, { id: newId(), text: { pl: '', en: '' } }])}>
         <Plus className="w-3.5 h-3.5" /> Dodaj pytanie
       </SmallButton>
+        </div>
+      )}
     </section>
   );
 };
@@ -78,8 +88,21 @@ const SessionEditor: React.FC<{
 export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: EditQuestions) => void }> = ({ data, onChange }) => {
   const sessions = data.sessions;
   const set = (list: EditSession[]) => onChange({ ...data, sessions: list });
+  // Everything starts collapsed; a newly added session opens straight away.
+  const [open, setOpen] = useState<Set<string>>(new Set());
+  const allOpen = sessions.length > 0 && sessions.every((s) => open.has(s.id));
+  const toggle = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
   return (
     <div className="space-y-5">
+      <SmallButton title={allOpen ? 'Zwiń wszystkie sesje' : 'Rozwiń wszystkie sesje'} onClick={() => setOpen(allOpen ? new Set() : new Set(sessions.map((s) => s.id)))}>
+        {allOpen ? <ChevronsDownUp className="w-3.5 h-3.5" /> : <ChevronsUpDown className="w-3.5 h-3.5" />}
+        {allOpen ? 'Zwiń wszystkie' : 'Rozwiń wszystkie'}
+      </SmallButton>
       <p className="text-xs text-[#E3E6DB]/55">
         Tytuł sesji na stronie to „Sesja [numer]” / „Session [number]” wg kolejności. Puste pole EN = na angielskiej wersji
         pojawi się tekst PL. Puste pytania są pomijane.
@@ -90,6 +113,8 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
           session={s}
           index={i}
           count={sessions.length}
+          open={open.has(s.id)}
+          onToggle={() => toggle(s.id)}
           onChange={(ns) => set(sessions.map((x) => (x.id === ns.id ? ns : x)))}
           onMove={(dir) => set(move(sessions, i, dir))}
           onDelete={() => {
@@ -99,7 +124,11 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
       ))}
       <SmallButton
         title="Dodaj sesję"
-        onClick={() => set([...sessions, { id: newId(), topic: { pl: '', en: '' }, questions: [] }])}
+        onClick={() => {
+          const id = newId();
+          set([...sessions, { id, topic: { pl: '', en: '' }, questions: [] }]);
+          setOpen((prev) => new Set(prev).add(id));
+        }}
       >
         <Plus className="w-3.5 h-3.5" /> Dodaj sesję
       </SmallButton>

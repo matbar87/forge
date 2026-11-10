@@ -27,7 +27,7 @@ const leaks = new Set();
 for (const f of files) {
   const text = readFileSync(f, 'utf8');
   for (const m of data.groups.flatMap((g) => g.members)) {
-    if (new RegExp(`["']?first["']?\\s*:\\s*["']${esc(m.first.trim())}["']`).test(text)) leaks.add(`${f}: ${m.first}`);
+    if (new RegExp(`\\\\?["']?first\\\\?["']?\\s*:\\s*\\\\?["']${esc(m.first.trim())}`).test(text)) leaks.add(`${f}: ${m.first}`);
   }
 }
 if (leaks.size) {
