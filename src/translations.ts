@@ -1,5 +1,6 @@
 import { plan } from './data/plan';
 import { questions } from './data/questions';
+import { groups } from './data/groups';
 
 export type Language = 'pl' | 'en';
 
@@ -141,8 +142,9 @@ export const translations = {
     },
     groupTime: {
       badge: 'CZAS W GRUPACH',
-      title: 'Czas w grupach',
-      subtitle: 'Pytania do rozmowy w grupie, dopasowane do każdej sesji.',
+      // Heading and sessions live in src/data/questions.json (editable in the panel).
+      title: questions.pl.title,
+      subtitle: questions.pl.subtitle,
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
@@ -151,8 +153,9 @@ export const translations = {
       sessions: questions.pl.sessions,
     },
     groupsView: {
-      title: 'Grupy',
-      subtitle: 'Podział na grupy — znajdź swoją grupę i osoby, z którymi spędzisz czas.',
+      // Heading lives in src/data/groups.json (editable in the panel).
+      title: groups.pl?.title ?? 'Grupy',
+      subtitle: groups.pl?.subtitle ?? '',
       pinPrompt: 'Podaj 4-cyfrowy kod dostępu',
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
@@ -319,8 +322,8 @@ export const translations = {
     },
     groupTime: {
       badge: 'GROUP TIME',
-      title: 'Group Time',
-      subtitle: 'Discussion questions for each session, ready to go.',
+      title: questions.en.title,
+      subtitle: questions.en.subtitle,
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',
@@ -329,8 +332,8 @@ export const translations = {
       sessions: questions.en.sessions,
     },
     groupsView: {
-      title: 'Groups',
-      subtitle: 'Who is in which group — find your group and the men you will spend the time with.',
+      title: groups.en?.title ?? 'Groups',
+      subtitle: groups.en?.subtitle ?? '',
       pinPrompt: 'Enter the 4-digit access code',
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',

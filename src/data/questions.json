@@ -1,11 +1,14 @@
 {
   "_info": [
     "Pytania do zakładki 'Czas w grupach' w /app (za kodem PIN).",
+    "Każdy język ma też title i subtitle — nagłówek strony (edytowalny w panelu / w zakładce Ustawienia arkusza).",
     "Każdy język (pl, en) ma listę sesji: title (np. 'Sesja 1'), topic (temat), questions (lista pytań, wyświetlana jako lista numerowana).",
     "Pusta lista pytań pokazuje komunikat 'Pytania do tej sesji pojawią się wkrótce'.",
     "Edytować można też arkusz plan/pytania-grupy.xlsx — workflow zamieni go na ten plik."
   ],
   "pl": {
+    "title": "Czas w grupach",
+    "subtitle": "Pytania do rozmowy w grupie, dopasowane do każdej sesji.",
     "sessions": [
       {
         "title": "Sesja 1",
@@ -63,6 +66,8 @@
     ]
   },
   "en": {
+    "title": "Group Time",
+    "subtitle": "Discussion questions for each session, ready to go.",
     "sessions": [
       {
         "title": "Session 1",

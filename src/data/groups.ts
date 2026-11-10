@@ -22,5 +22,8 @@ export interface Group {
 
 export const groups = groupsJson as unknown as {
   enabled: boolean;
+  // Page heading per language (absent when the page is disabled).
+  pl?: { title: string; subtitle: string };
+  en?: { title: string; subtitle: string };
   groups: Group[];
 };

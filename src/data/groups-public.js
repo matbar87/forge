@@ -17,6 +17,8 @@ export function publicGroups(data) {
   if (data.enabled === false) return { enabled: false, groups: [] };
   return {
     enabled: true,
+    pl: data.pl,
+    en: data.en,
     groups: (data.groups ?? []).map((g) => ({
       name: g.name,
       members: g.members.map((m) => ({ first: m.first, last: m.last, ...(m.role ? { role: m.role } : {}) })),

@@ -56,6 +56,8 @@ export interface EditSession {
 
 export interface EditQuestions {
   info: unknown;
+  title: Bilingual;
+  subtitle: Bilingual;
   sessions: EditSession[];
 }
 
@@ -77,6 +79,8 @@ export interface EditGroup {
 export interface EditGroups {
   info: unknown;
   enabled: boolean;
+  title: Bilingual;
+  subtitle: Bilingual;
   groups: EditGroup[];
 }
 
@@ -182,6 +186,8 @@ export function editToPlan(e: EditPlan): any {
 export function questionsToEdit(q: any): EditQuestions {
   return {
     info: q._info,
+    title: bi(q.pl.title, q.en.title),
+    subtitle: bi(q.pl.subtitle, q.en.subtitle),
     sessions: q.pl.sessions.map((s: any, i: number) => {
       const en = q.en.sessions[i] ?? { questions: [] };
       return {
@@ -197,6 +203,8 @@ export function editToQuestions(e: EditQuestions): any {
   const res: any = { _info: e.info };
   for (const [lang, word] of [['pl', 'Sesja'], ['en', 'Session']] as const) {
     res[lang] = {
+      title: out(e.title)[lang],
+      subtitle: out(e.subtitle)[lang],
       sessions: e.sessions.map((s, i) => ({
         title: `${word} ${i + 1}`,
         topic: out(s.topic)[lang],
@@ -210,6 +218,8 @@ export function groupsToEdit(g: any): EditGroups {
   return {
     info: g._info,
     enabled: g.enabled !== false,
+    title: bi(g.pl?.title, g.en?.title),
+    subtitle: bi(g.pl?.subtitle, g.en?.subtitle),
     groups: g.groups.map((x: any) => ({
       id: newId(),
       name: x.name,
@@ -222,6 +232,8 @@ export function editToGroups(e: EditGroups): any {
   return {
     _info: e.info,
     enabled: e.enabled,
+    pl: { title: out(e.title).pl, subtitle: out(e.subtitle).pl },
+    en: { title: out(e.title).en, subtitle: out(e.subtitle).en },
     groups: e.groups.map((g) => ({
       name: g.name.trim(),
       members: g.members

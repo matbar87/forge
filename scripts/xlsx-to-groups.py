@@ -56,8 +56,15 @@ try:
     old = json.load(open(dest, encoding='utf-8'))
 except FileNotFoundError:
     old = {}
+def heading(lang, label, key):
+    pl = text(settings.get(f'{label} PL'))
+    val = pl if lang == 'pl' else text(settings.get(f'{label} EN')) or pl
+    return val or old.get(lang, {}).get(key, '')
+
 out = {'_info': old.get('_info', []),
        'enabled': yes_no(settings['Strona Grupy włączona'], 'Strona Grupy włączona'),
+       'pl': {'title': heading('pl', 'Tytuł strony', 'title'), 'subtitle': heading('pl', 'Podtytuł strony', 'subtitle')},
+       'en': {'title': heading('en', 'Tytuł strony', 'title'), 'subtitle': heading('en', 'Podtytuł strony', 'subtitle')},
        'groups': groups}
 with open(dest, 'w', encoding='utf-8') as f:
     json.dump(out, f, ensure_ascii=False, indent=2); f.write('\n')
