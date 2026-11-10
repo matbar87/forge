@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
-import { MAX_GROUP_SIZE } from '../data/validation.js';
+import { MAX_GROUP_LEADERS, MAX_GROUP_SIZE } from '../data/validation.js';
 import { initial } from '../data/groups-public.js';
 import { SmallButton, TextField, move } from './fields';
 import { newId, type EditGroup, type EditGroups, type EditMember, type MemberRole } from './model';
@@ -30,7 +30,9 @@ const GroupEditor: React.FC<{
   onChange: (g: EditGroup) => void;
   onMove: (dir: -1 | 1) => void;
   onDelete: () => void;
-}> = ({ group, index, count, onChange, onMove, onDelete }) => {
+  selected: Set<string>;
+  onToggle: (id: string) => void;
+}> = ({ group, index, count, onChange, onMove, onDelete, selected, onToggle }) => {
   const ms = group.members;
   const setMs = (members: EditMember[]) => onChange({ ...group, members });
   const patch = (id: string, p: Partial<EditMember>) => setMs(ms.map((m) => (m.id === id ? { ...m, ...p } : m)));
@@ -60,7 +62,19 @@ const GroupEditor: React.FC<{
 
       <ol className="space-y-2">
         {ms.map((m, i) => (
-          <li key={m.id} className="bg-[#1E2937] rounded-xl p-2.5 grid grid-cols-2 sm:grid-cols-[1fr_1fr_130px_auto] gap-2 items-end">
+          <li
+            key={m.id}
+            className={`rounded-xl p-2.5 grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[auto_1fr_1fr_130px_auto] gap-2 items-end ${
+              selected.has(m.id) ? 'bg-[#2A3A50] ring-1 ring-[#E3E6DB]/40' : 'bg-[#1E2937]'
+            }`}
+          >
+            <input
+              type="checkbox"
+              className="w-4 h-4 mb-2.5"
+              aria-label={`Zaznacz ${m.first} ${m.last}`.trim()}
+              checked={selected.has(m.id)}
+              onChange={() => onToggle(m.id)}
+            />
             <TextField label="Imię" value={m.first} onChange={(first) => patch(m.id, { first })} />
             <TextField
               label="Inicjał nazwiska"
@@ -68,7 +82,7 @@ const GroupEditor: React.FC<{
               placeholder="K."
               onChange={(v) => patch(m.id, { last: initial(v.replace(/\./g, '')) })}
             />
-            <label className="block min-w-0">
+            <label className="block min-w-0 col-span-2 sm:col-span-1">
               <span className="block text-[10px] font-mono-code font-bold uppercase tracking-wider text-[#E3E6DB]/50 mb-1">Rola</span>
               <select className={selectClass} value={m.role} onChange={(e) => patch(m.id, { role: e.target.value as MemberRole })}>
                 <option value="">uczestnik</option>
@@ -76,7 +90,7 @@ const GroupEditor: React.FC<{
                 <option value="assistant">asystent</option>
               </select>
             </label>
-            <div className="flex gap-1 justify-end">
+            <div className="flex gap-1 justify-end col-span-3 sm:col-span-1">
               <SmallButton title="Osoba w górę" onClick={() => setMs(move(ms, i, -1))} disabled={i === 0}>
                 <ArrowUp className="w-3.5 h-3.5" />
               </SmallButton>
@@ -90,7 +104,9 @@ const GroupEditor: React.FC<{
           </li>
         ))}
       </ol>
-      {leaders > 1 && <p className="text-xs text-[#F2B8B5]">W grupie może być tylko jeden lider.</p>}
+      {leaders > MAX_GROUP_LEADERS && (
+        <p className="text-xs text-[#F2B8B5]">W grupie mogą być najwyżej {MAX_GROUP_LEADERS} osoby z rolą lidera.</p>
+      )}
       <SmallButton
         title="Dodaj osobę"
         disabled={full}
@@ -105,8 +121,60 @@ const GroupEditor: React.FC<{
 export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups) => void }> = ({ data, onChange }) => {
   const list = data.groups;
   const set = (groups: EditGroup[]) => onChange({ ...data, groups });
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [target, setTarget] = useState('');
+  // Drop selections of people who no longer exist (deleted / reloaded).
+  const existing = new Set(list.flatMap((g) => g.members.map((m) => m.id)));
+  const picked = list.flatMap((g) => g.members).filter((m) => selected.has(m.id) && existing.has(m.id));
+  const toggle = (id: string) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
+  const targetGroup = list.find((g) => g.id === target);
+  // Only people not already in the target group need room there.
+  const incoming = targetGroup ? picked.filter((m) => !targetGroup.members.some((x) => x.id === m.id)) : [];
+  const room = targetGroup ? MAX_GROUP_SIZE - targetGroup.members.length : 0;
+  const move_ = () => {
+    if (!targetGroup || incoming.length === 0 || incoming.length > room) return;
+    const ids = new Set(incoming.map((m) => m.id));
+    set(
+      list.map((g) =>
+        g.id === targetGroup.id
+          ? { ...g, members: [...g.members, ...incoming] }
+          : { ...g, members: g.members.filter((m) => !ids.has(m.id)) }
+      )
+    );
+    setSelected(new Set());
+  };
   return (
     <div className="space-y-5">
+      {picked.length > 0 && (
+        <div className="sticky top-[68px] z-20 bg-[#253242] border border-[#3E4C5E] rounded-2xl p-3 shadow-2xl flex flex-wrap items-center gap-2">
+          <span className="text-sm font-bold">Zaznaczono: {picked.length}</span>
+          <select className={`${selectClass} !w-auto min-w-[160px]`} value={target} onChange={(e) => setTarget(e.target.value)}>
+            <option value="">Przenieś do grupy…</option>
+            {list.map((g) => {
+              const free = MAX_GROUP_SIZE - g.members.length;
+              return (
+                <option key={g.id} value={g.id}>
+                  {g.name || 'bez nazwy'} (wolnych miejsc: {Math.max(free, 0)})
+                </option>
+              );
+            })}
+          </select>
+          <SmallButton title="Przenieś zaznaczone" onClick={move_} disabled={!targetGroup || incoming.length === 0 || incoming.length > room}>
+            Przenieś
+          </SmallButton>
+          <SmallButton title="Odznacz wszystkich" onClick={() => setSelected(new Set())}>
+            Odznacz
+          </SmallButton>
+          {targetGroup && incoming.length > room && (
+            <span className="text-xs text-[#F2B8B5]">W grupie „{targetGroup.name}” jest tylko {Math.max(room, 0)} wolnych miejsc.</span>
+          )}
+        </div>
+      )}
       <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
         <Switch
           checked={data.enabled}
@@ -116,8 +184,8 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
         />
       </section>
       <p className="text-xs text-[#E3E6DB]/55">
-        Maksymalnie {MAX_GROUP_SIZE} osób w grupie i jeden lider (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
-        Całość można też wgrać jako arkusz plan/grupy.xlsx na GitHubie.
+        Maksymalnie {MAX_GROUP_SIZE} osób w grupie i najwyżej {MAX_GROUP_LEADERS} liderów (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
+        Zaznacz osoby polem po lewej i przenieś je do innej grupy paskiem u góry. Całość można też wgrać jako arkusz plan/grupy.xlsx na GitHubie.
       </p>
       {list.map((g, i) => (
         <GroupEditor
@@ -127,6 +195,8 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           count={list.length}
           onChange={(ng) => set(list.map((x) => (x.id === ng.id ? ng : x)))}
           onMove={(dir) => set(move(list, i, dir))}
+          selected={selected}
+          onToggle={toggle}
           onDelete={() => {
             if (window.confirm(`Usunąć grupę „${g.name || i + 1}” razem z osobami?`)) set(list.filter((x) => x.id !== g.id));
           }}
