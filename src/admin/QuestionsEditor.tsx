@@ -53,7 +53,12 @@ const SessionEditor: React.FC<{
               <SmallButton title="Pytanie w dół" onClick={() => setQs(move(qs, i, 1))} disabled={i === qs.length - 1}>
                 <ArrowDown className="w-3.5 h-3.5" />
               </SmallButton>
-              <SmallButton title="Usuń pytanie" danger onClick={() => setQs(qs.filter((x) => x.id !== q.id))}>
+              <SmallButton title="Usuń pytanie" danger onClick={() => {
+                  const preview = q.text.pl.trim().slice(0, 60);
+                  if (window.confirm(`Usunąć pytanie ${i + 1}${preview ? ` („${preview}${q.text.pl.trim().length > 60 ? '…' : ''}”)` : ''}?`)) {
+                    setQs(qs.filter((x) => x.id !== q.id));
+                  }
+                }}>
                 <Trash2 className="w-3.5 h-3.5" />
               </SmallButton>
             </div>
