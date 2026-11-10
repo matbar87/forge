@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDown, ArrowUp, Copy, Plus, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { ArrowDown, ArrowUp, Copy, Plus, Trash2, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown } from 'lucide-react';
 import { BiField, Label, SmallButton, TextField, inputClass, move, toTimeInput, fromTimeInput } from './fields';
 import { ITEM_TYPES, emptyItem, newId, type EditDay, type EditItem, type EditPlan, type ItemType } from './model';
 import { toLocalISODate } from '../data/plan';
@@ -78,8 +78,9 @@ const DayEditor: React.FC<{
   version: Version;
   onChange: (day: EditDay) => void;
   onDelete: () => void;
-}> = ({ day, version, onChange, onDelete }) => {
-  const [open, setOpen] = useState(true);
+  open: boolean;
+  onToggle: () => void;
+}> = ({ day, version, onChange, onDelete, open, onToggle }) => {
   const items = day[version];
   const setItems = (list: EditItem[]) => onChange({ ...day, [version]: list });
   const leaders = items.filter((i) => i.leaders).length;
@@ -88,7 +89,7 @@ const DayEditor: React.FC<{
     <section className="bg-[#18212C] rounded-2xl shadow-xl">
       <button
         type="button"
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         className="w-full flex items-center gap-3 p-4 sm:p-5 text-left"
         aria-expanded={open}
       >
@@ -175,6 +176,15 @@ export const PlanEditor: React.FC<{ plan: EditPlan; onChange: (p: EditPlan) => v
   const [version, setVersion] = useState<Version>('detailed');
   const setDay = (day: EditDay) => onChange({ ...plan, days: plan.days.map((d) => (d.id === day.id ? day : d)) });
   const sortedDays = [...plan.days].sort((a, b) => a.isoDate.localeCompare(b.isoDate));
+  // Everything starts collapsed; a newly added day opens straight away.
+  const [open, setOpen] = useState<Set<string>>(new Set());
+  const allOpen = sortedDays.length > 0 && sortedDays.every((d) => open.has(d.id));
+  const toggleOpen = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
 
   const addDay = (where: 'before' | 'after') => {
     const first = sortedDays[0];
@@ -186,11 +196,13 @@ export const PlanEditor: React.FC<{ plan: EditPlan; onChange: (p: EditPlan) => v
       isoDate = shiftDate(first.isoDate, -1);
     }
     const empty = { pl: '', en: '' };
+    const id = newId();
+    setOpen((prev) => new Set(prev).add(id));
     onChange({
       ...plan,
       days: [
         ...plan.days,
-        { id: newId(), number, isoDate, date: { ...empty }, dayName: { ...empty }, theme: { ...empty }, detailed: [emptyItem()], basic: [] },
+        { id, number, isoDate, date: { ...empty }, dayName: { ...empty }, theme: { ...empty }, detailed: [emptyItem()], basic: [] },
       ],
     });
   };
@@ -239,9 +251,16 @@ export const PlanEditor: React.FC<{ plan: EditPlan; onChange: (p: EditPlan) => v
         Daty, nazwy dni i motywy są wspólne dla obu planów.
       </p>
 
+      <SmallButton title={allOpen ? 'Zwiń wszystkie dni' : 'Rozwiń wszystkie dni'} onClick={() => setOpen(allOpen ? new Set() : new Set(sortedDays.map((d) => d.id)))}>
+        {allOpen ? <ChevronsDownUp className="w-3.5 h-3.5" /> : <ChevronsUpDown className="w-3.5 h-3.5" />}
+        {allOpen ? 'Zwiń wszystkie' : 'Rozwiń wszystkie'}
+      </SmallButton>
+
       {sortedDays.map((day) => (
         <DayEditor
           key={day.id}
+          open={open.has(day.id)}
+          onToggle={() => toggleOpen(day.id)}
           day={day}
           version={version}
           onChange={setDay}
