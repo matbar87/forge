@@ -105,6 +105,7 @@ export function validateQuestions(data) {
 }
 
 export const MAX_GROUP_SIZE = 12;
+export const MAX_GROUP_LEADERS = 2;
 
 /** @returns {string[]} error messages (Polish), empty when the data is valid */
 export function validateGroups(data) {
@@ -132,7 +133,7 @@ export function validateGroups(data) {
         errors.push(`${w}.role: „${m.role}” — dozwolone: leader, assistant albo brak`);
       }
     });
-    if (g.members.filter((m) => m.role === 'leader').length > 1) errors.push(`${at}.members: w grupie może być tylko jeden lider`);
+    if (g.members.filter((m) => m.role === 'leader').length > MAX_GROUP_LEADERS) errors.push(`${at}.members: w grupie mogą być najwyżej ${MAX_GROUP_LEADERS} osoby z rolą lidera`);
   });
   return errors;
 }

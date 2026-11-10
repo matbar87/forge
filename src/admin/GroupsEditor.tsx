@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
-import { MAX_GROUP_SIZE } from '../data/validation.js';
+import { MAX_GROUP_LEADERS, MAX_GROUP_SIZE } from '../data/validation.js';
 import { initial } from '../data/groups-public.js';
 import { SmallButton, TextField, move } from './fields';
 import { newId, type EditGroup, type EditGroups, type EditMember, type MemberRole } from './model';
@@ -104,7 +104,9 @@ const GroupEditor: React.FC<{
           </li>
         ))}
       </ol>
-      {leaders > 1 && <p className="text-xs text-[#F2B8B5]">W grupie może być tylko jeden lider.</p>}
+      {leaders > MAX_GROUP_LEADERS && (
+        <p className="text-xs text-[#F2B8B5]">W grupie mogą być najwyżej {MAX_GROUP_LEADERS} osoby z rolą lidera.</p>
+      )}
       <SmallButton
         title="Dodaj osobę"
         disabled={full}
@@ -182,7 +184,7 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
         />
       </section>
       <p className="text-xs text-[#E3E6DB]/55">
-        Maksymalnie {MAX_GROUP_SIZE} osób w grupie i jeden lider (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
+        Maksymalnie {MAX_GROUP_SIZE} osób w grupie i najwyżej {MAX_GROUP_LEADERS} liderów (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
         Zaznacz osoby polem po lewej i przenieś je do innej grupy paskiem u góry. Całość można też wgrać jako arkusz plan/grupy.xlsx na GitHubie.
       </p>
       {list.map((g, i) => (

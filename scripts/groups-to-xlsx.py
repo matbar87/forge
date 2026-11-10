@@ -24,7 +24,7 @@ instructions(ws, [
     ('• Osoby — jedna osoba w wierszu: grupa, inicjał nazwiska, imię, rola (lider / asystent / puste). Kolejność = kolejność na liście.', False),
     ('', False),
     ('Zasady:', True),
-    ('• W grupie maksymalnie 12 osób i najwyżej jeden lider (asystentów może być kilku).', False),
+    ('• W grupie maksymalnie 12 osób i najwyżej dwóch liderów (asystentów może być kilku).', False),
     ('• Nazwa grupy w zakładce Osoby musi istnieć w zakładce Grupy.', False),
     ('• Na stronie osoby są pokazywane jako „Imię N.” (imię i inicjał nazwiska).', False),
     ('• Repo na GitHubie jest PUBLICZNE, dlatego nie przechowujemy nazwisk: w kolumnie „Inicjał nazwiska” wpisz jedną literę (np. „K.”).', False),
