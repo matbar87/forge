@@ -25,7 +25,11 @@
       {
         "title": "Sesja 3",
         "topic": "Zwycięstwo",
-        "questions": []
+        "questions": [
+          "Czy naprawdę wierzysz, że jesteś powołany do zwycięstwa?",
+          "O jaką sprawę walczysz, która jest większa niż Ty sam?",
+          "Czy strach podejmuje decyzje w Twoim życiu?"
+        ]
       },
       {
         "title": "Sesja 4",
@@ -74,7 +78,11 @@
       {
         "title": "Session 3",
         "topic": "Victory",
-        "questions": []
+        "questions": [
+          "Do you truly believe you are called win?",
+          "What is your cause that is bigger than yourself?",
+          "Is fear making decisions in your life?"
+        ]
       },
       {
         "title": "Session 4",
