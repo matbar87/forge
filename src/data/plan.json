@@ -554,17 +554,19 @@
             {
               "time": "19:00 – 20:30",
               "title": "Session 1",
+              "description": "Live translation through headphones",
               "type": "session"
             },
             {
               "time": "20:30 – 20:45",
               "title": "Announcements",
-              "description": "Group Assignments",
+              "description": "Group Assignments, Live translation through headphones",
               "type": "activity"
             },
             {
               "time": "20:45 – 23:30",
               "title": "Night Game",
+              "description": "Live translation through headphones",
               "type": "activity"
             }
           ]
@@ -633,6 +635,7 @@
             {
               "time": "18:30 – 20:00",
               "title": "Session 4",
+              "description": "Live translation through headphones",
               "type": "session"
             },
             {
@@ -707,6 +710,7 @@
             {
               "time": "15:00 – 16:30",
               "title": "Session 7",
+              "description": "Live translation through headphones",
               "type": "session"
             },
             {
