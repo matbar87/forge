@@ -11,6 +11,6 @@ export interface GroupSession {
 }
 
 export const questions = questionsJson as unknown as {
-  pl: { sessions: GroupSession[] };
-  en: { sessions: GroupSession[] };
+  pl: { title: string; subtitle: string; sessions: GroupSession[] };
+  en: { title: string; subtitle: string; sessions: GroupSession[] };
 };

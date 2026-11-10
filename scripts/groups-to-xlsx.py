@@ -19,7 +19,7 @@ instructions(ws, [
     ('Grupy — podział na grupy (Kuźnia / Forge, zakładka „Grupy” w /app)', True),
     ('', False),
     ('Zakładki:', True),
-    ('• Ustawienia — czy strona Grupy jest włączona (TAK / NIE).', False),
+    ('• Ustawienia — czy strona Grupy jest włączona (TAK / NIE) oraz nagłówek strony (tytuł i podtytuł, PL i EN; puste EN = tekst PL).', False),
     ('• Grupy — jedna grupa w wierszu (nazwa). Kolejność wierszy = kolejność na stronie.', False),
     ('• Osoby — jedna osoba w wierszu: grupa, inicjał nazwiska, imię, rola (lider / asystent / puste). Kolejność = kolejność na liście.', False),
     ('', False),
@@ -37,9 +37,13 @@ instructions(ws, [
 ])
 
 ws = wb.create_sheet('Ustawienia')
-header(ws, [('Ustawienie', 40), ('Wartość', 14)])
-for i, (k, v) in enumerate([('Strona Grupy włączona', d.get('enabled', True))]):
-    data_cell(ws, i + 2, 1, k, FILLS[i % 2]); data_cell(ws, i + 2, 2, yn(v), FILLS[i % 2], center=True)
+header(ws, [('Ustawienie', 40), ('Wartość', 90)])
+data_cell(ws, 2, 1, 'Strona Grupy włączona', FILLS[0]); data_cell(ws, 2, 2, yn(d.get('enabled', True)), FILLS[0])
+for i, (k, v) in enumerate([
+    ('Tytuł strony PL', d.get('pl', {}).get('title', '')), ('Tytuł strony EN', d.get('en', {}).get('title', '')),
+    ('Podtytuł strony PL', d.get('pl', {}).get('subtitle', '')), ('Podtytuł strony EN', d.get('en', {}).get('subtitle', '')),
+], 1):
+    data_cell(ws, i + 2, 1, k, FILLS[i % 2]); data_cell(ws, i + 2, 2, v, FILLS[i % 2])
 dv = DataValidation(type='list', formula1='"TAK,NIE"', allow_blank=False, showErrorMessage=True, errorTitle='Ustawienie', error='TAK albo NIE')
 ws.add_data_validation(dv); dv.add('B2:B2')
 

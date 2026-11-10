@@ -2,11 +2,20 @@
   "_info": [
     "Podział na grupy do zakładki 'Grupy' w /app (za kodem PIN).",
     "enabled: false wyłącza całą zakładkę (dane grup nie trafiają wtedy na stronę).",
+    "pl / en: title i subtitle — nagłówek strony (edytowalny w panelu / w zakładce Ustawienia arkusza).",
     "Repo jest publiczne, więc nazwisk tu NIE przechowujemy: last to tylko inicjał z kropką (np. 'B.').",
     "Każda grupa ma name i members (first = imię, last = inicjał nazwiska, role = 'leader' | 'assistant' | ''), max 12 osób.",
     "Edytować można też arkusz plan/grupy.xlsx — workflow zamieni go na ten plik."
   ],
   "enabled": true,
+  "pl": {
+    "title": "Grupy",
+    "subtitle": "Podział na grupy — znajdź swoją grupę i osoby, z którymi spędzisz czas."
+  },
+  "en": {
+    "title": "Groups",
+    "subtitle": "Who is in which group — find your group and the men you will spend the time with."
+  },
   "groups": [
     {
       "name": "Wieliczka 1",

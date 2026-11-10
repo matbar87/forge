@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Plus, Trash2 } from 'lucide-react';
 import { MAX_GROUP_LEADERS, MAX_GROUP_SIZE } from '../data/validation.js';
 import { initial } from '../data/groups-public.js';
-import { SmallButton, TextField, move } from './fields';
+import { BiField, SmallButton, TextField, move } from './fields';
 import { newId, type EditGroup, type EditGroups, type EditMember, type MemberRole } from './model';
 
 const selectClass =
@@ -212,6 +212,11 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           )}
         </div>
       )}
+      <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+        <h2 className="font-bebas text-2xl tracking-wide uppercase">Nagłówek strony</h2>
+        <BiField label="Tytuł" value={data.title} onChange={(title) => onChange({ ...data, title })} />
+        <BiField label="Podtytuł" value={data.subtitle} multiline onChange={(subtitle) => onChange({ ...data, subtitle })} />
+      </section>
       <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-4 shadow-xl">
         <Switch
           checked={data.enabled}

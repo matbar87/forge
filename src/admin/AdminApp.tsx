@@ -82,14 +82,16 @@ const friendlyPlanError = (plan: any, msg: string) => {
   };
   return `${where}${field ? ` — ${fieldName[field] ?? field}` : ''}: ${rest}`;
 };
+const friendlyHeadingError = (msg: string) =>
+  msg.replace(/^(pl|en)\.(title|subtitle):/, (_, lang, f) => `Nagłówek strony — ${f === 'title' ? 'tytuł' : 'podtytuł'}${lang === 'en' ? ' (EN)' : ''}:`);
 const friendlyQuestionsError = (msg: string) =>
-  msg.replace(/^(pl|en)\.sessions\[(\d+)\](?:\.questions\[(\d+)\])?\.?(\w*):/, (_, lang, si, qi, f) =>
+  friendlyHeadingError(msg).replace(/^(pl|en)\.sessions\[(\d+)\](?:\.questions\[(\d+)\])?\.?(\w*):/, (_, lang, si, qi, f) =>
     `Sesja ${Number(si) + 1}${qi !== undefined ? `, pytanie ${Number(qi) + 1}` : ''}${f === 'topic' ? ' — temat' : ''}${
       lang === 'en' ? ' (EN)' : ''
     }:`
   );
 const friendlyGroupsError = (data: any, msg: string) =>
-  msg.replace(/^groups\[(\d+)\](?:\.members(?:\[(\d+)\])?)?\.?(\w*):/, (_, gi, mi, f) => {
+  friendlyHeadingError(msg).replace(/^groups\[(\d+)\](?:\.members(?:\[(\d+)\])?)?\.?(\w*):/, (_, gi, mi, f) => {
     const g = data?.groups?.[Number(gi)];
     const m = mi !== undefined ? g?.members?.[Number(mi)] : undefined;
     const field = { first: ' — imię', last: ' — nazwisko', role: ' — rola', name: ' — nazwa' }[f as string] ?? '';

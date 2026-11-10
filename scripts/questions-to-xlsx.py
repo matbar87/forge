@@ -22,6 +22,7 @@ lines = [
     ('Zakładki:', True),
     ('• Sesje — jedna sesja w wierszu: numer i temat (PL i EN). Tytuł na stronie to „Sesja [numer]” / „Session [number]”.', False),
     ('• Pytania — jedno pytanie w wierszu: numer sesji i treść (PL i EN). Kolejność wierszy = numeracja pytań w danej sesji.', False),
+    ('• Ustawienia — nagłówek strony (tytuł i podtytuł, PL i EN).', False),
     ('', False),
     ('Jak edytować:', True),
     ('• Aby dodać pytanie, dopisz wiersz z numerem sesji (może być na końcu arkusza). Aby usunąć — usuń wiersz.', False),
@@ -50,6 +51,14 @@ for i, (a, b) in enumerate(zip(pl, en)):
 dv = DataValidation(type='whole', operator='between', formula1='1', formula2=str(len(pl)),
                     showErrorMessage=True, errorTitle='Sesja', error='Numer sesji z zakładki Sesje')
 ws.add_data_validation(dv); dv.add(f'A2:A{r + 300}')
+
+ws = wb.create_sheet('Ustawienia')
+header(ws, [('Ustawienie', 30), ('Wartość', 90)])
+for i, (k, v) in enumerate([
+    ('Tytuł strony PL', d['pl'].get('title', '')), ('Tytuł strony EN', d['en'].get('title', '')),
+    ('Podtytuł strony PL', d['pl'].get('subtitle', '')), ('Podtytuł strony EN', d['en'].get('subtitle', '')),
+]):
+    data_cell(ws, i + 2, 1, k, FILLS[i % 2], wrap=False); data_cell(ws, i + 2, 2, v, FILLS[i % 2])
 
 write_source(wb, json_text)
 wb.active = 1

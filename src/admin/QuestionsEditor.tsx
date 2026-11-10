@@ -99,6 +99,11 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
     });
   return (
     <div className="space-y-5">
+      <section className="bg-[#18212C] rounded-2xl p-4 sm:p-5 space-y-3 shadow-xl">
+        <h2 className="font-bebas text-2xl tracking-wide uppercase">Nagłówek strony</h2>
+        <BiField label="Tytuł" value={data.title} onChange={(title) => onChange({ ...data, title })} />
+        <BiField label="Podtytuł" value={data.subtitle} multiline onChange={(subtitle) => onChange({ ...data, subtitle })} />
+      </section>
       <SmallButton title={allOpen ? 'Zwiń wszystkie sesje' : 'Rozwiń wszystkie sesje'} onClick={() => setOpen(allOpen ? new Set() : new Set(sessions.map((s) => s.id)))}>
         {allOpen ? <ChevronsDownUp className="w-3.5 h-3.5" /> : <ChevronsUpDown className="w-3.5 h-3.5" />}
         {allOpen ? 'Zwiń wszystkie' : 'Rozwiń wszystkie'}
