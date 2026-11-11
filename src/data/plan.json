@@ -21,8 +21,7 @@
           "items": [
             {
               "time": "12:30 – 13:00",
-              "title": "Przyjazd / Rejestracja",
-              "description": "Zakwaterowanie w pokojach",
+              "title": "Przyjazd",
               "type": "break",
               "badge": "PRZYJAZD",
               "leaders": true
@@ -463,8 +462,7 @@
           "items": [
             {
               "time": "12:30 – 13:00",
-              "title": "Arrival / Check-in",
-              "description": "Room check-in",
+              "title": "Arrival",
               "type": "break",
               "badge": "ARRIVAL",
               "leaders": true
