@@ -190,42 +190,29 @@
       "name": "Katowice 1",
       "members": [
         {
-          "first": "Dominik",
-          "last": "T.",
-          "role": "leader"
-        },
-        {
-          "first": "Jarek",
+          "first": "Sergei",
           "last": "K.",
-          "role": "assistant"
-        },
-        {
-          "first": "Andrzej",
-          "last": "B."
-        },
-        {
-          "first": "Jarosław",
-          "last": "D."
-        },
-        {
-          "first": "Sławomir",
-          "last": "G."
+          "role": "leader"
         },
         {
           "first": "Maksym",
           "last": "K."
         },
         {
-          "first": "Kamil",
-          "last": "K."
+          "first": "Krzysztof",
+          "last": "S."
         },
         {
-          "first": "Marek",
-          "last": "S."
+          "first": "Edward",
+          "last": "M."
+        },
+        {
+          "first": "Jarosław",
+          "last": "D."
         },
         {
           "first": "Andrzej",
-          "last": "S."
+          "last": "B."
         }
       ]
     },
@@ -233,16 +220,42 @@
       "name": "Katowice 2",
       "members": [
         {
-          "first": "Sergei",
+          "first": "Jarek",
           "last": "K.",
-          "role": "assistant"
-        },
-        {
-          "first": "Krzysztof",
-          "last": "S."
+          "role": "leader"
         },
         {
           "first": "Grzegorz",
+          "last": "S."
+        },
+        {
+          "first": "Sławomir",
+          "last": "M."
+        },
+        {
+          "first": "Kamil",
+          "last": "K."
+        }
+      ]
+    },
+    {
+      "name": "Katowice 3",
+      "members": [
+        {
+          "first": "Dominik",
+          "last": "T.",
+          "role": "leader"
+        },
+        {
+          "first": "Sławomir",
+          "last": "G."
+        },
+        {
+          "first": "Marek",
+          "last": "S."
+        },
+        {
+          "first": "Andrzej",
           "last": "S."
         },
         {
@@ -252,14 +265,6 @@
         {
           "first": "Denis",
           "last": "Y."
-        },
-        {
-          "first": "Sławomir",
-          "last": "M."
-        },
-        {
-          "first": "Edward",
-          "last": "M."
         }
       ]
     },
