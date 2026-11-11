@@ -4,6 +4,7 @@
     "Każdy język ma też title i subtitle — nagłówek strony (edytowalny w panelu / w zakładce Ustawienia arkusza).",
     "Każdy język (pl, en) ma listę sesji: title (np. 'Sesja 1'), topic (temat), questions (lista pytań, wyświetlana jako lista numerowana).",
     "Pusta lista pytań pokazuje komunikat 'Pytania do tej sesji pojawią się wkrótce'.",
+    "Odblokowanie pytań: opcjonalne pole unlock w sesji (takie samo w pl i en). Brak = pytania pojawią się, gdy 'Sesja N' zacznie się wg planu szczegółowego (plan.json); 'open' = widoczne od razu; 'RRRR-MM-DD GG:MM' = widoczne od tej chwili.",
     "Edytować można też arkusz plan/pytania-grupy.xlsx — workflow zamieni go na ten plik."
   ],
   "pl": {

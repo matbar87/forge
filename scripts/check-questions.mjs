@@ -19,4 +19,21 @@ if (errors.length) {
   console.error('questions.json — błędy:\n  ' + errors.join('\n  '));
   process.exit(1);
 }
+
+// Sessions left on automatic unlock need a "Sesja N" item in the detailed
+// plan (same match as src/data/unlock.ts); without one their questions are
+// visible right away. Warn, don't fail: that may be intended.
+try {
+  const plan = JSON.parse(readFileSync(new URL('../src/data/plan.json', import.meta.url), 'utf8'));
+  const titles = (plan.pl?.szczegolowy?.days ?? []).flatMap((d) => (d.items ?? []).map((it) => it.title.trim()));
+  data.pl.sessions.forEach((s, i) => {
+    if (s.unlock) return;
+    const want = new RegExp(`^sesja\\s+${i + 1}(?!\\d)`, 'i');
+    if (!titles.some((t) => want.test(t))) {
+      console.log(`::warning::questions.json: Sesja ${i + 1} ma automatyczne odblokowanie, ale w planie szczegółowym nie ma punktu „Sesja ${i + 1}” — pytania będą widoczne od razu.`);
+    }
+  });
+} catch {
+  /* plan.json errors are reported by check-plan.mjs */
+}
 console.log('questions.json OK');

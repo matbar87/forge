@@ -21,6 +21,8 @@ lines = [
     ('', False),
     ('Zakładki:', True),
     ('• Sesje — jedna sesja w wierszu: numer i temat (PL i EN). Tytuł na stronie to „Sesja [numer]” / „Session [number]”.', False),
+    ('  Kolumna Odblokowanie: puste = pytania pojawią się, gdy „Sesja [numer]” zacznie się wg planu szczegółowego;', False),
+    ('  „od razu” = widoczne od razu; data i godzina RRRR-MM-DD GG:MM (np. 2026-11-12 19:00) = widoczne od tej chwili.', False),
     ('• Pytania — jedno pytanie w wierszu: numer sesji i treść (PL i EN). Kolejność wierszy = numeracja pytań w danej sesji.', False),
     ('• Ustawienia — nagłówek strony (tytuł i podtytuł, PL i EN).', False),
     ('', False),
@@ -37,9 +39,11 @@ instructions(ws, lines)
 
 pl, en = d['pl']['sessions'], d['en']['sessions']
 ws = wb.create_sheet('Sesje')
-header(ws, [('Sesja', 8), ('Temat PL', 50), ('Temat EN', 50)])
+header(ws, [('Sesja', 8), ('Temat PL', 50), ('Temat EN', 50), ('Odblokowanie', 22)])
+def unlock_cell(u):
+    return 'od razu' if u == 'open' else (u or '')
 for i, (a, b) in enumerate(zip(pl, en)):
-    put(ws, i + 2, [i + 1, a['topic'], b['topic']], FILLS[i % 2])
+    put(ws, i + 2, [i + 1, a['topic'], b['topic'], unlock_cell(a.get('unlock', ''))], FILLS[i % 2])
 
 ws = wb.create_sheet('Pytania')
 header(ws, [('Sesja', 8), ('Pytanie PL', 70), ('Pytanie EN', 70)])

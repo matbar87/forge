@@ -103,6 +103,28 @@ export function validateQuestions(data) {
   }
   if (counts.length === 2 && counts[0] !== counts[1]) errors.push(`pl i en mają różną liczbę sesji (${counts.join(' vs ')})`);
 
+  // unlock: missing/'' = when the session starts in the plan, 'open' = right
+  // away, 'RRRR-MM-DD GG:MM' = from that moment (see src/data/unlock.ts).
+  const UNLOCK = /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})$/;
+  const validUnlock = (u) => {
+    if (u === undefined || u === '' || u === 'open') return true;
+    const m = typeof u === 'string' && UNLOCK.exec(u);
+    if (!m) return false;
+    const d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+    return d.getMonth() === +m[2] - 1 && d.getDate() === +m[3] && +m[4] < 24 && +m[5] < 60;
+  };
+  for (const lang of ['pl', 'en']) {
+    (Array.isArray(data?.[lang]?.sessions) ? data[lang].sessions : []).forEach((s, i) => {
+      if (!validUnlock(s?.unlock)) errors.push(`${lang}.sessions[${i}].unlock: "${s.unlock}" — oczekiwane "open" albo "RRRR-MM-DD GG:MM", np. "2026-11-12 19:00" (brak = start sesji wg planu)`);
+    });
+  }
+  const plS = data?.pl?.sessions, enS = data?.en?.sessions;
+  if (Array.isArray(plS) && Array.isArray(enS)) {
+    plS.forEach((s, i) => {
+      if (enS[i] && (s?.unlock ?? '') !== (enS[i]?.unlock ?? '')) errors.push(`en.sessions[${i}].unlock: musi być takie samo jak w pl ("${s?.unlock ?? ''}")`);
+    });
+  }
+
   return errors;
 }
 

@@ -2,7 +2,8 @@
 # edited in Excel / Google Sheets) back to src/data/questions.json:
 #   python3 scripts/xlsx-to-questions.py plan/pytania-grupy.xlsx src/data/questions.json
 # Then run `node scripts/check-questions.mjs` to validate the result.
-import json, sys
+import json, re, sys
+from datetime import datetime
 from openpyxl import load_workbook
 
 src, dest = sys.argv[1], sys.argv[2]
@@ -44,12 +45,30 @@ def heading(label, L, lang, key):
     if lang == 'pl': return pl
     return settings.get(f'{label} EN', '') or pl
 
+# Odblokowanie column: blank = when the session starts in the plan, "od razu"
+# = right away, a date and time = from then. Sheets made before the column
+# existed keep the current settings.
+def unlock(r, n):
+    if 'Odblokowanie' not in r:
+        old_s = old.get('pl', {}).get('sessions', [])
+        return old_s[n - 1].get('unlock', '') if n <= len(old_s) else ''
+    v = r['Odblokowanie']
+    if isinstance(v, datetime): return v.strftime('%Y-%m-%d %H:%M')
+    t = text(v)
+    if t == '': return ''
+    if t.lower() in ('od razu', 'open', 'teraz', 'tak'): return 'open'
+    m = re.fullmatch(r'(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{2})(?::\d{2})?', t)
+    if not m: sys.exit(f'Sesje, sesja {n}: Odblokowanie "{t}" — wpisz „od razu”, datę RRRR-MM-DD GG:MM albo zostaw puste')
+    y, mo, d, h, mi = m.groups()
+    return f'{y}-{int(mo):02d}-{int(d):02d} {int(h):02d}:{mi}'
+
 for lang, L, word in (('pl', 'PL', 'Sesja'), ('en', 'EN', 'Session')):
     out[lang] = {
         'title': heading('Tytuł strony', L, lang, 'title'),
         'subtitle': heading('Podtytuł strony', L, lang, 'subtitle'),
         'sessions': [
-        {'title': f'{word} {n}', 'topic': text(r[f'Temat {L}']) or text(r['Temat PL']), 'questions': []}
+        {'title': f'{word} {n}', 'topic': text(r[f'Temat {L}']) or text(r['Temat PL']), 'questions': [],
+         **({'unlock': u} if (u := unlock(r, n)) else {})}
         for n, r in zip(numbers, sessions)
     ]}
 for i, r in enumerate(rows(wb['Pytania']), 2):
