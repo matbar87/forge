@@ -51,6 +51,9 @@ export interface EditPlan {
 export interface EditSession {
   id: string;
   topic: Bilingual;
+  // '' = when the session starts in the plan, 'open' = right away,
+  // 'RRRR-MM-DD GG:MM' = from that moment (see src/data/unlock.ts).
+  unlock: string;
   questions: { id: string; text: Bilingual }[];
 }
 
@@ -193,6 +196,7 @@ export function questionsToEdit(q: any): EditQuestions {
       return {
         id: newId(),
         topic: bi(s.topic, en.topic),
+        unlock: typeof s.unlock === 'string' ? s.unlock : '',
         questions: s.questions.map((text: string, j: number) => ({ id: newId(), text: bi(text, en.questions[j]) })),
       };
     }),
@@ -209,6 +213,7 @@ export function editToQuestions(e: EditQuestions): any {
         title: `${word} ${i + 1}`,
         topic: out(s.topic)[lang],
         questions: s.questions.map((q) => out(q.text)[lang]).filter((t) => t !== ''),
+        ...(s.unlock.trim() ? { unlock: s.unlock.trim() } : {}),
       })),
     };
   }

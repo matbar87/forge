@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Lock } from 'lucide-react';
 import { Language, translations } from '../translations';
+import { plan } from '../data/plan';
+import { formatUnlock, sessionUnlockAt } from '../data/unlock';
 import { usePinGate } from '../hooks/usePinGate';
 import { PinEntryCard } from './PinEntryCard';
 
@@ -10,6 +13,19 @@ interface GroupTimeViewProps {
 export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
   const t = translations[lang].groupTime;
   const pinGate = usePinGate();
+  // Each session's questions unlock when it starts (or as set in the panel,
+  // see data/unlock.ts); re-checked every 30 s and when the app comes back
+  // to the foreground, so they appear without a reload.
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const tick = () => setNow(new Date());
+    const id = setInterval(tick, 30000);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', tick);
+    };
+  }, []);
 
   return (
     <section className="min-h-screen w-full pt-[104px] sm:pt-[128px] pb-16 bg-transparent relative overflow-hidden">
@@ -28,7 +44,10 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
           <PinEntryCard prompt={t.pinPrompt} errorText={t.pinError} lockedText={t.pinLocked} pinGate={pinGate} />
         ) : (
           <div className="space-y-4">
-            {t.sessions.map((session, idx) => (
+            {t.sessions.map((session, idx) => {
+              const unlockAt = sessionUnlockAt(session.unlock, idx + 1, plan);
+              const locked = !!unlockAt && now < unlockAt;
+              return (
               <div
                 key={idx}
                 className="bg-[#18212C] rounded-2xl p-6 sm:p-8 shadow-xl"
@@ -42,7 +61,12 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
                   </h3>
                 </div>
 
-                {session.questions.length > 0 ? (
+                {locked ? (
+                  <p className="flex items-center gap-2 text-sm text-[#E3E6DB]/50 italic">
+                    <Lock className="w-4 h-4 shrink-0" />
+                    {(session.unlock ? t.questionsLockedUntil : t.questionsLocked).replace('{time}', formatUnlock(unlockAt, lang))}
+                  </p>
+                ) : session.questions.length > 0 ? (
                   <ol className="space-y-3">
                     {session.questions.map((q, qIdx) => (
                       <li key={qIdx} className="flex items-start gap-3">
@@ -57,7 +81,8 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
                   <p className="text-sm text-[#E3E6DB]/50 italic">{t.questionsComingSoon}</p>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

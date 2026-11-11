@@ -8,6 +8,9 @@ export interface GroupSession {
   title: string;
   topic: string;
   questions: string[];
+  // When the questions become visible — see unlock.ts. Missing = when the
+  // session starts in the plan.
+  unlock?: string;
 }
 
 export const questions = questionsJson as unknown as {

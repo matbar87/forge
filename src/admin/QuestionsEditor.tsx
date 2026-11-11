@@ -1,7 +1,71 @@
 import React, { useState } from 'react';
-import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Plus, Trash2 } from 'lucide-react';
-import { BiField, SmallButton, move } from './fields';
+import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, LockOpen, Plus, Trash2 } from 'lucide-react';
+import { BiField, Label, SmallButton, inputClass, move } from './fields';
 import { newId, type EditQuestions, type EditSession } from './model';
+import { UNLOCK_OPEN, formatUnlock, planSessionStart, sessionUnlockAt } from '../data/unlock';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PlanJson = any;
+
+type UnlockMode = 'auto' | 'open' | 'custom';
+const modeOf = (u: string): UnlockMode => (u === '' ? 'auto' : u === UNLOCK_OPEN ? 'open' : 'custom');
+// <input type="datetime-local"> uses "2026-11-12T19:00"; the JSON uses a space.
+const toInput = (u: string) => u.replace(' ', 'T');
+const fromInput = (v: string) => v.replace('T', ' ');
+const pad = (n: number) => String(n).padStart(2, '0');
+const toSetting = (d: Date) =>
+  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+
+/** Short status for the collapsed session header: open now / locked until …. */
+const unlockStatus = (unlock: string, n: number, plan: PlanJson) => {
+  const at = sessionUnlockAt(unlock, n, plan ?? {});
+  if (!at || new Date() >= at) return { locked: false, text: 'widoczne' };
+  return { locked: true, text: `od ${formatUnlock(at, 'pl')}` };
+};
+
+const UnlockField: React.FC<{ value: string; n: number; plan: PlanJson; onChange: (v: string) => void }> = ({ value, n, plan, onChange }) => {
+  const mode = modeOf(value);
+  const planStart = plan ? planSessionStart(plan, n) : null;
+  const hint =
+    mode === 'auto'
+      ? planStart
+        ? `Start „Sesja ${n}” w planie: ${formatUnlock(planStart, 'pl')}.`
+        : `W planie szczegółowym nie ma punktu „Sesja ${n}” — pytania będą widoczne od razu.`
+      : mode === 'open'
+        ? 'Pytania widoczne od razu, niezależnie od planu.'
+        : 'Pytania pojawią się o wybranej godzinie (czas urządzenia uczestnika).';
+  return (
+    <div className="bg-[#1E2937] rounded-xl p-3 space-y-2">
+      <Label>Odblokowanie pytań</Label>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <select
+          className={`${inputClass} sm:w-auto`}
+          value={mode}
+          onChange={(e) => {
+            const m = e.target.value as UnlockMode;
+            if (m === 'auto') onChange('');
+            else if (m === 'open') onChange(UNLOCK_OPEN);
+            // Start from the plan's time (or the current one) so the field isn't empty.
+            else onChange(mode === 'custom' ? value : toSetting(planStart ?? new Date()));
+          }}
+        >
+          <option value="auto">Automatycznie — gdy zacznie się sesja</option>
+          <option value="open">Od razu</option>
+          <option value="custom">Od wybranej daty i godziny</option>
+        </select>
+        {mode === 'custom' && (
+          <input
+            type="datetime-local"
+            className={`${inputClass} sm:w-auto`}
+            value={toInput(value)}
+            onChange={(e) => e.target.value && onChange(fromInput(e.target.value))}
+          />
+        )}
+      </div>
+      <p className="text-xs text-[#E3E6DB]/55">{hint}</p>
+    </div>
+  );
+};
 
 const SessionEditor: React.FC<{
   session: EditSession;
@@ -12,8 +76,10 @@ const SessionEditor: React.FC<{
   onDelete: () => void;
   open: boolean;
   onToggle: () => void;
-}> = ({ session, index, count, onChange, onMove, onDelete, open, onToggle }) => {
+  plan: PlanJson;
+}> = ({ session, index, count, onChange, onMove, onDelete, open, onToggle, plan }) => {
   const qs = session.questions;
+  const status = unlockStatus(session.unlock, index + 1, plan);
   const setQs = (questions: EditSession['questions']) => onChange({ ...session, questions });
   return (
     <section className="bg-[#18212C] rounded-2xl shadow-xl">
@@ -22,7 +88,14 @@ const SessionEditor: React.FC<{
           {open ? <ChevronDown className="w-4 h-4 shrink-0" /> : <ChevronRight className="w-4 h-4 shrink-0" />}
           <h2 className="font-bebas text-2xl tracking-wide uppercase shrink-0">Sesja {index + 1}</h2>
           <span className="hidden sm:block text-sm text-[#E3E6DB]/60 truncate">{session.topic.pl}</span>
-          <span className="text-xs font-mono-code text-[#E3E6DB]/50 ml-auto shrink-0">{qs.length} pyt.</span>
+          <span
+            className="ml-auto shrink-0 inline-flex items-center gap-1 text-xs font-mono-code text-[#E3E6DB]/50"
+            title={status.locked ? `Pytania zablokowane — pojawią się ${status.text}` : 'Pytania są teraz widoczne'}
+          >
+            {status.locked ? <Lock className="w-3 h-3" /> : <LockOpen className="w-3 h-3" />}
+            <span className="hidden sm:inline">{status.text}</span>
+          </span>
+          <span className="text-xs font-mono-code text-[#E3E6DB]/50 shrink-0">{qs.length} pyt.</span>
         </button>
         <div className="flex gap-1">
           <SmallButton title="Sesja w górę" onClick={() => onMove(-1)} disabled={index === 0}>
@@ -39,6 +112,7 @@ const SessionEditor: React.FC<{
       {open && (
         <div className="px-4 sm:px-5 pb-5 space-y-3">
       <BiField label="Temat" value={session.topic} onChange={(topic) => onChange({ ...session, topic })} />
+      <UnlockField value={session.unlock} n={index + 1} plan={plan} onChange={(unlock) => onChange({ ...session, unlock })} />
 
       <ol className="space-y-2">
         {qs.map((q, i) => (
@@ -85,7 +159,11 @@ const SessionEditor: React.FC<{
   );
 };
 
-export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: EditQuestions) => void }> = ({ data, onChange }) => {
+export const QuestionsEditor: React.FC<{ data: EditQuestions; plan: PlanJson; onChange: (d: EditQuestions) => void }> = ({
+  data,
+  plan,
+  onChange,
+}) => {
   const sessions = data.sessions;
   const set = (list: EditSession[]) => onChange({ ...data, sessions: list });
   // Everything starts collapsed; a newly added session opens straight away.
@@ -110,7 +188,8 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
       </SmallButton>
       <p className="text-xs text-[#E3E6DB]/55">
         Tytuł sesji na stronie to „Sesja [numer]” / „Session [number]” wg kolejności. Puste pole EN = na angielskiej wersji
-        pojawi się tekst PL. Puste pytania są pomijane.
+        pojawi się tekst PL. Puste pytania są pomijane. Domyślnie pytania sesji odblokowują się, gdy „Sesja [numer]”
+        zaczyna się wg planu szczegółowego — można to zmienić w każdej sesji (od razu albo od wybranej godziny).
       </p>
       {sessions.map((s, i) => (
         <SessionEditor
@@ -119,6 +198,7 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
           index={i}
           count={sessions.length}
           open={open.has(s.id)}
+          plan={plan}
           onToggle={() => toggle(s.id)}
           onChange={(ns) => set(sessions.map((x) => (x.id === ns.id ? ns : x)))}
           onMove={(dir) => set(move(sessions, i, dir))}
@@ -131,7 +211,7 @@ export const QuestionsEditor: React.FC<{ data: EditQuestions; onChange: (d: Edit
         title="Dodaj sesję"
         onClick={() => {
           const id = newId();
-          set([...sessions, { id, topic: { pl: '', en: '' }, questions: [] }]);
+          set([...sessions, { id, topic: { pl: '', en: '' }, unlock: '', questions: [] }]);
           setOpen((prev) => new Set(prev).add(id));
         }}
       >

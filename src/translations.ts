@@ -149,6 +149,8 @@ export const translations = {
       pinError: 'Nieprawidłowy kod, spróbuj ponownie.',
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
+      questionsLocked: 'Pytania pojawią się, gdy zacznie się sesja ({time}).',
+      questionsLockedUntil: 'Pytania pojawią się: {time}.',
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.pl.sessions,
     },
@@ -328,6 +330,8 @@ export const translations = {
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',
       questionsComingSoon: 'Questions for this session are coming soon.',
+      questionsLocked: 'Questions will appear when the session starts ({time}).',
+      questionsLockedUntil: 'Questions will appear: {time}.',
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.en.sessions,
     },

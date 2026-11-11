@@ -86,7 +86,7 @@ const friendlyHeadingError = (msg: string) =>
   msg.replace(/^(pl|en)\.(title|subtitle):/, (_, lang, f) => `Nagłówek strony — ${f === 'title' ? 'tytuł' : 'podtytuł'}${lang === 'en' ? ' (EN)' : ''}:`);
 const friendlyQuestionsError = (msg: string) =>
   friendlyHeadingError(msg).replace(/^(pl|en)\.sessions\[(\d+)\](?:\.questions\[(\d+)\])?\.?(\w*):/, (_, lang, si, qi, f) =>
-    `Sesja ${Number(si) + 1}${qi !== undefined ? `, pytanie ${Number(qi) + 1}` : ''}${f === 'topic' ? ' — temat' : ''}${
+    `Sesja ${Number(si) + 1}${qi !== undefined ? `, pytanie ${Number(qi) + 1}` : ''}${f === 'topic' ? ' — temat' : f === 'unlock' ? ' — odblokowanie pytań' : ''}${
       lang === 'en' ? ' (EN)' : ''
     }:`
   );
@@ -355,7 +355,7 @@ export const AdminApp: React.FC = () => {
         {!loading && plan && questions && groups && (tab === 'plan' ? (
           <PlanEditor plan={plan} onChange={(p) => { setPlan(p); setSaved(null); }} />
         ) : tab === 'questions' ? (
-          <QuestionsEditor data={questions} onChange={(q) => { setQuestions(q); setSaved(null); }} />
+          <QuestionsEditor data={questions} plan={planJson} onChange={(q) => { setQuestions(q); setSaved(null); }} />
         ) : (
           <GroupsEditor data={groups} onChange={(g) => { setGroups(g); setSaved(null); }} />
         ))}
