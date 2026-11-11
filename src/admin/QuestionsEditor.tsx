@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, ChevronsUpDown, Lock, LockOpen, Plus, Trash2 } from 'lucide-react';
 import { BiField, Label, SmallButton, inputClass, move } from './fields';
 import { newId, type EditQuestions, type EditSession } from './model';
+import { toLocalISODate } from '../data/plan';
 import { UNLOCK_OPEN, formatUnlock, planSessionStart, sessionUnlockAt } from '../data/unlock';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,11 +11,11 @@ type PlanJson = any;
 type UnlockMode = 'auto' | 'open' | 'custom';
 const modeOf = (u: string): UnlockMode => (u === '' ? 'auto' : u === UNLOCK_OPEN ? 'open' : 'custom');
 // <input type="datetime-local"> uses "2026-11-12T19:00"; the JSON uses a space.
-const toInput = (u: string) => u.replace(' ', 'T');
+// A one-digit hour ("9:00", allowed in the JSON) is padded, or the input shows nothing.
+const toInput = (u: string) => u.replace(/ (\d):/, ' 0$1:').replace(' ', 'T');
 const fromInput = (v: string) => v.replace('T', ' ');
 const pad = (n: number) => String(n).padStart(2, '0');
-const toSetting = (d: Date) =>
-  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const toSetting = (d: Date) => `${toLocalISODate(d)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
 /** Short status for the collapsed session header: open now / locked until …. */
 const unlockStatus = (unlock: string, n: number, plan: PlanJson) => {

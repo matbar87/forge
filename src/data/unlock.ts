@@ -16,11 +16,12 @@ interface PlanLike {
 
 /** Start of "Sesja N" (1-based) in the detailed PL plan, or null if the plan has no such item. */
 export const planSessionStart = (plan: PlanLike, n: number): Date | null => {
-  const want = `sesja ${n}`;
+  // "Sesja 1", "Sesja 1 – Serce", "sesja 1." match; "Sesja 10" / "Sesja dla liderów 1" don't.
+  const want = new RegExp(`^sesja\\s+${n}(?!\\d)`, 'i');
   let best: Date | null = null;
   for (const day of plan.pl?.szczegolowy?.days ?? []) {
     for (const it of day.items ?? []) {
-      if (it.title.trim().toLowerCase() !== want) continue;
+      if (!want.test(it.title.trim())) continue;
       const start = parseLocalDateTime(day.isoDate, it.time.split('–')[0].trim());
       if (start && (!best || start < best)) best = start;
     }
@@ -39,7 +40,7 @@ export const sessionUnlockAt = (unlock: string | undefined, n: number, plan: Pla
   return planSessionStart(plan, n);
 };
 
-/** '12.11, 19:00' style label (PL) / 'Nov 12, 19:00' (EN). */
+/** 'czw., 12.11, 19:00' style label (PL) / 'Thu 12 Nov, 19:00' (EN). */
 export const formatUnlock = (d: Date, lang: 'pl' | 'en') =>
   d.toLocaleString(lang === 'pl' ? 'pl-PL' : 'en-GB', {
     weekday: 'short',
