@@ -117,6 +117,11 @@
       "name": "Warszawa 2",
       "members": [
         {
+          "first": "Michael",
+          "last": "F.",
+          "role": "leader"
+        },
+        {
           "first": "Serhiy",
           "last": "Y."
         },
@@ -261,6 +266,11 @@
     {
       "name": "Kielce",
       "members": [
+        {
+          "first": "Filip",
+          "last": "O.",
+          "role": "leader"
+        },
         {
           "first": "Bartłomiej",
           "last": "C."
