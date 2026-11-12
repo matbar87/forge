@@ -24,8 +24,16 @@ const fromInput = (v: string) => v.replace('T', ' ');
 const pad = (n: number) => String(n).padStart(2, '0');
 const toSetting = (d: Date) => `${toLocalISODate(d)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
-/** "Zadanie 1 – PL.pdf" -> "zadania/zadanie-1-pl.pdf" */
-export const taskPath = (fileName: string) => {
+/**
+ * "Zadanie 1 – PL.pdf" -> "zadania/zadanie-1-pl-3f9a12c4.pdf". The suffix is
+ * from the file's content: a PL and an EN file with the same name never
+ * overwrite each other, and a replaced PDF gets a new address, so phones
+ * can't serve a cached old version.
+ */
+export const taskPath = async (file: File) => {
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', await file.arrayBuffer()));
+  const hash = [...digest.slice(0, 4)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const fileName = file.name;
   const base = fileName
     .replace(/\.pdf$/i, '')
     .toLowerCase()
@@ -34,7 +42,7 @@ export const taskPath = (fileName: string) => {
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-  return `${TASK_DIR}/${base || 'zadanie'}.pdf`;
+  return `${TASK_DIR}/${(base || 'zadanie').slice(0, 60)}-${hash}.pdf`;
 };
 
 const FilePicker: React.FC<{
@@ -102,12 +110,15 @@ export const TasksEditor: React.FC<{
   const tasks = data.tasks;
   const setTasks = (list: EditTask[]) => onChange({ ...data, tasks: list });
   const patch = (id: string, p: Partial<EditTask>) => setTasks(tasks.map((t) => (t.id === id ? { ...t, ...p } : t)));
-  const pick = (task: EditTask, lang: 'pl' | 'en', file: File) => {
-    const path = taskPath(file.name);
-    const other = tasks.find((t) => t.id !== task.id && (t.pl === path || t.en === path)) || (lang === 'en' ? task.pl === path : task.en === path);
-    if (other && !window.confirm(`Plik ${path.slice(TASK_DIR.length + 1)} jest już użyty w innym miejscu i zostanie zastąpiony nowym. Kontynuować?`)) return;
+  // Hashing the file is asynchronous: apply the result to the data as it is
+  // by then, not as it was when the file was picked.
+  const latest = useRef(data);
+  latest.current = data;
+  const pick = async (task: EditTask, lang: 'pl' | 'en', file: File) => {
+    const path = await taskPath(file);
     onUpload(path, file);
-    patch(task.id, { [lang]: path });
+    const now = latest.current;
+    onChange({ ...now, tasks: now.tasks.map((t) => (t.id === task.id ? { ...t, [lang]: path } : t)) });
   };
 
   const mode = modeOf(data.tasksUnlock);

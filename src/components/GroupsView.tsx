@@ -107,7 +107,8 @@ export const GroupsView: React.FC<GroupsViewProps> = ({ lang }) => {
                   {tasksOpen && taskFile(group.task) && (
                     <a
                       href={publicUrl(taskFile(group.task)!)}
-                      download
+                      // Saved without the panel's content-hash suffix.
+                      download={taskFile(group.task)!.split('/').pop()!.replace(/-[0-9a-f]{8}\.pdf$/, '.pdf')}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-mono-code text-xs font-bold uppercase tracking-wider transition-colors"
