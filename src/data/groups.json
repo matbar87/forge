@@ -117,11 +117,6 @@
       "name": "Warszawa 2",
       "members": [
         {
-          "first": "Michael",
-          "last": "F.",
-          "role": "leader"
-        },
-        {
           "first": "Serhiy",
           "last": "Y."
         },
@@ -410,12 +405,8 @@
           "last": "P."
         },
         {
-          "first": "Richard",
-          "last": "F."
-        },
-        {
-          "first": "Matt",
-          "last": "R."
+          "first": "Justin",
+          "last": "X."
         }
       ]
     },
@@ -478,6 +469,24 @@
         {
           "first": "Samuel",
           "last": "N."
+        }
+      ]
+    },
+    {
+      "name": "ENGLISH",
+      "members": [
+        {
+          "first": "Michael",
+          "last": "F.",
+          "role": "leader"
+        },
+        {
+          "first": "Richard",
+          "last": "F."
+        },
+        {
+          "first": "Matt",
+          "last": "R."
         }
       ]
     }
