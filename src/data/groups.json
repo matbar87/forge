@@ -5,6 +5,7 @@
     "pl / en: title i subtitle — nagłówek strony (edytowalny w panelu / w zakładce Ustawienia arkusza).",
     "Repo jest publiczne, więc nazwisk tu NIE przechowujemy: last to tylko inicjał z kropką (np. 'B.').",
     "Każda grupa ma name i members (first = imię, last = inicjał nazwiska, role = 'leader' | 'assistant' | ''), max 12 osób.",
+    "tasks: zadania PDF (files: name, pl, en — pliki w public/zadania/) i unlock ('' = godzinę przed 'Gra nocna', 'open', 'RRRR-MM-DD GG:MM'); grupa wskazuje zadanie polem task (nazwa). Ustawiane w panelu.",
     "Edytować można też arkusz plan/grupy.xlsx — workflow zamieni go na ten plik."
   ],
   "enabled": true,
@@ -15,6 +16,10 @@
   "en": {
     "title": "Groups",
     "subtitle": "Find your group and see who's in yours!"
+  },
+  "tasks": {
+    "unlock": "",
+    "files": []
   },
   "groups": [
     {

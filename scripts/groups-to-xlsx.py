@@ -30,6 +30,7 @@ instructions(ws, [
     ('• Repo na GitHubie jest PUBLICZNE, dlatego nie przechowujemy nazwisk: w kolumnie „Inicjał nazwiska” wpisz jedną literę (np. „K.”).', False),
     ('  Jeśli wpiszesz całe nazwisko, zostanie skrócone do inicjału — ale wgrany plik zostaje w historii repo, więc lepiej nie wgrywać pełnych nazwisk.', False),
     ('• Strona włączona = NIE: zakładka Grupy znika, a dane osób nie trafiają do kodu strony.', False),
+    ('• Zadania PDF („Pobierz zadanie”) ustawia się tylko w panelu edycji — arkusz ich nie zmienia (zostają bez zmian).', False),
     ('', False),
     ('Aktualizacja strony: wgraj ten plik na GitHubie do repo forge jako plan/grupy.xlsx', False),
     ('(Add file → Upload files, ta sama nazwa i folder). Strona przebuduje się sama w kilka minut.', False),

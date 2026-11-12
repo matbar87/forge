@@ -17,12 +17,22 @@ const heading = (h) => (h ? { title: h.title, subtitle: h.subtitle } : undefined
 
 export function publicGroups(data) {
   if (data.enabled === false) return { enabled: false, groups: [] };
+  // Task PDFs (download button under a group): only the ones some group uses.
+  const files = Array.isArray(data.tasks?.files) ? data.tasks.files : [];
+  const byName = new Map(files.map((t) => [String(t.name).trim().toLowerCase(), t]));
+  const taskOf = (g) => (g.task ? byName.get(String(g.task).trim().toLowerCase()) : undefined);
+  const used = files.filter((t) => (data.groups ?? []).some((g) => taskOf(g) === t));
   return {
     enabled: true,
     pl: heading(data.pl),
     en: heading(data.en),
+    tasks: {
+      unlock: data.tasks?.unlock ?? '',
+      files: used.map((t) => ({ name: t.name, pl: t.pl, ...(t.en ? { en: t.en } : {}) })),
+    },
     groups: (data.groups ?? []).map((g) => ({
       name: g.name,
+      ...(taskOf(g) ? { task: taskOf(g).name } : {}),
       members: g.members.map((m) => ({ first: m.first, last: m.last, ...(m.role ? { role: m.role } : {}) })),
     })),
   };

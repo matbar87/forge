@@ -17,7 +17,17 @@ export interface GroupMember {
 
 export interface Group {
   name: string;
+  /** Name of the task PDF (tasks.files) to download under this group. */
+  task?: string;
   members: GroupMember[];
+}
+
+export interface GroupTask {
+  name: string;
+  /** Path under the site root, e.g. "zadania/zadanie-1-pl.pdf". */
+  pl: string;
+  /** English version; missing = the PL file. */
+  en?: string;
 }
 
 export const groups = groupsJson as unknown as {
@@ -25,5 +35,8 @@ export const groups = groupsJson as unknown as {
   // Page heading per language (absent when the page is disabled).
   pl?: { title: string; subtitle: string };
   en?: { title: string; subtitle: string };
+  // '' = an hour before "Gra nocna" in the plan, 'open', 'RRRR-MM-DD GG:MM'
+  // (see data/unlock.ts).
+  tasks?: { unlock: string; files: GroupTask[] };
   groups: Group[];
 };

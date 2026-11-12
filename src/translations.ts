@@ -165,6 +165,7 @@ export const translations = {
       noResults: 'Nikogo nie znaleziono.',
       leader: 'Lider',
       assistant: 'Asystent',
+      downloadTask: 'Pobierz zadanie',
     },
     translationView: {
       title: 'Tłumaczenie',
@@ -345,6 +346,7 @@ export const translations = {
       noResults: 'No one found.',
       leader: 'Leader',
       assistant: 'Assistant',
+      downloadTask: 'Download task',
     },
     translationView: {
       title: 'Translation',

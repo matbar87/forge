@@ -62,10 +62,18 @@ def heading(lang, label, key):
     if lang == 'pl': return pl
     return text(settings.get(f'{label} EN')) or pl
 
+# Task PDFs are set in the admin panel only: keep them, and each group's
+# task (matched by group name), as they are in the current JSON.
+old_task = {str(g.get('name', '')).lower(): g['task'] for g in old.get('groups', []) if g.get('task')}
+for g in groups:
+    if g['name'].lower() in old_task:
+        members = g.pop('members'); g['task'] = old_task[g['name'].lower()]; g['members'] = members
+
 out = {'_info': old.get('_info', []),
        'enabled': yes_no(settings['Strona Grupy włączona'], 'Strona Grupy włączona'),
        'pl': {'title': heading('pl', 'Tytuł strony', 'title'), 'subtitle': heading('pl', 'Podtytuł strony', 'subtitle')},
        'en': {'title': heading('en', 'Tytuł strony', 'title'), 'subtitle': heading('en', 'Podtytuł strony', 'subtitle')},
+       **({'tasks': old['tasks']} if 'tasks' in old else {}),
        'groups': groups}
 with open(dest, 'w', encoding='utf-8') as f:
     json.dump(out, f, ensure_ascii=False, indent=2); f.write('\n')

@@ -82,6 +82,21 @@ export function validatePlan(plan) {
   return errors;
 }
 
+// unlock settings (questions, group tasks): missing/'' = automatic,
+// 'open' = right away, 'RRRR-MM-DD GG:MM' = from that moment.
+const UNLOCK = /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})$/;
+const validUnlock = (u) => {
+  if (u === undefined || u === '' || u === 'open') return true;
+  const m = typeof u === 'string' && UNLOCK.exec(u);
+  if (!m) return false;
+  const d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+  return d.getMonth() === +m[2] - 1 && d.getDate() === +m[3] && +m[4] < 24 && +m[5] < 60;
+};
+
+/** Where task PDFs live: public/zadania/ in the repo, zadania/ on the site. */
+export const TASK_DIR = 'zadania';
+export const TASK_PATH = /^zadania\/[a-z0-9][a-z0-9._-]*\.pdf$/;
+
 /** @returns {string[]} error messages (Polish), empty when the data is valid */
 export function validateQuestions(data) {
   const errors = [];
@@ -105,14 +120,6 @@ export function validateQuestions(data) {
 
   // unlock: missing/'' = when the session starts in the plan, 'open' = right
   // away, 'RRRR-MM-DD GG:MM' = from that moment (see src/data/unlock.ts).
-  const UNLOCK = /^(\d{4})-(\d{2})-(\d{2}) (\d{1,2}):(\d{2})$/;
-  const validUnlock = (u) => {
-    if (u === undefined || u === '' || u === 'open') return true;
-    const m = typeof u === 'string' && UNLOCK.exec(u);
-    if (!m) return false;
-    const d = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
-    return d.getMonth() === +m[2] - 1 && d.getDate() === +m[3] && +m[4] < 24 && +m[5] < 60;
-  };
   for (const lang of ['pl', 'en']) {
     (Array.isArray(data?.[lang]?.sessions) ? data[lang].sessions : []).forEach((s, i) => {
       if (!validUnlock(s?.unlock)) errors.push(`${lang}.sessions[${i}].unlock: "${s.unlock}" — oczekiwane "open" albo "RRRR-MM-DD GG:MM", np. "2026-11-12 19:00" (brak = start sesji wg planu)`);
@@ -143,6 +150,7 @@ export function validateGroups(data) {
       if (!isText(data?.[lang]?.subtitle)) errors.push(`${lang}.subtitle: brak podtytułu strony`);
     }
   }
+  const taskNames = checkTasks(data?.tasks, errors);
   const groups = data?.groups;
   if (!Array.isArray(groups)) return [...errors, 'groups: musi być listą grup'];
   const names = new Set();
@@ -167,6 +175,41 @@ export function validateGroups(data) {
       }
     });
     if (g.members.filter((m) => m.role === 'leader').length > MAX_GROUP_LEADERS) errors.push(`${at}.members: w grupie mogą być najwyżej ${MAX_GROUP_LEADERS} osoby z rolą lidera`);
+    if (g.task !== undefined && g.task !== '' && !taskNames.has(String(g.task).trim().toLowerCase())) {
+      errors.push(`${at}.task: zadanie „${g.task}” nie istnieje na liście zadań (PDF)`);
+    }
   });
   return errors;
+}
+
+// Task PDFs: tasks = { unlock, files: [{ name, pl, en }] }; a group points
+// at one by name (groups[i].task). See src/data/unlock.ts for unlock.
+function checkTasks(tasks, errors) {
+  const names = new Set();
+  if (tasks === undefined) return names;
+  if (!tasks || typeof tasks !== 'object') {
+    errors.push('tasks: musi być obiektem (unlock, files)');
+    return names;
+  }
+  if (!validUnlock(tasks.unlock)) {
+    errors.push(`tasks.unlock: "${tasks.unlock}" — oczekiwane "open" albo "RRRR-MM-DD GG:MM", np. "2026-11-12 19:45" (brak = godzinę przed „Gra nocna” wg planu)`);
+  }
+  const files = tasks.files ?? [];
+  if (!Array.isArray(files)) {
+    errors.push('tasks.files: musi być listą zadań');
+    return names;
+  }
+  files.forEach((t, i) => {
+    const at = `tasks.files[${i}]`;
+    if (!t || typeof t !== 'object') return errors.push(`${at}: musi być zadaniem (nazwa, PDF PL, PDF EN)`);
+    if (typeof t.name !== 'string' || !t.name.trim()) errors.push(`${at}.name: brak nazwy zadania`);
+    else if (names.has(t.name.trim().toLowerCase())) errors.push(`${at}.name: nazwa „${t.name}” występuje dwa razy`);
+    else names.add(t.name.trim().toLowerCase());
+    if (typeof t.pl !== 'string' || !t.pl) errors.push(`${at}.pl: brak pliku PDF (PL)`);
+    else if (!TASK_PATH.test(t.pl)) errors.push(`${at}.pl: „${t.pl}” — oczekiwane zadania/nazwa-pliku.pdf`);
+    if (t.en !== undefined && t.en !== '' && !(typeof t.en === 'string' && TASK_PATH.test(t.en))) {
+      errors.push(`${at}.en: „${t.en}” — oczekiwane zadania/nazwa-pliku.pdf`);
+    }
+  });
+  return names;
 }

@@ -3,7 +3,8 @@ import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, ChevronsDownUp, Chevrons
 import { MAX_GROUP_LEADERS, MAX_GROUP_SIZE } from '../data/validation.js';
 import { initial } from '../data/groups-public.js';
 import { BiField, SmallButton, TextField, move } from './fields';
-import { newId, type EditGroup, type EditGroups, type EditMember, type MemberRole } from './model';
+import { newId, type EditGroup, type EditGroups, type EditMember, type EditTask, type MemberRole } from './model';
+import { TasksEditor } from './TasksEditor';
 
 const selectClass =
   'w-full bg-[#121820] border border-[#3E4C5E]/60 rounded-lg px-2.5 py-1.5 text-sm text-[#E3E6DB] focus:outline-none focus:border-[#E3E6DB]/60';
@@ -34,7 +35,8 @@ const GroupEditor: React.FC<{
   onToggle: (id: string) => void;
   open: boolean;
   onToggleOpen: () => void;
-}> = ({ group, index, count, onChange, onMove, onDelete, selected, onToggle, open, onToggleOpen }) => {
+  tasks: EditTask[];
+}> = ({ group, index, count, onChange, onMove, onDelete, selected, onToggle, open, onToggleOpen, tasks }) => {
   const ms = group.members;
   const setMs = (members: EditMember[]) => onChange({ ...group, members });
   const patch = (id: string, p: Partial<EditMember>) => setMs(ms.map((m) => (m.id === id ? { ...m, ...p } : m)));
@@ -64,7 +66,20 @@ const GroupEditor: React.FC<{
       </div>
       {open && (
         <div className="px-4 sm:px-5 pb-5 space-y-3">
-      <TextField label={`Grupa ${index + 1} — nazwa`} value={group.name} onChange={(name) => onChange({ ...group, name })} />
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2">
+        <TextField label={`Grupa ${index + 1} — nazwa`} value={group.name} onChange={(name) => onChange({ ...group, name })} />
+        <label className="block min-w-0">
+          <span className="block text-[10px] font-mono-code font-bold uppercase tracking-wider text-[#E3E6DB]/50 mb-1">Zadanie (PDF)</span>
+          <select className={selectClass} value={group.taskId} onChange={(e) => onChange({ ...group, taskId: e.target.value })}>
+            <option value="">brak — bez przycisku „Pobierz zadanie”</option>
+            {tasks.map((t, i) => (
+              <option key={t.id} value={t.id}>
+                {t.name || `Zadanie ${i + 1}`}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       <ol className="space-y-2">
         {ms.map((m, i) => (
@@ -138,7 +153,14 @@ const GroupEditor: React.FC<{
   );
 };
 
-export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups) => void }> = ({ data, onChange }) => {
+export const GroupsEditor: React.FC<{
+  data: EditGroups;
+  onChange: (d: EditGroups) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  plan: any;
+  uploads: Record<string, File>;
+  onUpload: (path: string, file: File) => void;
+}> = ({ data, onChange, plan, uploads, onUpload }) => {
   const list = data.groups;
   const set = (groups: EditGroup[]) => onChange({ ...data, groups });
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -225,6 +247,7 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           hint="Wyłączona: zakładka Grupy znika z aplikacji, a lista osób w ogóle nie trafia do kodu strony."
         />
       </section>
+      <TasksEditor data={data} plan={plan} onChange={onChange} uploads={uploads} onUpload={onUpload} />
       <p className="text-xs text-[#E3E6DB]/55">
         Maksymalnie {MAX_GROUP_SIZE} osób w grupie i najwyżej {MAX_GROUP_LEADERS} liderów (asystentów może być kilku). Repo jest publiczne, więc zapisujemy tylko imię i inicjał nazwiska (np. „K.”).
         Zaznacz osoby polem po lewej i przenieś je do innej grupy paskiem u góry. Całość można też wgrać jako arkusz plan/grupy.xlsx na GitHubie.
@@ -245,6 +268,7 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
           onToggle={toggle}
           open={open.has(g.id)}
           onToggleOpen={() => toggleOpen(g.id)}
+          tasks={data.tasks}
           onDelete={() => {
             if (window.confirm(`Usunąć grupę „${g.name || i + 1}” razem z osobami?`)) set(list.filter((x) => x.id !== g.id));
           }}
@@ -254,7 +278,7 @@ export const GroupsEditor: React.FC<{ data: EditGroups; onChange: (d: EditGroups
         title="Dodaj grupę"
         onClick={() => {
           const id = newId();
-          set([...list, { id, name: '', members: [] }]);
+          set([...list, { id, name: '', taskId: '', members: [] }]);
           setOpen((prev) => new Set(prev).add(id));
         }}
       >

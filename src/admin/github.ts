@@ -57,8 +57,8 @@ async function request(token: string, path: string, init: RequestInit = {}) {
 }
 
 const decode = (b64: string) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, '')), (c) => c.charCodeAt(0)));
-const encode = (text: string) => {
-  const bytes = new TextEncoder().encode(text);
+const encode = (text: string) => encodeBytes(new TextEncoder().encode(text));
+const encodeBytes = (bytes: Uint8Array) => {
   let bin = '';
   for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
   return btoa(bin);
@@ -108,6 +108,26 @@ export async function writeFile(token: string, file: RepoFile, text: string, mes
   });
   return { sha: data.content.sha as string, commitUrl: data.commit.html_url as string };
 }
+
+/**
+ * Commits a binary file (e.g. a task PDF), creating it or replacing the
+ * current version at that path. Returns the commit URL.
+ */
+export async function uploadFile(token: string, path: string, bytes: Uint8Array, message: string) {
+  let sha: string | undefined;
+  try {
+    sha = (await request(token, `/repos/${REPO}/contents/${path}?ref=${BRANCH}`)).sha;
+  } catch (err) {
+    if (!(err instanceof GitHubError && err.status === 404)) throw err;
+  }
+  const data = await request(token, `/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify({ message, content: encodeBytes(bytes), branch: BRANCH, ...(sha ? { sha } : {}) }),
+  });
+  return data.commit.html_url as string;
+}
+
+export const repoFileUrl = (path: string) => `https://github.com/${REPO}/blob/${BRANCH}/${path}`;
 
 // The panel's own address on GitHub Pages: a separate origin from
 // koscioldlamiasta.pl, so a remembered token isn't readable by the rest of

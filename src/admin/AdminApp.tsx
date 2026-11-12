@@ -9,6 +9,7 @@ import {
   REPO,
   checkAccess,
   readFile,
+  uploadFile,
   writeFile,
   type RepoFile,
 } from './github';
@@ -91,10 +92,17 @@ const friendlyQuestionsError = (msg: string) =>
     }:`
   );
 const friendlyGroupsError = (data: any, msg: string) =>
-  friendlyHeadingError(msg).replace(/^groups\[(\d+)\](?:\.members(?:\[(\d+)\])?)?\.?(\w*):/, (_, gi, mi, f) => {
+  friendlyHeadingError(msg)
+    .replace(/^tasks\.unlock:/, 'Zadania (PDF) — kiedy pokazać przycisk:')
+    .replace(/^tasks\.files\[(\d+)\]\.?(\w*):/, (_, ti, f) => {
+      const t = data?.tasks?.files?.[Number(ti)];
+      const field = { name: ' — nazwa', pl: ' — PDF PL', en: ' — PDF EN' }[f as string] ?? '';
+      return `Zadanie „${t?.name || Number(ti) + 1}”${field}:`;
+    })
+    .replace(/^groups\[(\d+)\](?:\.members(?:\[(\d+)\])?)?\.?(\w*):/, (_, gi, mi, f) => {
     const g = data?.groups?.[Number(gi)];
     const m = mi !== undefined ? g?.members?.[Number(mi)] : undefined;
-    const field = { first: ' — imię', last: ' — nazwisko', role: ' — rola', name: ' — nazwa' }[f as string] ?? '';
+    const field = { first: ' — imię', last: ' — nazwisko', role: ' — rola', name: ' — nazwa', task: ' — zadanie' }[f as string] ?? '';
     return `Grupa „${g?.name || Number(gi) + 1}”${m ? `, osoba ${Number(mi) + 1}${m.first || m.last ? ` (${m.first} ${m.last})` : ''}` : ''}${field}:`;
   });
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -185,6 +193,8 @@ export const AdminApp: React.FC = () => {
   const [plan, setPlan] = useState<EditPlan | null>(null);
   const [questions, setQuestions] = useState<EditQuestions | null>(null);
   const [groups, setGroups] = useState<EditGroups | null>(null);
+  // Task PDFs picked in the panel, by repo path under public/; committed on save.
+  const [uploads, setUploads] = useState<Record<string, File>>({});
   const [loadError, setLoadError] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -200,6 +210,7 @@ export const AdminApp: React.FC = () => {
       setPlan(planToEdit(JSON.parse(p.text)));
       setQuestions(questionsToEdit(JSON.parse(q.text)));
       setGroups(groupsToEdit(JSON.parse(g.text)));
+      setUploads({});
     } catch (err) {
       setLoadError(err instanceof Error ? err.message : String(err));
       if (err instanceof GitHubError && err.status === 401) {
@@ -226,7 +237,13 @@ export const AdminApp: React.FC = () => {
   const planDirty = !!files && planText !== files.plan.text;
   const questionsDirty = !!files && questionsText !== files.questions.text;
   const groupsText = groupsJson ? toFileText(groupsJson) : '';
-  const groupsDirty = !!files && groupsText !== files.groups.text;
+  // Only PDFs still used by a task are uploaded (one picked and then
+  // replaced or removed is dropped).
+  const pendingUploads = useMemo(() => {
+    const used = new Set(groups?.tasks.flatMap((t) => [t.pl, t.en]) ?? []);
+    return Object.entries(uploads).filter(([path]) => used.has(path));
+  }, [uploads, groups]);
+  const groupsDirty = !!files && (groupsText !== files.groups.text || pendingUploads.length > 0);
   const dirty = planDirty || questionsDirty || groupsDirty;
 
   const errors = useMemo(() => {
@@ -262,6 +279,7 @@ export const AdminApp: React.FC = () => {
     setPlan(null);
     setQuestions(null);
     setGroups(null);
+    setUploads({});
   };
 
   const reload = () => {
@@ -290,7 +308,16 @@ export const AdminApp: React.FC = () => {
         setFiles((f) => f && { ...f, questions: { ...f.questions, sha: r.sha, text: questionsText } });
         url = r.commitUrl;
       }
-      if (groupsDirty) {
+      // The PDFs go first, so groups.json never points at a missing file.
+      for (const [path, file] of pendingUploads) {
+        url = await uploadFile(token, `public/${path}`, new Uint8Array(await file.arrayBuffer()), `Upload group task ${path} via admin panel`);
+        setUploads((u) => {
+          const next = { ...u };
+          if (next[path] === file) delete next[path];
+          return next;
+        });
+      }
+      if (groupsText !== files.groups.text) {
         const r = await writeFile(token, files.groups, groupsText, 'Update groups via admin panel');
         setFiles((f) => f && { ...f, groups: { ...f.groups, sha: r.sha, text: groupsText } });
         url = r.commitUrl;
@@ -357,7 +384,13 @@ export const AdminApp: React.FC = () => {
         ) : tab === 'questions' ? (
           <QuestionsEditor data={questions} plan={planJson} onChange={(q) => { setQuestions(q); setSaved(null); }} />
         ) : (
-          <GroupsEditor data={groups} onChange={(g) => { setGroups(g); setSaved(null); }} />
+          <GroupsEditor
+            data={groups}
+            plan={planJson}
+            uploads={uploads}
+            onUpload={(path, file) => { setUploads((u) => ({ ...u, [path]: file })); setSaved(null); }}
+            onChange={(g) => { setGroups(g); setSaved(null); }}
+          />
         ))}
       </main>
 

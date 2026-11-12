@@ -76,7 +76,17 @@ export interface EditMember {
 export interface EditGroup {
   id: string;
   name: string;
+  /** id of the EditTask downloaded under this group ('' = none). */
+  taskId: string;
   members: EditMember[];
+}
+
+export interface EditTask {
+  id: string;
+  name: string;
+  /** Paths under public/, e.g. "zadania/zadanie-1-pl.pdf" ('' = none yet). */
+  pl: string;
+  en: string;
 }
 
 export interface EditGroups {
@@ -84,6 +94,9 @@ export interface EditGroups {
   enabled: boolean;
   title: Bilingual;
   subtitle: Bilingual;
+  // '' = an hour before "Gra nocna", 'open', 'RRRR-MM-DD GG:MM' (data/unlock.ts).
+  tasksUnlock: string;
+  tasks: EditTask[];
   groups: EditGroup[];
 }
 
@@ -220,27 +233,39 @@ export function editToQuestions(e: EditQuestions): any {
   return res;
 }
 export function groupsToEdit(g: any): EditGroups {
+  const tasks: EditTask[] = (g.tasks?.files ?? []).map((t: any) => ({ id: newId(), name: t.name ?? '', pl: t.pl ?? '', en: t.en ?? '' }));
+  const taskId = (name: unknown) =>
+    typeof name === 'string' ? tasks.find((t) => t.name.trim().toLowerCase() === name.trim().toLowerCase())?.id ?? '' : '';
   return {
     info: g._info,
     enabled: g.enabled !== false,
     title: bi(g.pl?.title, g.en?.title),
     subtitle: bi(g.pl?.subtitle, g.en?.subtitle),
+    tasksUnlock: typeof g.tasks?.unlock === 'string' ? g.tasks.unlock : '',
+    tasks,
     groups: g.groups.map((x: any) => ({
       id: newId(),
       name: x.name,
+      taskId: taskId(x.task),
       members: x.members.map((m: any) => ({ id: newId(), first: m.first, last: m.last, role: m.role ?? '' })),
     })),
   };
 }
 
 export function editToGroups(e: EditGroups): any {
+  const taskName = (id: string) => e.tasks.find((t) => t.id === id)?.name.trim() ?? '';
   return {
     _info: e.info,
     enabled: e.enabled,
     pl: { title: out(e.title).pl, subtitle: out(e.subtitle).pl },
     en: { title: out(e.title).en, subtitle: out(e.subtitle).en },
+    tasks: {
+      unlock: e.tasksUnlock.trim(),
+      files: e.tasks.map((t) => ({ name: t.name.trim(), pl: t.pl, ...(t.en ? { en: t.en } : {}) })),
+    },
     groups: e.groups.map((g) => ({
       name: g.name.trim(),
+      ...(taskName(g.taskId) ? { task: taskName(g.taskId) } : {}),
       members: g.members
         .filter((m) => m.first.trim() || m.last.trim()) // fully empty rows are dropped
         .map((m) => ({ first: m.first.trim(), last: m.last.trim(), ...(m.role ? { role: m.role } : {}) })),

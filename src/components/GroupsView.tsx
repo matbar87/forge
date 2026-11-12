@@ -1,8 +1,11 @@
-import React, { useMemo, useState } from 'react';
-import { Search } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Download, Search } from 'lucide-react';
 import { Language, translations } from '../translations';
 import { usePinGate } from '../hooks/usePinGate';
 import { groups } from '../data/groups';
+import { plan } from '../data/plan';
+import { taskUnlockAt } from '../data/unlock';
+import { publicUrl } from '../publicUrl';
 import { PinEntryCard } from './PinEntryCard';
 
 interface GroupsViewProps {
@@ -15,6 +18,26 @@ export const GroupsView: React.FC<GroupsViewProps> = ({ lang }) => {
   const t = translations[lang].groupsView;
   const pinGate = usePinGate();
   const [query, setQuery] = useState('');
+  // The "Download task" buttons appear at tasks.unlock (by default an hour
+  // before "Gra nocna"); re-checked every 30 s and when the app comes back
+  // to the foreground, so they show up without a reload.
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const tick = () => setNow(new Date());
+    const id = setInterval(tick, 30000);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener('visibilitychange', tick);
+    };
+  }, []);
+  const tasksUnlockAt = useMemo(() => taskUnlockAt(groups.tasks?.unlock, plan), []);
+  const tasksOpen = !tasksUnlockAt || now >= tasksUnlockAt;
+  // The PDF in the app's language; an English one falls back to Polish.
+  const taskFile = (name?: string) => {
+    const task = name ? groups.tasks?.files.find((t) => t.name === name) : undefined;
+    return task && (lang === 'en' ? task.en || task.pl : task.pl);
+  };
 
   // A group whose name matches shows all its members; otherwise only the
   // members that match.
@@ -81,6 +104,18 @@ export const GroupsView: React.FC<GroupsViewProps> = ({ lang }) => {
                       </li>
                     ))}
                   </ul>
+                  {tasksOpen && taskFile(group.task) && (
+                    <a
+                      href={publicUrl(taskFile(group.task)!)}
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#E3E6DB] hover:bg-white text-[#121820] font-mono-code text-xs font-bold uppercase tracking-wider transition-colors"
+                    >
+                      <Download className="w-4 h-4" />
+                      {t.downloadTask}
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
