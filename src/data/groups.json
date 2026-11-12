@@ -84,28 +84,47 @@
           "role": "leader"
         },
         {
-          "first": "Sergii",
-          "last": "P."
+          "first": "Vitaliy",
+          "last": "G.",
+          "role": "assistant"
         },
         {
-          "first": "Artur",
-          "last": "G."
+          "first": "Sergii",
+          "last": "P."
         },
         {
           "first": "Roman",
           "last": "T."
         },
         {
-          "first": "Ilia",
-          "last": "P."
+          "first": "Valentyn",
+          "last": "B."
         },
         {
-          "first": "Vitaliy",
+          "first": "Serhiy",
+          "last": "Y."
+        }
+      ]
+    },
+    {
+      "name": "Warszawa 2",
+      "members": [
+        {
+          "first": "Davyd",
+          "last": "D.",
+          "role": "leader"
+        },
+        {
+          "first": "Artur",
           "last": "G."
         },
         {
-          "first": "Davyd",
-          "last": "D."
+          "first": "Danylo",
+          "last": "S."
+        },
+        {
+          "first": "Pavel",
+          "last": "B."
         },
         {
           "first": "Artem",
@@ -114,23 +133,12 @@
       ]
     },
     {
-      "name": "Warszawa 2",
+      "name": "Warszawa 3",
       "members": [
         {
-          "first": "Serhiy",
-          "last": "Y."
-        },
-        {
-          "first": "Danylo",
-          "last": "S."
-        },
-        {
-          "first": "Valentyn",
-          "last": "B."
-        },
-        {
-          "first": "Pavel",
-          "last": "B."
+          "first": "Ilia",
+          "last": "P.",
+          "role": "leader"
         },
         {
           "first": "Anton",
@@ -149,10 +157,6 @@
           "last": "P."
         }
       ]
-    },
-    {
-      "name": "Warszawa 3",
-      "members": []
     },
     {
       "name": "Gdynia",
