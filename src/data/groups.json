@@ -18,12 +18,29 @@
     "subtitle": "Find your group and see who's in yours!"
   },
   "tasks": {
-    "unlock": "",
-    "files": []
+    "unlock": "open",
+    "files": [
+      {
+        "name": "Zadanie 1",
+        "pl": "zadania/kuznia-pl-washington-1-710c8751.pdf",
+        "en": "zadania/kuznia-en-washington-1-3487ee8e.pdf"
+      },
+      {
+        "name": "Zadanie 2",
+        "pl": "zadania/kuznia-pl-last-supper-2-b40c8a0d.pdf",
+        "en": "zadania/kuznia-en-last-supper-2-2dbf5669.pdf"
+      },
+      {
+        "name": "Zadanie 3",
+        "pl": "zadania/kuznia-pl-skyscraper-3-d2c66ece.pdf",
+        "en": "zadania/kuznia-en-skyscraper-3-38a1c8eb.pdf"
+      }
+    ]
   },
   "groups": [
     {
       "name": "Wieliczka 1",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Łukasz",
@@ -55,6 +72,7 @@
     },
     {
       "name": "Wieliczka 2",
+      "task": "Zadanie 2",
       "members": [
         {
           "first": "Paweł",
@@ -82,6 +100,7 @@
     },
     {
       "name": "Warszawa 1",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Anatolii",
@@ -113,6 +132,7 @@
     },
     {
       "name": "Warszawa 2",
+      "task": "Zadanie 2",
       "members": [
         {
           "first": "Davyd",
@@ -139,6 +159,7 @@
     },
     {
       "name": "Warszawa 3",
+      "task": "Zadanie 3",
       "members": [
         {
           "first": "Ilia",
@@ -165,6 +186,7 @@
     },
     {
       "name": "Gdynia",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Maciej",
@@ -196,6 +218,7 @@
     },
     {
       "name": "Katowice 1",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Sergei",
@@ -222,6 +245,7 @@
     },
     {
       "name": "Katowice 2",
+      "task": "Zadanie 2",
       "members": [
         {
           "first": "Jarek",
@@ -248,6 +272,7 @@
     },
     {
       "name": "Katowice 3",
+      "task": "Zadanie 3",
       "members": [
         {
           "first": "Dominik",
@@ -278,6 +303,7 @@
     },
     {
       "name": "Kielce",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Filip",
@@ -324,6 +350,7 @@
     },
     {
       "name": "KDM 1",
+      "task": "Zadanie 2",
       "members": [
         {
           "first": "Mykyta",
@@ -363,6 +390,7 @@
     },
     {
       "name": "KDM 2",
+      "task": "Zadanie 3",
       "members": [
         {
           "first": "Maciej",
@@ -398,6 +426,7 @@
     },
     {
       "name": "KDM International",
+      "task": "Zadanie 2",
       "members": [
         {
           "first": "Joel",
@@ -425,6 +454,7 @@
     },
     {
       "name": "KDM MIX 1",
+      "task": "Zadanie 3",
       "members": [
         {
           "first": "Piotr",
@@ -456,6 +486,7 @@
     },
     {
       "name": "KDM MIX 2",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Bartłomiej",
@@ -487,6 +518,7 @@
     },
     {
       "name": "ENGLISH",
+      "task": "Zadanie 1",
       "members": [
         {
           "first": "Michael",
