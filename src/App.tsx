@@ -12,9 +12,11 @@ import { GroupTimeView } from './components/GroupTimeView';
 import { GroupsView } from './components/GroupsView';
 import { TranslationView } from './components/TranslationView';
 import { EventTabBar } from './components/EventTabBar';
+import { groups } from './data/groups';
 import { InstallBanner } from './components/InstallBanner';
 
 type View = 'site' | 'group-time' | 'groups' | 'translation';
+const VIEW_STORAGE_KEY = 'kuznia_app_view';
 
 // The main site always shows its full content — it doesn't switch to the
 // in-event view during the camp (that lives at /app, see alwaysLive below).
@@ -65,7 +67,29 @@ export function App({ alwaysLive = false }: AppProps) {
   // main page), reachable from the bottom tab bar that appears only while
   // the event is live. Navigating to a section id while on that view first
   // switches back to the site, then scrolls once the site's DOM is mounted.
-  const [view, setView] = useState<View>('site');
+  // In the event app (/app) the active tab survives a page refresh: it is kept
+  // in sessionStorage (per browser tab), so reloading stays on the same tab
+  // instead of jumping back to the schedule.
+  const [view, setView] = useState<View>(() => {
+    if (!alwaysLive) return 'site';
+    try {
+      const saved = sessionStorage.getItem(VIEW_STORAGE_KEY);
+      if (saved === 'group-time' || saved === 'translation') return saved;
+      if (saved === 'groups' && groups.enabled) return saved;
+    } catch {
+      // storage unavailable - fall back to the schedule
+    }
+    return 'site';
+  });
+
+  useEffect(() => {
+    if (!alwaysLive) return;
+    try {
+      sessionStorage.setItem(VIEW_STORAGE_KEY, view);
+    } catch {
+      // ignore - persistence is only a convenience
+    }
+  }, [view, alwaysLive]);
   const pendingScrollRef = useRef<string | null>(null);
 
   const scrollToId = (id: string) => {
