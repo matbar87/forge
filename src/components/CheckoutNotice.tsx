@@ -7,13 +7,21 @@ interface CheckoutNoticeProps {
   lang: Language;
 }
 
-// Room check-out deadline: 14 Nov 2026, 9:30, on the viewer's device clock
-// (like EVENT_END in App.tsx). After it the badge disappears on its own.
-const CHECKOUT_DEADLINE = new Date(2026, 10, 14, 9, 30, 0);
+// All times are on the viewer's device clock (like EVENT_END in App.tsx).
+// Check-out day: from its start the notice opens on every entry to the app.
+const CHECKOUT_DAY = new Date(2026, 10, 14, 0, 0, 0);
+// Until 10:00 on check-out day (half an hour past the 9:30 deadline, for
+// stragglers). After it both the auto-opening and the badge stop.
+const NOTICE_END = new Date(2026, 10, 14, 10, 0, 0);
 
-// Remembers that the notice has already opened by itself once, so it pops up
-// on the next visit only, not on every one. "_app": event-app-only flag.
-const SEEN_KEY = 'kuznia_checkout_notice_seen_app';
+// Before check-out day the notice opens by itself only once. "_app":
+// event-app-only flag; the date keeps it apart from any earlier flag.
+const SEEN_KEY = 'kuznia_checkout_notice_seen_app_2026-11-13';
+
+// Coming back to the app (e.g. an installed app resumed from the background)
+// counts as a new entry on check-out day once it was away at least this long,
+// so a quick glance at another app doesn't reopen it straight away.
+const REENTRY_MS = 60 * 1000;
 
 const readSeen = () => {
   try {
@@ -31,15 +39,22 @@ const markSeen = () => {
   }
 };
 
-const isPastDeadline = () => new Date() >= CHECKOUT_DEADLINE;
+const isOver = () => new Date() >= NOTICE_END;
+const isCheckoutDay = () => {
+  const now = new Date();
+  return now >= CHECKOUT_DAY && now < NOTICE_END;
+};
+
+// Should the notice open by itself on entering the app right now?
+const shouldAutoOpen = () => isCheckoutDay() || (!isOver() && !readSeen());
 
 // Pulsing yellow badge in the event app's header; clicking it opens the
-// check-out message. The message also opens by itself once, on the first
-// visit after this was deployed.
+// check-out message. It also opens by itself on entering the app: once on
+// the days before check-out, and on every entry on check-out day until 10:00.
 export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
   const t = translations[lang].checkoutNotice;
-  const [expired, setExpired] = useState(isPastDeadline);
-  const [open, setOpen] = useState(() => !isPastDeadline() && !readSeen());
+  const [expired, setExpired] = useState(isOver);
+  const [open, setOpen] = useState(shouldAutoOpen);
   const okRef = useRef<HTMLButtonElement>(null);
   const badgeRef = useRef<HTMLButtonElement>(null);
 
@@ -51,12 +66,27 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
 
   useEffect(() => {
     if (expired) return;
-    const check = () => setExpired(isPastDeadline());
-    const id = setInterval(check, 60000);
-    document.addEventListener('visibilitychange', check);
+    let hiddenAt: number | null = null;
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') {
+        hiddenAt = Date.now();
+        return;
+      }
+      if (isOver()) {
+        setExpired(true);
+        return;
+      }
+      // Back in the app after a while: on check-out day that's a new entry.
+      if (hiddenAt !== null && Date.now() - hiddenAt >= REENTRY_MS && isCheckoutDay()) {
+        setOpen(true);
+      }
+      hiddenAt = null;
+    };
+    const id = setInterval(() => setExpired(isOver()), 60000);
+    document.addEventListener('visibilitychange', onVisibility);
     return () => {
       clearInterval(id);
-      document.removeEventListener('visibilitychange', check);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
   }, [expired]);
 
