@@ -11,8 +11,11 @@ interface CheckoutNoticeProps {
 // Check-out day: from its start the notice opens on every entry to the app.
 const CHECKOUT_DAY = new Date(2026, 10, 14, 0, 0, 0);
 // Until 10:00 on check-out day (half an hour past the 9:30 deadline, for
-// stragglers). After it both the auto-opening and the badge stop.
+// stragglers). After it the notice no longer opens by itself.
 const NOTICE_END = new Date(2026, 10, 14, 10, 0, 0);
+// The badge (and opening the notice from it) stays until the end of
+// check-out day.
+const BADGE_END = new Date(2026, 10, 15, 0, 0, 0);
 
 // Before check-out day the notice opens by itself only once. "_app":
 // event-app-only flag; the date keeps it apart from any earlier flag.
@@ -40,6 +43,7 @@ const markSeen = () => {
 };
 
 const isOver = () => new Date() >= NOTICE_END;
+const isBadgeOver = () => new Date() >= BADGE_END;
 const isCheckoutDay = () => {
   const now = new Date();
   return now >= CHECKOUT_DAY && now < NOTICE_END;
@@ -53,7 +57,7 @@ const shouldAutoOpen = () => isCheckoutDay() || (!isOver() && !readSeen());
 // the days before check-out, and on every entry on check-out day until 10:00.
 export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
   const t = translations[lang].checkoutNotice;
-  const [expired, setExpired] = useState(isOver);
+  const [expired, setExpired] = useState(isBadgeOver);
   const [open, setOpen] = useState(shouldAutoOpen);
   const okRef = useRef<HTMLButtonElement>(null);
   const badgeRef = useRef<HTMLButtonElement>(null);
@@ -72,7 +76,7 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
         hiddenAt = Date.now();
         return;
       }
-      if (isOver()) {
+      if (isBadgeOver()) {
         setExpired(true);
         return;
       }
@@ -82,7 +86,7 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
       }
       hiddenAt = null;
     };
-    const id = setInterval(() => setExpired(isOver()), 60000);
+    const id = setInterval(() => setExpired(isBadgeOver()), 60000);
     document.addEventListener('visibilitychange', onVisibility);
     return () => {
       clearInterval(id);
