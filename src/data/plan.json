@@ -228,7 +228,7 @@
               "time": "8:00 – 9:30",
               "title": "Wymeldowanie",
               "description": "Prosimy o wymeldowanie z pokoju",
-              "type": "session"
+              "type": "break"
             },
             {
               "time": "8:30 – 9:15",
@@ -678,7 +678,7 @@
               "time": "8:00 – 9:30",
               "title": "Check-out",
               "description": "Please check out of your room",
-              "type": "session"
+              "type": "break"
             },
             {
               "time": "8:30 – 9:15",
