@@ -125,6 +125,12 @@ export function App({ alwaysLive = false }: AppProps) {
     }
   }, [view]);
 
+  // Keep <html lang> in sync with the shown language, so the browser doesn't
+  // misdetect the page language and offer/auto-run its own translation.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
     localStorage.setItem('kuznia_lang', newLang);
