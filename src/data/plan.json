@@ -225,6 +225,12 @@
               "badge": "GRUPY"
             },
             {
+              "time": "8:00 – 9:30",
+              "title": "Wymeldowanie",
+              "description": "Prosimy o wymeldowanie z pokoju",
+              "type": "session"
+            },
+            {
               "time": "8:30 – 9:15",
               "title": "Śniadanie",
               "type": "meal"
@@ -667,6 +673,12 @@
               "title": "Leaders' Meeting",
               "type": "session",
               "badge": "GROUPS"
+            },
+            {
+              "time": "8:00 – 9:30",
+              "title": "Check-out",
+              "description": "Please check out of your room",
+              "type": "session"
             },
             {
               "time": "8:30 – 9:15",
