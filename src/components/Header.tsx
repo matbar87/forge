@@ -3,6 +3,7 @@ import { publicUrl } from '../publicUrl';
 import { Language, translations } from '../translations';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
+import { CheckoutNotice } from './CheckoutNotice';
 
 interface HeaderProps {
   lang: Language;
@@ -54,6 +55,13 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
               className="h-11 sm:h-13 w-auto object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
             />
           </button>
+
+          {/* Event app only: pulsing check-out badge, centred between the logo and the language switch */}
+          {isEventLive && (
+            <div className="flex-1 min-w-0 flex justify-center px-1.5 sm:px-4">
+              <CheckoutNotice lang={lang} />
+            </div>
+          )}
 
           {/* Desktop Navigation Links - No nested background, sits cleanly in header */}
           {/* Not in the event app: its bottom tab bar is the navigation there. */}

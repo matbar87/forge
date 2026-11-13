@@ -175,6 +175,13 @@ export const translations = {
       pinLocked: 'Zbyt wiele prób. Spróbuj ponownie za {time}.',
       button: 'Uruchom',
     },
+    checkoutNotice: {
+      badge: 'Wymeldowanie do 9:30, 14.11',
+      title: 'Wymeldowanie',
+      message: 'Prosimy o wymeldowanie się z pokojów do godziny 9:30, 14 listopada.',
+      ok: 'Rozumiem',
+      close: 'Zamknij',
+    },
     installBanner: {
       title: 'Zainstaluj aplikację',
       subtitle: 'Szybki dostęp do planu i czasu w grupach — nawet offline.',
@@ -355,6 +362,13 @@ export const translations = {
       pinError: 'Wrong code, try again.',
       pinLocked: 'Too many attempts. Try again in {time}.',
       button: 'Start',
+    },
+    checkoutNotice: {
+      badge: 'Check-out by 9:30, 14.11',
+      title: 'Check-out',
+      message: 'Please check out of your rooms by 9:30 on November 14.',
+      ok: 'Got it',
+      close: 'Close',
     },
     installBanner: {
       title: 'Install the app',
