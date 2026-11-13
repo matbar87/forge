@@ -44,49 +44,77 @@ const markSeen = () => {
 
 const isOver = () => new Date() >= NOTICE_END;
 const isBadgeOver = () => new Date() >= BADGE_END;
-const isCheckoutDay = () => {
+// 00:00-10:00 on check-out day: the notice opens on every entry.
+const inEveryEntryWindow = () => {
   const now = new Date();
   return now >= CHECKOUT_DAY && now < NOTICE_END;
 };
 
-// Should the notice open by itself on entering the app right now?
-const shouldAutoOpen = () => isCheckoutDay() || (!isOver() && !readSeen());
+// Should the notice open by itself on entering the app right now? Only when
+// the page is actually on screen: an app started in the background mustn't
+// use up the one-time showing unseen.
+const shouldAutoOpen = () =>
+  document.visibilityState === 'visible' &&
+  (inEveryEntryWindow() || (!isOver() && !readSeen()));
 
 // Pulsing yellow badge in the event app's header; clicking it opens the
 // check-out message. It also opens by itself on entering the app: once on
 // the days before check-out, and on every entry on check-out day until 10:00.
+// The badge itself stays until the end of check-out day.
 export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
   const t = translations[lang].checkoutNotice;
   const [expired, setExpired] = useState(isBadgeOver);
   const [open, setOpen] = useState(shouldAutoOpen);
   const okRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const badgeRef = useRef<HTMLButtonElement>(null);
+  // Focus goes back to the badge only when the badge opened the dialog.
+  const openedFromBadge = useRef(false);
+  // Whether the notice has been on screen since the app was opened.
+  const shownThisEntry = useRef(false);
 
   // Marking it seen as soon as it is shown (not on close) means a reload
   // while it's open doesn't show it a second time.
   useEffect(() => {
-    if (open) markSeen();
+    if (!open) return;
+    shownThisEntry.current = true;
+    markSeen();
   }, [open]);
 
   useEffect(() => {
     if (expired) return;
     let hiddenAt: number | null = null;
+    let wasInWindow = inEveryEntryWindow();
+    const expire = () => {
+      setOpen(false);
+      setExpired(true);
+    };
     const onVisibility = () => {
       if (document.visibilityState === 'hidden') {
         hiddenAt = Date.now();
         return;
       }
-      if (isBadgeOver()) {
-        setExpired(true);
-        return;
-      }
-      // Back in the app after a while: on check-out day that's a new entry.
-      if (hiddenAt !== null && Date.now() - hiddenAt >= REENTRY_MS && isCheckoutDay()) {
+      if (isBadgeOver()) return expire();
+      const awayLongEnough = hiddenAt !== null && Date.now() - hiddenAt >= REENTRY_MS;
+      hiddenAt = null;
+      // Back in the app after a while on check-out day is a new entry; and a
+      // showing skipped because the app started hidden happens now.
+      if ((awayLongEnough && inEveryEntryWindow()) || (!shownThisEntry.current && shouldAutoOpen())) {
+        openedFromBadge.current = false;
         setOpen(true);
       }
-      hiddenAt = null;
     };
-    const id = setInterval(() => setExpired(isBadgeOver()), 60000);
+    const tick = () => {
+      if (isBadgeOver()) return expire();
+      // App left open on screen through midnight into check-out day.
+      const inWindow = inEveryEntryWindow();
+      if (inWindow && !wasInWindow && document.visibilityState === 'visible') {
+        openedFromBadge.current = false;
+        setOpen(true);
+      }
+      wasInWindow = inWindow;
+    };
+    const id = setInterval(tick, 60000);
     document.addEventListener('visibilitychange', onVisibility);
     return () => {
       clearInterval(id);
@@ -97,16 +125,33 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
   useEffect(() => {
     if (!open) return;
     okRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    window.addEventListener('keydown', onKey);
+    // Keep the page behind the dialog from scrolling (and the header from
+    // sliding away with it).
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
-      window.removeEventListener('keydown', onKey);
-      // Hand focus back to the badge once the dialog closes (keyboard users).
-      badgeRef.current?.focus({ preventScroll: true });
+      document.body.style.overflow = prevOverflow;
+      if (openedFromBadge.current) badgeRef.current?.focus({ preventScroll: true });
     };
   }, [open]);
+
+  // Escape closes; Tab stays within the dialog's two buttons.
+  const onDialogKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      setOpen(false);
+    } else if (e.key === 'Tab') {
+      const first = closeRef.current;
+      const last = okRef.current;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    }
+  };
 
   if (expired) return null;
 
@@ -115,7 +160,10 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
       <button
         ref={badgeRef}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          openedFromBadge.current = true;
+          setOpen(true);
+        }}
         aria-haspopup="dialog"
         className="relative inline-flex items-center gap-1.5 min-w-0 px-2 min-[360px]:px-2.5 sm:px-3 py-1.5 rounded-full bg-[#FACC15] text-[#121820] font-mono-code text-[10px] sm:text-[11px] font-bold sm:tracking-wide whitespace-nowrap shadow-[0_0_0_0_rgba(250,204,21,0.6)] motion-safe:animate-[checkout-pulse_2s_ease-out_infinite] hover:bg-[#FDE047] active:scale-95 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDE047] focus-visible:ring-offset-2 focus-visible:ring-offset-[#18212C]"
       >
@@ -138,9 +186,11 @@ export const CheckoutNotice: React.FC<CheckoutNoticeProps> = ({ lang }) => {
               aria-labelledby="checkout-notice-title"
               aria-describedby="checkout-notice-message"
               onClick={(e) => e.stopPropagation()}
+              onKeyDown={onDialogKeyDown}
               className="relative w-full max-w-sm bg-[#18212C] border border-[#FACC15]/40 rounded-2xl shadow-2xl p-6 text-center"
             >
               <button
+                ref={closeRef}
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label={t.close}
