@@ -74,7 +74,9 @@
       {
         "title": "Sesja 7",
         "topic": "Większa Historia",
-        "questions": []
+        "questions": [
+          "O co Ty będziesz walczył?"
+        ]
       }
     ]
   },
@@ -145,7 +147,9 @@
       {
         "title": "Session 7",
         "topic": "The Larger Story",
-        "questions": []
+        "questions": [
+          "What will you fight for?"
+        ]
       }
     ]
   }
