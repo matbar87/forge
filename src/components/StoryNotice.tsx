@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ExternalLink, PenLine, X } from 'lucide-react';
 import { Language, translations } from '../translations';
-import { STORY_FORM_URL, isStoryActive } from '../data/story';
+import { STORY_FORM_URL, hasGoneToForm, isStoryActive, noteWentToForm } from '../data/story';
 
 // Coming back to the app (e.g. an installed app resumed from the background)
 // counts as a new entry once it was away at least this long, so a quick
@@ -47,9 +47,6 @@ export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
   const goRef = useRef<HTMLAnchorElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const shownThisEntry = useRef(open);
-  // After "Go" the viewer is off filling in the form; coming back from it
-  // isn't a new entry, so the notice doesn't greet them again on return.
-  const wentToForm = useRef(false);
 
   useEffect(() => {
     let hiddenAt: number | null = null;
@@ -60,7 +57,7 @@ export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
       }
       const awayLongEnough = hiddenAt !== null && Date.now() - hiddenAt >= REENTRY_MS;
       hiddenAt = null;
-      if (!shownThisEntry.current || (awayLongEnough && !wentToForm.current)) {
+      if (!shownThisEntry.current || (awayLongEnough && !hasGoneToForm())) {
         shownThisEntry.current = true;
         setOpen(true);
       }
@@ -103,6 +100,7 @@ export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
     <>
       <a
         {...linkProps}
+        onClick={noteWentToForm}
         className="relative inline-flex items-center gap-1.5 min-w-0 px-2 min-[360px]:px-2.5 sm:px-3 py-1.5 rounded-full bg-[#FACC15] text-[#121820] font-mono-code text-[10px] sm:text-[11px] font-bold sm:tracking-wide whitespace-nowrap shadow-[0_0_0_0_rgba(250,204,21,0.6)] motion-safe:animate-[checkout-pulse_2s_ease-out_infinite] hover:bg-[#FDE047] active:scale-95 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDE047] focus-visible:ring-offset-2 focus-visible:ring-offset-[#18212C]"
       >
         {/* The icon gives way to the text on the narrowest phones. */}
@@ -153,7 +151,7 @@ export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
                 ref={goRef}
                 {...linkProps}
                 onClick={() => {
-                  wentToForm.current = true;
+                  noteWentToForm();
                   // Closed only after the click has run its course: a link
                   // already removed from the page may not navigate (Safari).
                   setTimeout(() => setOpen(false), 0);

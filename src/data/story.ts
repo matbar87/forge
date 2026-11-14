@@ -28,3 +28,12 @@ export const STORY_START: Date | null =
     : sessionUnlockAt(unlock, STORY_SESSION, plan) ?? FALLBACK_START;
 
 export const isStoryActive = (now = new Date()) => !STORY_START || now >= STORY_START;
+
+// Whether the story form was opened (from the badge, the notice or the
+// Session 7 button) since the app was started. Coming back from the form
+// isn't a new entry, so the notice doesn't greet the viewer again on return.
+let wentToForm = false;
+export const noteWentToForm = () => {
+  wentToForm = true;
+};
+export const hasGoneToForm = () => wentToForm;
