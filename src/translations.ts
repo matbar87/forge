@@ -151,6 +151,7 @@ export const translations = {
       questionsComingSoon: 'Pytania do tej sesji pojawią się wkrótce.',
       questionsLocked: 'Pytania pojawią się, gdy zacznie się sesja ({time}).',
       questionsLockedUntil: 'Pytania pojawią się: {time}.',
+      storyButton: 'Moja historia',
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.pl.sessions,
     },
@@ -180,6 +181,13 @@ export const translations = {
       title: 'Wymeldowanie',
       message: 'Prosimy o wymeldowanie się z pokojów do godziny 9:30, 14 listopada.',
       ok: 'Rozumiem',
+      close: 'Zamknij',
+    },
+    storyNotice: {
+      badge: 'Moja historia',
+      title: 'Moja historia',
+      message: 'Opisz swoją historię z Kuźni',
+      go: 'Przejdź',
       close: 'Zamknij',
     },
     installBanner: {
@@ -340,6 +348,7 @@ export const translations = {
       questionsComingSoon: 'Questions for this session are coming soon.',
       questionsLocked: 'Questions will appear when the session starts ({time}).',
       questionsLockedUntil: 'Questions will appear: {time}.',
+      storyButton: 'My story',
       // The sessions and their questions live in src/data/questions.json.
       sessions: questions.en.sessions,
     },
@@ -368,6 +377,13 @@ export const translations = {
       title: 'Check-out',
       message: 'Please check out of your rooms by 9:30 on November 14.',
       ok: 'Got it',
+      close: 'Close',
+    },
+    storyNotice: {
+      badge: 'My story',
+      title: 'My story',
+      message: 'Describe your story from Forge',
+      go: 'Go',
       close: 'Close',
     },
     installBanner: {

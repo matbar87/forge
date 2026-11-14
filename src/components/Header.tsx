@@ -4,6 +4,7 @@ import { Language, translations } from '../translations';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useHeaderVisibility } from '../hooks/useHeaderVisibility';
 import { CheckoutNotice } from './CheckoutNotice';
+import { StoryNotice, useStoryActive } from './StoryNotice';
 
 interface HeaderProps {
   lang: Language;
@@ -19,6 +20,8 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
   // Never let the header slide away while the mobile drawer is open.
   const hidden = scrollHidden && !mobileMenuOpen;
   const t = translations[lang].nav;
+  // From the start of Session 7 the "My story" badge takes the check-out badge's place.
+  const storyActive = useStoryActive();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 25);
@@ -56,10 +59,10 @@ export const Header: React.FC<HeaderProps> = ({ lang, setLang, isEventLive, onNa
             />
           </button>
 
-          {/* Event app only: pulsing check-out badge, centred between the logo and the language switch */}
+          {/* Event app only: pulsing check-out / "My story" badge, centred between the logo and the language switch */}
           {isEventLive && (
             <div className="flex-1 min-w-0 flex justify-center px-1.5 sm:px-4">
-              <CheckoutNotice lang={lang} />
+              {storyActive ? <StoryNotice lang={lang} /> : <CheckoutNotice lang={lang} />}
             </div>
           )}
 

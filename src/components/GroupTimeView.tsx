@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Lock } from 'lucide-react';
+import { ExternalLink, Lock, PenLine } from 'lucide-react';
 import { Language, translations } from '../translations';
 import { plan } from '../data/plan';
 import { formatUnlock, sessionUnlockAt } from '../data/unlock';
 import { usePinGate } from '../hooks/usePinGate';
 import { PinEntryCard } from './PinEntryCard';
+import { STORY_FORM_URL, STORY_SESSION } from '../data/story';
 
 interface GroupTimeViewProps {
   lang: Language;
@@ -79,6 +80,20 @@ export const GroupTimeView: React.FC<GroupTimeViewProps> = ({ lang }) => {
                   </ol>
                 ) : (
                   <p className="text-sm text-[#E3E6DB]/50 italic">{t.questionsComingSoon}</p>
+                )}
+
+                {/* Session 7: "My story" form, appearing together with its questions. */}
+                {!locked && idx + 1 === STORY_SESSION && (
+                  <a
+                    href={STORY_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FACC15] hover:bg-[#FDE047] text-[#121820] font-mono-code text-xs font-bold uppercase tracking-wider transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FDE047] focus-visible:ring-offset-2 focus-visible:ring-offset-[#18212C]"
+                  >
+                    <PenLine className="w-4 h-4" aria-hidden="true" />
+                    {t.storyButton}
+                    <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                  </a>
                 )}
               </div>
               );
