@@ -38,7 +38,7 @@ const linkProps = { href: STORY_FORM_URL, target: '_blank', rel: 'noopener noref
 // Pulsing yellow "My story" badge in the event app's header (in place of the
 // check-out badge), linking straight to the story form. Rendered only once
 // the story phase has begun; the notice then opens on every entry to the app.
-// Only its X (or Escape) closes it - a tap beside it doesn't.
+// Its X, Escape or a tap beside it closes it.
 export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
   const t = translations[lang].storyNotice;
   // Opens on entering the app - but only when the page is actually on screen;
@@ -114,12 +114,16 @@ export const StoryNotice: React.FC<StoryNoticeProps> = ({ lang }) => {
           scroll), which would otherwise trap a fixed overlay inside it. */}
       {open &&
         createPortal(
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-checkout-fade-in">
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-checkout-fade-in"
+            onClick={() => setOpen(false)}
+          >
             <div
               role="dialog"
               aria-modal="true"
               aria-labelledby="story-notice-title"
               aria-describedby="story-notice-message"
+              onClick={(e) => e.stopPropagation()}
               onKeyDown={onDialogKeyDown}
               className="relative w-full max-w-sm bg-[#18212C] border border-[#FACC15]/40 rounded-2xl shadow-2xl p-6 text-center"
             >
